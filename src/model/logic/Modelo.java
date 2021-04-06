@@ -507,7 +507,58 @@ public class Modelo
 		}
 		
 	}
-	
+	public void leerDatosTablasHash()
+	{
+		try 
+		{
+			leerCategorias();
+			int cont = 0;
+			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/videos-all.csv")),"UTF-8");
+			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
+			for(final CSVRecord excel : separador)
+			{		
+				String id = excel.get("video_id");
+				String fechaTrending = excel.get("trending_date");		
+				String titulo = excel.get("title");
+				String canal = excel.get("channel_title");
+				String categoria = excel.get("category_id");
+				String publicacion = excel.get("publish_time");
+				String tags = excel.get("tags");
+				String vistas = excel.get("views");
+				String likes =excel.get("likes");
+				String dislikes = excel.get("dislikes");
+				String pais = excel.get("country");
+				Video nuevo = new Video(id, fecha1(fechaTrending), titulo, canal, Integer.valueOf(categoria), fecha2(publicacion), publicacion, tags, Integer.valueOf(vistas), likes, dislikes, darNomCat(Integer.valueOf(categoria),categorias), pais);
+				
+				String llave = pais +"-" +darCategoria(categoria);
+				if (!datosTablaSimbolos.contains(llave))
+				{
+					cont ++;
+					ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
+					lista.addFirst(nuevo);
+					TInicio = System.currentTimeMillis();
+					datosTablaSimbolos.put(llave, lista);
+					tiempo = System.currentTimeMillis() - TInicio;
+					tiempoEjecucionPromedio += tiempo;
+				}
+				else
+				{
+					cont ++;
+					cantidadDuplas ++;
+					TInicio = System.currentTimeMillis();
+					datosTablaSimbolos.get(llave).addLast(nuevo);
+					tiempo = System.currentTimeMillis() - TInicio;
+					tiempoEjecucionPromedio += tiempo;
+				}
+				cantidadVideos = cont;
+			}
+			tiempoEjecucionPromedio /= cont;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * Informa el número y los videos que pertenecen a un mismo país y nombre de categoría
 	 * @param pPais

@@ -105,6 +105,13 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 	{
 		return size() == 0;
 	}
+
+	@Override
+	public int hash(K key) 
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }
 	

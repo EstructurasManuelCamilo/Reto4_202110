@@ -51,6 +51,8 @@ public interface ITablaSimbolos <K extends Comparable<K>, V extends Comparable<V
 	 * Verifica si la tabla esta vacia.
 	 * @return True en caso de que la tabla este vacia. False de lo contrario.
 	 */
-	public boolean isEmpty();	
+	public boolean isEmpty();
+
+	public int hash(K key);	
 
 }

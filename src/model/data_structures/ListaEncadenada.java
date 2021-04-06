@@ -384,5 +384,11 @@ public class ListaEncadenada <T extends Comparable<T>> implements ILista<T>
 		}
 		return copia;
 	}
+	@Override
+	public int compareTo(ILista<T> o) 
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

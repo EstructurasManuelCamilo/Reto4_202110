@@ -33,6 +33,16 @@ public class NodoTS<K extends Comparable<K>, V> implements Comparable<NodoTS<K,V
 		this.valor = valor;
 	}
 	
+	public void setEmpty()
+	{
+		this.llave = null;
+	}
+	
+	public boolean isEmpty()
+	{
+		return this.llave == null;
+	}
+	
 	/** 
 	 * La comparación de dos NodoTS depende de sus llaves 
 	*/ 

@@ -638,4 +638,22 @@ public class Modelo
 		return tiempoEjecucionPromedio;
 	}
 	
+	// Requerimiento 1. linear probing
+	public ILista<Video> videoPorPaisLinear(String pPais, String pCategoria)
+	{
+		String llave = pPais + pCategoria;
+		ILista<Video> resp = new ArregloDinamico<Video>(7);
+		resp = datosSeparateChaining.get(llave);
+		return resp;
+	}
+	
+	// Requerimiento 2. Separate chaining
+	public ILista<Video> videoPorPaisSeparate(String pPais, String pCategoria)
+	{
+		String llave = pPais + pCategoria;
+		ILista<Video> resp = new ArregloDinamico<Video>(7);
+		resp = datosSeparateChaining.get(llave);
+		return resp;
+	}
+	
 }

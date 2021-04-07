@@ -9,7 +9,7 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	public TablaHashLinearProbing(int pTamanioIncial) 
 	{
 		tamanioTabla = nextPrime(pTamanioIncial);
-		listaNodos = new ArregloDinamico<NodoTS<K,V>> (pTamanioIncial);
+		listaNodos = new ArregloDinamico<NodoTS<K,V>> (tamanioTabla);
 		tamanioActual = 0;
 		for (int i = 0 ; i < tamanioTabla; i++)
 		{
@@ -207,5 +207,21 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		}
 		return p1;
 	}
+	
+	private void rehash(int cap)
+	{
+		TablaHashLinearProbing<K,V> nueva = new TablaHashLinearProbing<>(cap);
+		for(int i = 0; i < tamanioTabla; i++)
+		{
+			NodoTS<K, V> actual = listaNodos.getElement(i);
+			if(actual!=null)
+			{
+				nueva.put(actual.getKey(), actual.getValue());
+			}
+		}
+// falta actualizar lista de nodos
+		tamanioTabla = nueva.size();
+	}
 
+	
 }

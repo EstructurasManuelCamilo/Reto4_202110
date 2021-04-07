@@ -152,7 +152,10 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	@Override
 	public int hash(K key) 
 	{
-		return 0;
+		int p = nextPrime(tamanioTabla);
+		int a = (int) (Math.random()* (p-1));
+		int b = (int) (Math.random()* (p-1));
+		return Math.abs((key.hashCode()*a + b) % p) % tamanioTabla;
 	}
 	
 	// Function that returns true if n

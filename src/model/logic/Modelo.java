@@ -33,7 +33,11 @@ public class Modelo
 
 	private ListaEncadenada<Video> datosLista;
 	
-	private TablaSimbolos<String, ArregloDinamico<Video>> datosTablaSimbolos;
+	private TablaSimbolos<String, ILista<Video>> datosTablaSimbolos;
+	
+	private TablaHashLinearProbing<String,Video> datosLinearProbing;
+	
+	private TablaHashSeparateChaining<String, ILista<Video>> datosSeparateChaining;
 
 	private Ordenamientos<Video> ordenamientos;
 
@@ -60,6 +64,8 @@ public class Modelo
 		tiempoEjecucionPromedio = 0;
 		cantidadVideos = 0;
 		datosTablaSimbolos = new TablaSimbolos<>();
+		datosLinearProbing = new TablaHashLinearProbing<>(750);
+		datosSeparateChaining = new TablaHashSeparateChaining<>(5, 0.75);
 	}
 
 	/**
@@ -268,7 +274,7 @@ public class Modelo
 		return (ListaEncadenada<Video>) datosLista;
 	}
 	
-	public TablaSimbolos<String,ArregloDinamico<Video>> darTablaSimbolos()
+	public TablaSimbolos<String,ILista<Video>> darTablaSimbolos()
 	{
 		return datosTablaSimbolos;
 	}
@@ -460,7 +466,7 @@ public class Modelo
 		{
 			leerCategorias();
 			int cont = 0;
-			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/videos-all.csv")),"UTF-8");
+			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/videos-small.csv")),"UTF-8");
 			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 			for(final CSVRecord excel : separador)
 			{		
@@ -513,7 +519,8 @@ public class Modelo
 		{
 			leerCategorias();
 			int cont = 0;
-			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/videos-all.csv")),"UTF-8");
+			int cont2 = 0;
+			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/videos-small.csv")),"UTF-8");
 			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 			for(final CSVRecord excel : separador)
 			{		
@@ -531,13 +538,21 @@ public class Modelo
 				Video nuevo = new Video(id, fecha1(fechaTrending), titulo, canal, Integer.valueOf(categoria), fecha2(publicacion), publicacion, tags, Integer.valueOf(vistas), likes, dislikes, darNomCat(Integer.valueOf(categoria),categorias), pais);
 				
 				String llave = pais +"-" +darCategoria(categoria);
-				if (!datosTablaSimbolos.contains(llave))
+//				TInicio = System.currentTimeMillis();
+//				datosLinearProbing.put(llave, nuevo);
+//				System.out.println(datosLinearProbing.get(llave));
+//				tiempo = System.currentTimeMillis() - TInicio;
+//				cont ++;
+//				tiempoEjecucionPromedio += tiempo;
+//				cantidadVideos = cont;
+				
+				if (!datosSeparateChaining.contains(llave))
 				{
 					cont ++;
 					ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
 					lista.addFirst(nuevo);
 					TInicio = System.currentTimeMillis();
-					datosTablaSimbolos.put(llave, lista);
+					datosSeparateChaining.put(llave, lista);
 					tiempo = System.currentTimeMillis() - TInicio;
 					tiempoEjecucionPromedio += tiempo;
 				}
@@ -546,7 +561,7 @@ public class Modelo
 					cont ++;
 					cantidadDuplas ++;
 					TInicio = System.currentTimeMillis();
-					datosTablaSimbolos.get(llave).addLast(nuevo);
+					(datosSeparateChaining.get(llave)).addLast(nuevo);
 					tiempo = System.currentTimeMillis() - TInicio;
 					tiempoEjecucionPromedio += tiempo;
 				}
@@ -586,7 +601,7 @@ public class Modelo
 	public ArregloDinamico<Video> requerimiento1(String pais, String categoria) 
 	{
 		String llave = pais +"-"+categoria;
-		ArregloDinamico<Video> listaVideos = datosTablaSimbolos.get(llave);
+		ArregloDinamico<Video> listaVideos = (ArregloDinamico<Video>) datosTablaSimbolos.get(llave);
 		return listaVideos == null? null: listaVideos;
 	}
 

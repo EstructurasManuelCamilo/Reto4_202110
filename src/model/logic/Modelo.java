@@ -67,7 +67,7 @@ public class Modelo
 		cantidadVideos = 0;
 		datosTablaSimbolos = new TablaSimbolos<>();
 		datosLinearProbing = new TablaHashLinearProbing<>(750);
-		datosSeparateChaining = new TablaHashSeparateChaining<>(5, 0.75);
+		datosSeparateChaining = new TablaHashSeparateChaining<>(201);
 	}
 
 	/**

@@ -17,7 +17,11 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		}
 	}
 	
-
+	public ILista <NodoTS<K, V>> darListaNodos()
+	{
+		return listaNodos;
+	}
+	
 	@Override
 	public ILista<K> keySet() 
 	{ 
@@ -69,6 +73,7 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	@Override
 	public void put(K key, V val) 
 	{
+		
 		int posicion = hash(key);
 		NodoTS<K, V> nodo = listaNodos.getElement(posicion);
 		if(nodo != null && nodo.isEmpty())
@@ -77,6 +82,10 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		}
 		listaNodos.changeInfo(posicion, new NodoTS<K, V>(key, val));
 		tamanioActual ++;
+		if( (tamanioActual/tamanioTabla) >= 0.75)
+		{
+			rehash(tamanioTabla*2);
+		}
 	}
 
 	@Override
@@ -219,8 +228,8 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 				nueva.put(actual.getKey(), actual.getValue());
 			}
 		}
-// falta actualizar lista de nodos
 		tamanioTabla = nueva.size();
+		listaNodos = nueva.darListaNodos();
 	}
 
 	

@@ -9,7 +9,7 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	public TablaHashLinearProbing(int pTamanioIncial) 
 	{
 		tamanioTabla = nextPrime(pTamanioIncial);
-		listaNodos = new ArregloDinamico<NodoTS<K,V>> (pTamanioIncial);
+		listaNodos = new ArregloDinamico<NodoTS<K,V>> (tamanioTabla);
 		tamanioActual = 0;
 		for (int i = 0 ; i < tamanioTabla; i++)
 		{
@@ -17,7 +17,11 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		}
 	}
 	
-
+	public ILista <NodoTS<K, V>> darListaNodos()
+	{
+		return listaNodos;
+	}
+	
 	@Override
 	public ILista<K> keySet() 
 	{ 
@@ -69,6 +73,7 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	@Override
 	public void put(K key, V val) 
 	{
+		
 		int posicion = hash(key);
 		NodoTS<K, V> nodo = listaNodos.getElement(posicion);
 		if(nodo != null && nodo.isEmpty())
@@ -77,6 +82,10 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		}
 		listaNodos.changeInfo(posicion, new NodoTS<K, V>(key, val));
 		tamanioActual ++;
+		if( (tamanioActual/tamanioTabla) >= 0.75)
+		{
+			rehash(tamanioTabla*2);
+		}
 	}
 
 	@Override
@@ -207,5 +216,21 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		}
 		return p1;
 	}
+	
+	private void rehash(int cap)
+	{
+		TablaHashLinearProbing<K,V> nueva = new TablaHashLinearProbing<>(cap);
+		for(int i = 0; i < tamanioTabla; i++)
+		{
+			NodoTS<K, V> actual = listaNodos.getElement(i);
+			if(actual!=null)
+			{
+				nueva.put(actual.getKey(), actual.getValue());
+			}
+		}
+		tamanioTabla = nueva.size();
+		listaNodos = nueva.darListaNodos();
+	}
 
+	
 }

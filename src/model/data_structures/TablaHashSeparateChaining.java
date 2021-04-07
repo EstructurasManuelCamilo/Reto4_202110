@@ -9,7 +9,7 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 	private int tamanioTabla;
 	private int cantDuplas;
 	
-	public TablaHashSeparateChaining(int pTamanioIncial, double pFactorCarga) 
+	public TablaHashSeparateChaining(int pTamanioIncial) 
 	{
 		// Cuando llegue al factor de carga se tiene que hacer rehash
 		listaNodos = new ArregloDinamico<> (pTamanioIncial);
@@ -20,6 +20,11 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 		{
 			listaNodos.addLast(null);
 		}
+	}
+	
+	private ILista <ILista<NodoTS<K, V>>> darListaNodos()
+	{
+		return listaNodos;
 	}
 	@Override
 	public ILista<K> keySet() 
@@ -81,6 +86,10 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 			listaNodos.getElement(posicion).addLast(new NodoTS<K, V>(key, val));
 		}
 		tamanioActual ++;
+		if( (tamanioActual/tamanioTabla) >= 5)
+		{
+			rehash(tamanioTabla*2);
+		}
 	}
 
 	@Override
@@ -184,6 +193,24 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 			resp = lista;
 		}
 		return resp;
+	}
+	
+	private void rehash(int cap)
+	{
+		TablaHashSeparateChaining<K,V> nueva = new TablaHashSeparateChaining<>(cap);
+		for(int i = 0; i < tamanioTabla; i++)
+		{
+			for(int j = 0; j < listaNodos.getElement(i).size(); i++)
+			{
+				NodoTS<K, V> actual = listaNodos.getElement(i).getElement(j);
+				if(actual!=null)
+				{
+					nueva.put(actual.getKey(), actual.getValue());
+				}
+			}
+		}
+		tamanioTabla = nueva.size();
+		listaNodos = nueva.darListaNodos();
 	}
 
 }

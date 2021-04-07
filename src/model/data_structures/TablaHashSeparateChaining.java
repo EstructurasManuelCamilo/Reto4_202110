@@ -7,6 +7,7 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 	private ILista <ILista<NodoTS<K, V>>> listaNodos;
 	private int tamanioActual;
 	private int tamanioTabla;
+	private int cantDuplas;
 	
 	public TablaHashSeparateChaining(int pTamanioIncial, double pFactorCarga) 
 	{
@@ -14,6 +15,7 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 		listaNodos = new ArregloDinamico<> (pTamanioIncial);
 		tamanioActual = 0;
 		tamanioTabla = pTamanioIncial;
+		cantDuplas = 0;
 		for (int i = 0 ; i < tamanioTabla; i++)
 		{
 			listaNodos.addLast(null);
@@ -58,15 +60,19 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 		return tamanioTabla;
 	}
 
+	public int darCantDuplas()
+	{
+		return cantDuplas;
+	}
 	@Override
 	public void put(K key, V val)
 	{
 		int posicion = hash(key);
-		System.out.println(posicion);
 		ILista<NodoTS<K, V>> lista = listaNodos.getElement(posicion);
 		if(lista != null && !contains(key))
 		{
 			lista.addLast(new NodoTS<K, V>(key, val));
+			cantDuplas ++;
 		}
 		else
 		{

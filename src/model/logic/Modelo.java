@@ -27,7 +27,7 @@ public class Modelo
 	 * Atributos del modelo del mundo
 	 */
 	long TInicio, TFin, tiempo;
-
+	long TInicio2, TFin2, tiempo2;
 
 	private ArregloDinamico<Video> datosArreglo; 
 
@@ -555,15 +555,16 @@ public class Modelo
 				cont2 ++;
 				ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
 				lista.addLast(nuevo);
-				TInicio = System.currentTimeMillis();
+				TInicio2 = System.currentTimeMillis();
 				datosSeparateChaining.put(llave, lista);
-				tiempo = System.currentTimeMillis() - TInicio;
-				tiempoEjecucionPromedio2 += tiempo;
+				tiempo2 = System.currentTimeMillis() - TInicio2;
+				tiempoEjecucionPromedio2 += tiempo2;
 				
 				cantidadVideos = cont2;
 			}
 			tiempoEjecucionPromedio /= (cont);
 			tiempoEjecucionPromedio2 /= cont2;
+			cantidadDuplas = datosSeparateChaining.darCantDuplas();
 		}
 		catch(Exception e)
 		{

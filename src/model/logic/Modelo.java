@@ -540,7 +540,6 @@ public class Modelo
 				String llave = pais +"-" +darCategoria(categoria);
 //				TInicio = System.currentTimeMillis();
 //				datosLinearProbing.put(llave, nuevo);
-//				System.out.println(datosLinearProbing.get(llave));
 //				tiempo = System.currentTimeMillis() - TInicio;
 //				cont ++;
 //				tiempoEjecucionPromedio += tiempo;
@@ -561,7 +560,8 @@ public class Modelo
 					cont ++;
 					cantidadDuplas ++;
 					TInicio = System.currentTimeMillis();
-					(datosSeparateChaining.get(llave)).addLast(nuevo);
+					NodoTS<String, Video> nodo =  new NodoTS<String, Video>(llave, nuevo);
+					datosSeparateChaining.get(llave).addLast( nodo);
 					tiempo = System.currentTimeMillis() - TInicio;
 					tiempoEjecucionPromedio += tiempo;
 				}

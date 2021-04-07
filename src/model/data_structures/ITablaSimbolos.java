@@ -54,5 +54,6 @@ public interface ITablaSimbolos <K extends Comparable<K>, V extends Comparable<V
 	public boolean isEmpty();
 
 	public int hash(K key);	
+	
 
 }

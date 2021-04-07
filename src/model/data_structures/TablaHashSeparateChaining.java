@@ -1,5 +1,7 @@
 package model.data_structures;
 
+import model.logic.Video;
+
 public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Comparable<V>> implements ITablaSimbolos <K,V>
 {
 	private ILista <ILista<NodoTS<K, V>>> listaNodos;
@@ -39,7 +41,7 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 		ILista<NodoTS<K, V>> lista = listaNodos.getElement(posicion);
 		if(lista != null )
 		{
-			for( int i = 1; i <= lista.size() && resp == null; i ++)
+			for( int i = 0; i <= lista.size()-1 && resp == null; i ++)
 			{
 				if(lista.getElement(i).getKey().compareTo(key) == 0)
 				{
@@ -101,7 +103,7 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 		ILista<NodoTS<K, V>> lista = listaNodos.getElement(posicion);
 		if(lista != null )
 		{
-			for( int i = 1; i <= lista.size(); i ++)
+			for( int i = 0; i <= lista.size()-1; i ++)
 			{
 				if(lista.getElement(i).getKey().compareTo(key) == 0)
 				{
@@ -164,6 +166,18 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
         return prime;
 
     }
-	
+
+    
+	public ILista<Video> getLista(K key) 
+	{
+		ILista<V> resp = null;
+		int posicion = hash(key);
+		ILista<NodoTS<K, V>> lista = listaNodos.getElement(posicion);
+		if(lista != null )
+		{
+			resp = (ILista<V>) lista;
+		}
+		return resp;
+	}
 
 }

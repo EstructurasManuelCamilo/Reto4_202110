@@ -76,6 +76,8 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 			posicion = getNextEmpty(posicion);
 		}
 		listaNodos.changeInfo(posicion, new NodoTS<K, V>(key, val));
+		System.out.println(listaNodos.getElement(posicion).getValue());
+		System.out.println(listaNodos.getElement(posicion).getKey());
 		tamanioActual ++;
 	}
 

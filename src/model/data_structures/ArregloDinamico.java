@@ -204,10 +204,7 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista <T>
 
 	public void changeInfo(int pos, T elem) 
 	{
-		if(getElement(pos) != null)
-		{
-			elementos[pos] = elem;
-		}
+		elementos[pos] = elem;
 	}
 
 

@@ -48,6 +48,8 @@ public class Modelo
 	private int cantidadDuplas;
 	
 	private float tiempoEjecucionPromedio;
+	
+	private float tiempoEjecucionPromedio2;
 
 	private int cantidadVideos;
 
@@ -287,6 +289,11 @@ public class Modelo
 	public float darTiempoEjecucionPromedio()
 	{
 		return tiempoEjecucionPromedio;
+	}
+	
+	public float darTiempoEjecucionPromedio2()
+	{
+		return tiempoEjecucionPromedio2;
 	}
 	
 	public String darNomCat(int pId, ArregloDinamico<Categoria> categorias2)
@@ -551,11 +558,12 @@ public class Modelo
 				TInicio = System.currentTimeMillis();
 				datosSeparateChaining.put(llave, lista);
 				tiempo = System.currentTimeMillis() - TInicio;
-				tiempoEjecucionPromedio += tiempo;
+				tiempoEjecucionPromedio2 += tiempo;
 				
 				cantidadVideos = cont2;
 			}
-			tiempoEjecucionPromedio /= (cont+cont2);
+			tiempoEjecucionPromedio /= (cont);
+			tiempoEjecucionPromedio2 /= cont2;
 		}
 		catch(Exception e)
 		{

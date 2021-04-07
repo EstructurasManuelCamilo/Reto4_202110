@@ -538,36 +538,24 @@ public class Modelo
 				Video nuevo = new Video(id, fecha1(fechaTrending), titulo, canal, Integer.valueOf(categoria), fecha2(publicacion), publicacion, tags, Integer.valueOf(vistas), likes, dislikes, darNomCat(Integer.valueOf(categoria),categorias), pais);
 				
 				String llave = pais +"-" +darCategoria(categoria);
-//				TInicio = System.currentTimeMillis();
-//				datosLinearProbing.put(llave, nuevo);
-//				tiempo = System.currentTimeMillis() - TInicio;
-//				cont ++;
-//				tiempoEjecucionPromedio += tiempo;
-//				cantidadVideos = cont;
-				
-				if (!datosSeparateChaining.contains(llave))
-				{
-					cont ++;
-					ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
-					lista.addFirst(nuevo);
-					TInicio = System.currentTimeMillis();
-					datosSeparateChaining.put(llave, lista);
-					tiempo = System.currentTimeMillis() - TInicio;
-					tiempoEjecucionPromedio += tiempo;
-				}
-				else
-				{
-					cont ++;
-					cantidadDuplas ++;
-					TInicio = System.currentTimeMillis();
-					NodoTS<String, Video> nodo =  new NodoTS<String, Video>(llave, nuevo);
-					datosSeparateChaining.get(llave).addLast( nodo);
-					tiempo = System.currentTimeMillis() - TInicio;
-					tiempoEjecucionPromedio += tiempo;
-				}
+				TInicio = System.currentTimeMillis();
+				datosLinearProbing.put(llave, nuevo);
+				tiempo = System.currentTimeMillis() - TInicio;
+				cont ++;
+				tiempoEjecucionPromedio += tiempo;
 				cantidadVideos = cont;
+				
+				cont2 ++;
+				ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
+				lista.addLast(nuevo);
+				TInicio = System.currentTimeMillis();
+				datosSeparateChaining.put(llave, lista);
+				tiempo = System.currentTimeMillis() - TInicio;
+				tiempoEjecucionPromedio += tiempo;
+				
+				cantidadVideos = cont2;
 			}
-			tiempoEjecucionPromedio /= cont;
+			tiempoEjecucionPromedio /= (cont+cont2);
 		}
 		catch(Exception e)
 		{

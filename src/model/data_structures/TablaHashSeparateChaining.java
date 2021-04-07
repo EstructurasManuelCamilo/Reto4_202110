@@ -168,14 +168,14 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
     }
 
     
-	public ILista<Video> getLista(K key) 
+	public ILista<NodoTS<K, V>> getLista(K key) 
 	{
-		ILista<V> resp = null;
+		ILista<NodoTS<K, V>> resp = null;
 		int posicion = hash(key);
 		ILista<NodoTS<K, V>> lista = listaNodos.getElement(posicion);
 		if(lista != null )
 		{
-			resp = (ILista<V>) lista;
+			resp = lista;
 		}
 		return resp;
 	}

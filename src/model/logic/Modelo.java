@@ -637,5 +637,4 @@ public class Modelo
 		tiempoEjecucionPromedio = (prom1 + prom2)/2;
 		return tiempoEjecucionPromedio;
 	}
-	
 }

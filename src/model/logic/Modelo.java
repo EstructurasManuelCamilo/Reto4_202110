@@ -544,7 +544,8 @@ public class Modelo
 				String pais = excel.get("country");
 				Video nuevo = new Video(id, fecha1(fechaTrending), titulo, canal, Integer.valueOf(categoria), fecha2(publicacion), publicacion, tags, Integer.valueOf(vistas), likes, dislikes, darNomCat(Integer.valueOf(categoria),categorias), pais);
 				
-				String llave = pais +"-" +darCategoria(categoria);
+				String llave = pais + "-" +darCategoria(categoria);
+				System.out.println(llave);
 				TInicio = System.currentTimeMillis();
 				datosLinearProbing.put(llave, nuevo);
 				tiempo = System.currentTimeMillis() - TInicio;
@@ -565,6 +566,8 @@ public class Modelo
 			tiempoEjecucionPromedio /= (cont);
 			tiempoEjecucionPromedio2 /= cont2;
 			cantidadDuplas = datosSeparateChaining.darCantDuplas();
+			System.out.println(datosLinearProbing.get("mexico-Comedy"));
+			System.out.println(datosSeparateChaining.get("mexico-Comedy"));
 		}
 		catch(Exception e)
 		{

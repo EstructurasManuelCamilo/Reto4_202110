@@ -42,6 +42,7 @@ public class Controller {
 		boolean fin = false;
 		String pais = "";
 		String categoria = "";
+		int numero = 0;
 		while( !fin ){
 			view.printMenu();
 
@@ -63,6 +64,11 @@ public class Controller {
 
 			case 2:
 				//REQ 1
+				view.printMessage("Ingrese el numero de videos que desea consultar"); 
+				while(numero == 0)
+				{
+					numero = lector.nextInt();
+				}
 				view.printMessage("Ingrese el país que desea consultar"); 
 				while(pais.equals(""))
 				{
@@ -73,38 +79,43 @@ public class Controller {
 				{
 					categoria = lector.nextLine();
 				}
-				if ( modelo.requerimiento1(pais, categoria)== null) 
-					view.printMessage("No se pudo reportar respuesta al requerimiento");
+
+				ILista<Video> solucion = modelo.videoPorPaisSeparate(numero, pais, categoria);
+				
+				if ( solucion == null) 
+					view.printMessage("No se pudo encontro respuesta al requerimiento");
 				else
 				{
 					int i = 0;
 					int j = 1;
-					view.printMessage("El número de videos es: " + modelo.requerimiento1(pais, categoria).size());
-					while(modelo.requerimiento1(pais, categoria).size() > i)
+					while(numero > i)
 					{
 						view.printMessage("----------------" + " \n Video " + j);
-						view.printMessage("El título es: " + modelo.requerimiento1(pais, categoria).getElement(i).getTitle());
-						view.printMessage("El número de views son: " + modelo.requerimiento1(pais, categoria).getElement(i).darVistas());
-						view.printMessage("El número de likes son: " + modelo.requerimiento1(pais, categoria).getElement(i).darLikes());
-						view.printMessage("El número de dislikes son: " + modelo.requerimiento1(pais, categoria).getElement(i).darDisLikes());
+						view.printMessage("El título es: " + solucion.getElement(i).getTitle());
+						view.printMessage("El número de views son: " + solucion.getElement(i).darVistas());
+						view.printMessage("El número de likes son: " + solucion.getElement(i).darLikes());
+						view.printMessage("El número de dislikes son: " + solucion.getElement(i).darDisLikes());
 						i++;
 						j++;
 					}
 				}
+				numero = 0;
+				pais = "";
+				categoria = "";
 
 				break;
 			case 3:
 				//int promedio = modelo.desempenioMetodoGet();
 				view.printMessage("El tiempo promedio es: " + modelo.desempenioMetodoGetLlavesExistentes());
-					
+
 				break;
-				
+
 			case 4: 
 				view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 				lector.close();
 				fin = true;
 				break;
-				
+
 			default: 
 				view.printMessage("--------- \n Opcion Invalida !! \n---------");
 				break;

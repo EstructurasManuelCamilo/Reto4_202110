@@ -32,23 +32,23 @@ public class Modelo
 	private ArregloDinamico<Video> datosArreglo; 
 
 	private ListaEncadenada<Video> datosLista;
-	
+
 	private TablaSimbolos<String, ILista<Video>> datosTablaSimbolos;
-	
+
 	private TablaHashLinearProbing<String,Video> datosLinearProbing;
-	
+
 	private TablaHashSeparateChaining<String, ILista<Video>> datosSeparateChaining;
 
 	private Ordenamientos<Video> ordenamientos;
 
 	private ArregloDinamico<Categoria> categorias; 
-	
+
 	private int diasTendencia;
 
 	private int cantidadDuplas;
-	
+
 	private float tiempoEjecucionPromedio;
-	
+
 	private float tiempoEjecucionPromedio2;
 
 	private int cantidadVideos;
@@ -87,12 +87,12 @@ public class Modelo
 	{
 		return datosArreglo.size();
 	}
-	
+
 	public int darDiasTendencia()
 	{
 		return diasTendencia;
 	}
-	
+
 	public int darCantidadVideos()
 	{
 		return cantidadVideos;
@@ -275,27 +275,27 @@ public class Modelo
 	{
 		return (ListaEncadenada<Video>) datosLista;
 	}
-	
+
 	public TablaSimbolos<String,ILista<Video>> darTablaSimbolos()
 	{
 		return datosTablaSimbolos;
 	}
-	
+
 	public int darDuplas()
 	{
 		return cantidadDuplas;
 	}
-	
+
 	public float darTiempoEjecucionPromedio()
 	{
 		return tiempoEjecucionPromedio;
 	}
-	
+
 	public float darTiempoEjecucionPromedio2()
 	{
 		return tiempoEjecucionPromedio2;
 	}
-	
+
 	public String darNomCat(int pId, ArregloDinamico<Categoria> categorias2)
 	{
 		String resp = "";
@@ -343,7 +343,7 @@ public class Modelo
 		Video videoTendencia = null;
 		int masDias = 0;
 		int contador = 1;
-		
+
 		int i = 0;
 		Video actual = null;
 		while(i < datosArreglo.size())
@@ -357,13 +357,13 @@ public class Modelo
 		}
 		ordenamientos.ordenarShell(videosPais, comp2, true);
 		Video act = videosPais.getElement(0);
-		
+
 		for(int j = 1; j < videosPais.size(); j++)
 		{
 			if(videosPais.getElement(j).getId().equals(act.getId()))
 			{
 				contador++;
-				
+
 			}
 			else if(contador > masDias)
 			{
@@ -377,7 +377,7 @@ public class Modelo
 			}
 			act = videosPais.getElement(j);
 		}
-		
+
 		diasTendencia = masDias;
 		return videoTendencia;
 	}
@@ -394,7 +394,7 @@ public class Modelo
 		Video videoTendencia = null;
 		int masDias = 0;
 		int contador = 1;
-		
+
 		int i = 0;
 		Video actual = null;
 		while(i < datosArreglo.size())
@@ -408,13 +408,13 @@ public class Modelo
 		}
 		ordenamientos.ordenarShell(videosCat, comp2, true);
 		Video act = videosCat.getElement(0);
-		
+
 		for(int j = 1; j < videosCat.size(); j++)
 		{
 			if(videosCat.getElement(j).getId().equals(act.getId()))
 			{
 				contador++;
-				
+
 			}
 			else if(contador > masDias)
 			{
@@ -428,7 +428,7 @@ public class Modelo
 			}
 			act = videosCat.getElement(j);
 		}
-		
+
 		diasTendencia = masDias;
 		return videoTendencia;
 	}
@@ -464,7 +464,7 @@ public class Modelo
 
 		return solucion;
 	}
-	
+
 
 	public void leerDatosTablaSimbolos()
 	{
@@ -489,7 +489,7 @@ public class Modelo
 				String dislikes = excel.get("dislikes");
 				String pais = excel.get("country");
 				Video nuevo = new Video(id, fecha1(fechaTrending), titulo, canal, Integer.valueOf(categoria), fecha2(publicacion), publicacion, tags, Integer.valueOf(vistas), likes, dislikes, darNomCat(Integer.valueOf(categoria),categorias), pais);
-				
+
 				String llave = pais +"-" +darCategoria(categoria);
 				if (!datosTablaSimbolos.contains(llave))
 				{
@@ -518,7 +518,7 @@ public class Modelo
 		{
 			e.printStackTrace();
 		}
-		
+
 	}
 	public void leerDatosTablasHash()
 	{
@@ -543,7 +543,7 @@ public class Modelo
 				String dislikes = excel.get("dislikes");
 				String pais = excel.get("country");
 				Video nuevo = new Video(id, fecha1(fechaTrending), titulo, canal, Integer.valueOf(categoria), fecha2(publicacion), publicacion, tags, Integer.valueOf(vistas), likes, dislikes, darNomCat(Integer.valueOf(categoria),categorias), pais);
-				
+
 				String llave = pais + "-" +darCategoria(categoria);
 				System.out.println(llave);
 				TInicio = System.currentTimeMillis();
@@ -552,7 +552,7 @@ public class Modelo
 				cont ++;
 				tiempoEjecucionPromedio += tiempo;
 				cantidadVideos = cont;
-				
+
 				cont2 ++;
 				ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
 				lista.addLast(nuevo);
@@ -560,7 +560,7 @@ public class Modelo
 				datosSeparateChaining.put(llave, lista);
 				tiempo2 = System.currentTimeMillis() - TInicio2;
 				tiempoEjecucionPromedio2 += tiempo2;
-				
+
 				cantidadVideos = cont2;
 			}
 			tiempoEjecucionPromedio /= (cont);
@@ -598,14 +598,6 @@ public class Modelo
 		return resp;
 	}
 
-	public ArregloDinamico<Video> requerimiento1(String pais, String categoria) 
-	{
-		String llave = pais +"-"+categoria;
-		ArregloDinamico<Video> listaVideos = (ArregloDinamico<Video>) datosTablaSimbolos.get(llave);
-		return listaVideos == null? null: listaVideos;
-	}
-
-	
 
 	public float desempenioMetodoGetLlavesExistentes() 
 	{
@@ -616,7 +608,7 @@ public class Modelo
 		while(i < 700)
 		{
 			int min = 0;
-		    int max = datosTablaSimbolos.keySet().size() - 1;
+			int max = datosTablaSimbolos.keySet().size() - 1;
 			int random_int = (int)(Math.random() * (max - min + 1) + min);
 			String llaveTemp = datosTablaSimbolos.keySet().getElement(random_int);
 			System.out.println(llaveTemp);
@@ -641,24 +633,51 @@ public class Modelo
 		return tiempoEjecucionPromedio;
 	}
 
-	
+
 	// Requerimiento 1. linear probing
-	public ILista<Video> videoPorPaisLinear(String pPais, String pCategoria)
+	public ILista<Video> videoPorPaisLinear(int n, String pPais, String pCategoria)
 	{
-		String llave = pPais + pCategoria;
+		ILista<Video> lista = new ArregloDinamico<Video>(7);
 		ILista<Video> resp = new ArregloDinamico<Video>(7);
-		resp = datosSeparateChaining.get(llave);
+
+		String llave = pPais + "-" + pCategoria;
+		Video actual = datosLinearProbing.get(llave);
+
+		if(actual != null)
+		{
+			lista.addLast(actual);
+			
+			Video.ComparadorXVistas comp = new Video.ComparadorXVistas();
+			ordenamientos.ordenarShell(lista, comp, true);
+
+			for(int i = 0; i < n && i < lista.size();i++)
+			{
+				resp.addLast(lista.getElement(i));
+			}
+		}
 		return resp;
 	}
-	
-	// Requerimiento 2. Separate chaining
-	public ILista<Video> videoPorPaisSeparate(String pPais, String pCategoria)
+
+	// Requerimiento 1. Separate chaining
+	public ILista<Video> videoPorPaisSeparate(int n, String pPais, String pCategoria)
 	{
-		String llave = pPais + pCategoria;
 		ILista<Video> resp = new ArregloDinamico<Video>(7);
-		resp = datosSeparateChaining.get(llave);
+
+		String llave = pPais + "-" + pCategoria;
+		ILista<Video> actual = datosSeparateChaining.get(llave);
+
+		if(!actual.isEmpty() || actual != null)
+		{
+			Video.ComparadorXVistas comp = new Video.ComparadorXVistas();
+			ordenamientos.ordenarShell(actual, comp, true);
+
+			for(int i = 0; i < n && i < actual.size();i++)
+			{
+				resp.addLast(actual.getElement(i));
+			}
+		}
 		return resp;
 	}
-	
+
 
 }

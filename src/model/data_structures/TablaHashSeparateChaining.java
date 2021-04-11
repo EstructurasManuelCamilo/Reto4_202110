@@ -1,13 +1,14 @@
 package model.data_structures;
 
-import model.logic.Video;
-
 public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Comparable<V>> implements ITablaSimbolos <K,V>
 {
 	private ILista <ILista<NodoTS<K, V>>> listaNodos;
 	private int tamanioActual;
 	private int tamanioTabla;
 	private int cantDuplas;
+	private int p;
+	private int a;
+	private int b;
 	
 	public TablaHashSeparateChaining(int pTamanioIncial) 
 	{
@@ -20,6 +21,10 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 		{
 			listaNodos.addLast(null);
 		}
+		
+		p = nextPrime(tamanioTabla);
+		a = (int) (Math.random()* (p-1));
+		b = (int) (Math.random()* (p-1));
 	}
 	
 	private ILista <ILista<NodoTS<K, V>>> darListaNodos()
@@ -138,9 +143,6 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 	@Override
 	public int hash(K key) 
 	{
-		int p = nextPrime(tamanioTabla);
-		int a = (int) (Math.random()* (p-1));
-		int b = (int) (Math.random()* (p-1));
 		return Math.abs((key.hashCode()*a + b) % p) % tamanioTabla;
 	}
 	

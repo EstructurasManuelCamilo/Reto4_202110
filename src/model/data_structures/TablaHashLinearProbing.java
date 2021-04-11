@@ -5,6 +5,9 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	private ILista <NodoTS<K, V>> listaNodos;
 	private int tamanioActual;
 	private int tamanioTabla;
+	private int p;
+	private int a;
+	private int b;
 	
 	public TablaHashLinearProbing(int pTamanioIncial) 
 	{
@@ -15,6 +18,10 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		{
 			listaNodos.addLast(null);
 		}
+		
+		p = nextPrime(tamanioTabla);
+		a = (int) (Math.random()* (p-1));
+		b = (int) (Math.random()* (p-1));
 	}
 	
 	public ILista <NodoTS<K, V>> darListaNodos()
@@ -73,14 +80,15 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	@Override
 	public void put(K key, V val) 
 	{
-		
 		int posicion = hash(key);
 		NodoTS<K, V> nodo = listaNodos.getElement(posicion);
 		if(nodo != null && nodo.isEmpty())
 		{
 			posicion = getNextEmpty(posicion);
 		}
-		listaNodos.changeInfo(posicion, new NodoTS<K, V>(key, val));
+		NodoTS<K, V> no = new  NodoTS<K, V>(key, val);
+		listaNodos.changeInfo(posicion, no);
+		System.out.println(no.getKey());
 		tamanioActual ++;
 		if( (tamanioActual/tamanioTabla) >= 0.75)
 		{
@@ -161,9 +169,6 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	@Override
 	public int hash(K key) 
 	{
-		int p = nextPrime(tamanioTabla);
-		int a = (int) (Math.random()* (p-1));
-		int b = (int) (Math.random()* (p-1));
 		return Math.abs((key.hashCode()*a + b) % p) % tamanioTabla;
 	}
 	

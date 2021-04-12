@@ -82,6 +82,9 @@ public class Controller {
 
 				ILista<Video> solucion = modelo.videoPorPaisSeparate(numero, pais, categoria);
 				
+				for(int i = 0; i < numero; i++)
+					System.out.println(""+ solucion.getElement(i));
+				
 				if ( solucion == null) 
 					view.printMessage("No se pudo encontro respuesta al requerimiento");
 				else

@@ -545,7 +545,7 @@ public class Modelo
 				Video nuevo = new Video(id, fecha1(fechaTrending), titulo, canal, Integer.valueOf(categoria), fecha2(publicacion), publicacion, tags, Integer.valueOf(vistas), likes, dislikes, darNomCat(Integer.valueOf(categoria),categorias), pais);
 
 				String llave = pais + "-" +darCategoria(categoria);
-				System.out.println(llave);
+				
 				TInicio = System.currentTimeMillis();
 				datosLinearProbing.put(llave, nuevo);
 				tiempo = System.currentTimeMillis() - TInicio;
@@ -611,7 +611,7 @@ public class Modelo
 			int max = datosTablaSimbolos.keySet().size() - 1;
 			int random_int = (int)(Math.random() * (max - min + 1) + min);
 			String llaveTemp = datosTablaSimbolos.keySet().getElement(random_int);
-			System.out.println(llaveTemp);
+			
 			TInicio = System.currentTimeMillis();
 			datosTablaSimbolos.get(llaveTemp);
 			tiempo = System.currentTimeMillis() - TInicio;

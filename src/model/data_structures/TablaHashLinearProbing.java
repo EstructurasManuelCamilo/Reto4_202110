@@ -82,13 +82,15 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	{
 		int posicion = hash(key);
 		NodoTS<K, V> nodo = listaNodos.getElement(posicion);
-		if(nodo != null && nodo.isEmpty())
+		if(nodo != null && !nodo.isEmpty())
 		{
 			posicion = getNextEmpty(posicion);
 		}
+		
 		NodoTS<K, V> no = new  NodoTS<K, V>(key, val);
 		listaNodos.changeInfo(posicion, no);
-		System.out.println(no.getKey());
+		nodo = listaNodos.getElement(posicion);
+		
 		tamanioActual ++;
 		if( (tamanioActual/tamanioTabla) >= 0.75)
 		{
@@ -216,7 +218,7 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		{
 			p1 ++;
 			if (p1 > tamanioTabla) {
-				p1 = 1;
+				p1 = 0;
 			}
 		}
 		return p1;

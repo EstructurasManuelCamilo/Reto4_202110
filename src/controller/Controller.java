@@ -80,10 +80,7 @@ public class Controller {
 					categoria = lector.nextLine();
 				}
 
-				ILista<Video> solucion = modelo.videoPorPaisSeparate(numero, pais, categoria);
-				
-				for(int i = 0; i < numero; i++)
-					System.out.println(""+ solucion.getElement(i));
+				ILista<Video> solucion = modelo.videoPorPaisLinear(numero, pais, categoria);
 				
 				if ( solucion == null) 
 					view.printMessage("No se pudo encontro respuesta al requerimiento");

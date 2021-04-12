@@ -66,7 +66,7 @@ public class Modelo
 		tiempoEjecucionPromedio = 0;
 		cantidadVideos = 0;
 		datosTablaSimbolos = new TablaSimbolos<>();
-		datosLinearProbing = new TablaHashLinearProbing<>(3);
+		datosLinearProbing = new TablaHashLinearProbing<>(14);
 		datosSeparateChaining = new TablaHashSeparateChaining<>(201);
 	}
 
@@ -547,32 +547,33 @@ public class Modelo
 				String llave = pais + "-" +darCategoria(categoria);
 				
 				TInicio = System.currentTimeMillis();
-				datosLinearProbing.put("canada-Music", nuevo);
-				datosLinearProbing.put("USA-Music", nuevo);
-				datosLinearProbing.put("canada-Music", nuevo);
-				datosLinearProbing.put("canada-Music", nuevo);
-				datosLinearProbing.put("USA-Music", nuevo);
-				datosLinearProbing.put("USA-Music", nuevo);
+				datosLinearProbing.put(llave, nuevo);
 				tiempo = System.currentTimeMillis() - TInicio;
 				cont ++;
 				tiempoEjecucionPromedio += tiempo;
 				cantidadVideos = cont;
 
-//				cont2 ++;
-//				ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
-//				lista.addLast(nuevo);
-//				TInicio2 = System.currentTimeMillis();
-//				datosSeparateChaining.put(llave, lista);
-//				tiempo2 = System.currentTimeMillis() - TInicio2;
-//				tiempoEjecucionPromedio2 += tiempo2;
-//
-//				cantidadVideos = cont2;
+				cont2 ++;
+				ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
+				lista.addLast(nuevo);
+				TInicio2 = System.currentTimeMillis();
+				datosSeparateChaining.put(llave, lista);
+				tiempo2 = System.currentTimeMillis() - TInicio2;
+				tiempoEjecucionPromedio2 += tiempo2;
+
+				cantidadVideos = cont2;
 			}
 			tiempoEjecucionPromedio /= (cont);
 			tiempoEjecucionPromedio2 /= cont2;
 			cantidadDuplas = datosSeparateChaining.darCantDuplas();
-			System.out.println(datosLinearProbing.get("mexico-Comedy"));
-			System.out.println(datosSeparateChaining.get("mexico-Comedy"));
+			System.out.println(datosSeparateChaining.getLista("canada-Music").size());
+			for(int i = 0; i < datosSeparateChaining.getLista("canada-Music").size(); i++)
+			{
+				System.out.println(datosSeparateChaining.getLista("canada-Music").getElement(i).getValue().size());
+				for(int j = 0; j < datosSeparateChaining.getLista("canada-Music").getElement(i).getValue().size(); j++)
+					System.out.println(datosSeparateChaining.getLista("canada-Music").getElement(i).getValue().getElement(j).getTitle());
+		
+			}
 		}
 		catch(Exception e)
 		{
@@ -642,19 +643,13 @@ public class Modelo
 	// Requerimiento 1. linear probing
 	public ILista<Video> videoPorPaisLinear(int n, String pPais, String pCategoria)
 	{
-		ILista<Video> lista = new ArregloDinamico<Video>(7);
-		ILista<Video> resp = new ArregloDinamico<Video>(7);
-
 		String llave = pPais + "-" + pCategoria;
-		Video actual = datosLinearProbing.get(llave);
-
-		if(actual != null)
-		{
-			lista.addLast(actual);
-			
+		ILista<Video> resp = new ArregloDinamico<Video>(7);
+		ILista<Video> lista = datosLinearProbing.getLista(llave);
+		if(!lista.isEmpty())
+		{	
 			Video.ComparadorXVistas comp = new Video.ComparadorXVistas();
 			ordenamientos.ordenarShell(lista, comp, true);
-
 			for(int i = 0; i < n && i < lista.size();i++)
 			{
 				resp.addLast(lista.getElement(i));

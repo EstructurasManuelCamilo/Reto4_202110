@@ -9,6 +9,36 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	private int a;
 	private int b;
 	
+	public int darP()
+	{
+		return p;
+	}
+	
+	public int darA()
+	{
+		return a;
+	}
+	
+	public int darB()
+	{
+		return b;
+	}
+	
+	public void setP(int pP)
+	{
+		p = pP;
+	}
+	
+	public void setA(int pA)
+	{
+		a = pA;
+	}
+	
+	public void setB(int pB)
+	{
+		b = pB;
+	}
+	
 	public TablaHashLinearProbing(int pTamanioIncial) 
 	{
 		tamanioTabla = nextPrime(pTamanioIncial);
@@ -59,14 +89,6 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 			{
 				resp = nodoActual.getValue();
 			}
-			else 
-			{
-				posicion ++;
-				if(posicion > tamanioActual)
-				{
-					posicion = 1;
-				}
-			}
 		}
 		return resp;
 	}
@@ -92,8 +114,8 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		nodo = listaNodos.getElement(posicion);
 		
 		tamanioActual ++;
-		float div = tamanioActual/tamanioTabla;
-		if(div >= 0.75)
+		double div2 = (double)tamanioActual/(double)tamanioTabla;
+		if(div2 >= 0.75)
 		{
 			rehash(tamanioTabla*2);
 		}
@@ -236,9 +258,36 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 				nueva.put(actual.getKey(), actual.getValue());
 			}
 		}
-		tamanioTabla = nueva.size();
+		this.setP(nueva.darP());
+		this.setA(nueva.darA());
+		this.setB(nueva.darB());
+		tamanioTabla = nueva.darListaNodos().size();
 		listaNodos = nueva.darListaNodos();
 	}
 
-	
+	public ILista<V> getLista(K key) 
+	{
+		int posicion = hash(key);
+		ILista<V> resp = new ArregloDinamico<>(7);
+		boolean encontroNull = false;
+		while(!encontroNull )
+		{
+			NodoTS<K, V> nodoActual = listaNodos.getElement(posicion);
+			if(nodoActual == null)
+			{
+				encontroNull = true;
+			}
+			else if( ! nodoActual.isEmpty() && nodoActual.getKey().compareTo(key) == 0)
+			{
+				resp.addLast(nodoActual.getValue());
+			}
+			posicion ++;
+			
+			if(posicion > tamanioTabla - 1)
+			{
+				posicion = 1;
+			}
+		}
+		return resp;
+	}
 }

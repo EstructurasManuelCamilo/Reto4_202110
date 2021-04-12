@@ -92,7 +92,8 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		nodo = listaNodos.getElement(posicion);
 		
 		tamanioActual ++;
-		if( (tamanioActual/tamanioTabla) >= 0.75)
+		float div = tamanioActual/tamanioTabla;
+		if(div >= 0.75)
 		{
 			rehash(tamanioTabla*2);
 		}
@@ -217,7 +218,7 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		while(listaNodos.getElement(p1) != null && !listaNodos.getElement(p1).isEmpty())
 		{
 			p1 ++;
-			if (p1 > tamanioTabla) {
+			if (p1 >= tamanioTabla) {
 				p1 = 0;
 			}
 		}

@@ -66,7 +66,7 @@ public class Modelo
 		tiempoEjecucionPromedio = 0;
 		cantidadVideos = 0;
 		datosTablaSimbolos = new TablaSimbolos<>();
-		datosLinearProbing = new TablaHashLinearProbing<>(750);
+		datosLinearProbing = new TablaHashLinearProbing<>(3);
 		datosSeparateChaining = new TablaHashSeparateChaining<>(201);
 	}
 
@@ -547,21 +547,26 @@ public class Modelo
 				String llave = pais + "-" +darCategoria(categoria);
 				
 				TInicio = System.currentTimeMillis();
-				datosLinearProbing.put(llave, nuevo);
+				datosLinearProbing.put("canada-Music", nuevo);
+				datosLinearProbing.put("USA-Music", nuevo);
+				datosLinearProbing.put("canada-Music", nuevo);
+				datosLinearProbing.put("canada-Music", nuevo);
+				datosLinearProbing.put("USA-Music", nuevo);
+				datosLinearProbing.put("USA-Music", nuevo);
 				tiempo = System.currentTimeMillis() - TInicio;
 				cont ++;
 				tiempoEjecucionPromedio += tiempo;
 				cantidadVideos = cont;
 
-				cont2 ++;
-				ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
-				lista.addLast(nuevo);
-				TInicio2 = System.currentTimeMillis();
-				datosSeparateChaining.put(llave, lista);
-				tiempo2 = System.currentTimeMillis() - TInicio2;
-				tiempoEjecucionPromedio2 += tiempo2;
-
-				cantidadVideos = cont2;
+//				cont2 ++;
+//				ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
+//				lista.addLast(nuevo);
+//				TInicio2 = System.currentTimeMillis();
+//				datosSeparateChaining.put(llave, lista);
+//				tiempo2 = System.currentTimeMillis() - TInicio2;
+//				tiempoEjecucionPromedio2 += tiempo2;
+//
+//				cantidadVideos = cont2;
 			}
 			tiempoEjecucionPromedio /= (cont);
 			tiempoEjecucionPromedio2 /= cont2;

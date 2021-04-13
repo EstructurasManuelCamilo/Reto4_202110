@@ -249,12 +249,4 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 		tamanioTabla = nueva.size();
 		listaListasNodos = nueva.darListaNodos();
 	}
-
-//	public ILista<V> getLista(K key) 
-//	{
-//		boolean encontroNull = false;
-//		int posicion = hash(key);
-//		ILista<NodoTS<K, V>> lista = listaNodos.getElement(posicion);
-//		return lista;
-//	}
 }

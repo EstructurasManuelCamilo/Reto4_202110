@@ -693,7 +693,6 @@ public class Modelo
 		ILista<Video> lista = new ArregloDinamico<Video>(7);
 		for(int i = 0; i < categorias.size();i++)
 		{
-			System.out.println(masDias);
 			String llave = pPais + "-" + categorias.getElement(i).darNombreCat();
 			lista = datosLinearProbing.getLista(llave);
 			ordenamientos.ordenarShell(lista, comp2, true);
@@ -709,7 +708,6 @@ public class Modelo
 				{
 					resp = act;
 					masDias =  cont;
-					System.out.println(masDias);
 					cont = 1;
 				}
 				else
@@ -759,5 +757,9 @@ public class Modelo
 		diasTendencia = masDias;
 		return resp;
 	}
+	// Requerimiento 4 n videos diferentes con más likes dado un tag específico
+	public ILista<Video> videosMasLikesPorTag(String pTag, int n)
+	{
 		
+	}
 }

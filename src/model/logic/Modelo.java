@@ -52,6 +52,8 @@ public class Modelo
 	private float tiempoEjecucionPromedio2;
 
 	private int cantidadVideos;
+	
+	private ArregloDinamico<String> listaPaises;
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
@@ -68,6 +70,7 @@ public class Modelo
 		datosTablaSimbolos = new TablaSimbolos<>();
 		datosLinearProbing = new TablaHashLinearProbing<>(14);
 		datosSeparateChaining = new TablaHashSeparateChaining<>(201);
+		listaPaises = new ArregloDinamico<>(7);
 	}
 
 	/**
@@ -542,8 +545,11 @@ public class Modelo
 				String likes =excel.get("likes");
 				String dislikes = excel.get("dislikes");
 				String pais = excel.get("country");
+				
 				Video nuevo = new Video(id, fecha1(fechaTrending), titulo, canal, Integer.valueOf(categoria), fecha2(publicacion), publicacion, tags, Integer.valueOf(vistas), likes, dislikes, darNomCat(Integer.valueOf(categoria),categorias), pais);
-
+				if(listaPaises.isPresent(pais) == -1)
+					listaPaises.addLast(pais);
+				
 				String llave = pais + "-" +darCategoria(categoria);
 				
 				TInicio = System.currentTimeMillis();
@@ -665,7 +671,6 @@ public class Modelo
 
 		String llave = pPais + "-" + pCategoria;
 		ILista<Video> actual = datosSeparateChaining.get(llave);
-
 		if(!actual.isEmpty() || actual != null)
 		{
 			Video.ComparadorXVistas comp = new Video.ComparadorXVistas();
@@ -678,6 +683,81 @@ public class Modelo
 		}
 		return resp;
 	}
+	// Requerimiento 2 video con más días en trendig dado el país Linear
+	public Video videoMasDiasTrendigPorPais(String pPais)
+	{
+		Video.ComparadorXId comp2 = new Video.ComparadorXId();
+		Video resp = null;
+		int masDias = 0;
+		int cont = 1;
+		ILista<Video> lista = new ArregloDinamico<Video>(7);
+		for(int i = 0; i < categorias.size();i++)
+		{
+			System.out.println(masDias);
+			String llave = pPais + "-" + categorias.getElement(i).darNombreCat();
+			lista = datosLinearProbing.getLista(llave);
+			ordenamientos.ordenarShell(lista, comp2, true);
+			Video act = lista.getElement(0);
+			for(int j = 1; j < lista.size(); j++)
+			{
+				if(lista.getElement(j).getId().equals(act.getId()))
+				{
+					cont++;
 
+				}
+				else if(cont > masDias)
+				{
+					resp = act;
+					masDias =  cont;
+					System.out.println(masDias);
+					cont = 1;
+				}
+				else
+				{
+					cont = 1;
+				}
+				act = lista.getElement(j);
+			}
+		}
+		diasTendencia = masDias;
+		return resp;
+	}
+	// Requerimiento 3 video con más días en trendig dado la categoría Linear
+	public Video videoMasDiasTrendigPorCategoria(String pCategoria)
+	{
+		Video.ComparadorXId comp2 = new Video.ComparadorXId();
+		Video resp = null;
+		int masDias = 0;
+		int cont = 1;
+		ILista<Video> lista = new ArregloDinamico<Video>(7);
+		for(int i = 0; i < listaPaises.size();i++)
+		{
+			String llave = listaPaises.getElement(i).toString() + "-" + pCategoria;
+			lista = datosLinearProbing.getLista(llave);
+			ordenamientos.ordenarShell(lista, comp2, true);
+			Video act = lista.getElement(0);
+			for(int j = 1; j < lista.size(); j++)
+			{
+				if(lista.getElement(j).getId().equals(act.getId()))
+				{
+					cont++;
 
+				}
+				else if(cont > masDias)
+				{
+					resp = act;
+					masDias = cont;
+					cont = 1;
+				}
+				else
+				{
+					cont = 1;
+				}
+				act = lista.getElement(j);
+			}
+		}
+		diasTendencia = masDias;
+		return resp;
+	}
+		
 }

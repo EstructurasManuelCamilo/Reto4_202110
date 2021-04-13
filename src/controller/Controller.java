@@ -106,11 +106,48 @@ public class Controller {
 				break;
 			case 3:
 				//int promedio = modelo.desempenioMetodoGet();
-				view.printMessage("El tiempo promedio es: " + modelo.desempenioMetodoGetLlavesExistentes());
-
+				view.printMessage("Ingrese el país que desea consultar"); 
+				while(pais.equals(""))
+				{
+					pais = lector.nextLine();
+				}
+				Video resp = modelo.videoMasDiasTrendigPorPais(pais);
+				if ( resp == null) 
+					view.printMessage("No se pudo encontro respuesta al requerimiento");
+				else
+				{
+					view.printMessage("El título es: " + resp.getTitle());
+					view.printMessage("El número de views son: " + resp.darVistas());
+					view.printMessage("El número de likes son: " + resp.darLikes());
+					view.printMessage("El número de dislikes son: " + resp.darDisLikes());
+				}
+				pais = "";
 				break;
-
-			case 4: 
+				
+			case 4:
+				//int promedio = modelo.desempenioMetodoGet();
+				view.printMessage("Ingrese la categoría que desea consultar"); 
+				while(categoria.equals(""))
+				{
+					categoria = lector.nextLine();
+				}
+				Video respCat = modelo.videoMasDiasTrendigPorCategoria(categoria);
+				if ( respCat == null) 
+					view.printMessage("No se pudo encontro respuesta al requerimiento");
+				else
+				{
+					view.printMessage("El título es: " + respCat.getTitle());
+					view.printMessage("El número de views son: " + respCat.darVistas());
+					view.printMessage("El número de likes son: " + respCat.darLikes());
+					view.printMessage("El número de dislikes son: " + respCat.darDisLikes());
+				}
+				pais = "";
+				break;
+				
+			case 5: 
+				//REQUERIMIENTO 4
+				
+			case 6: 
 				view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 				lector.close();
 				fin = true;

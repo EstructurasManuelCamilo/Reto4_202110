@@ -71,8 +71,8 @@ public class Modelo
 		cantidadVideos = 0;
 		cantidadCategorias = 0;
 		datosTablaSimbolos = new TablaSimbolos<>();
-		datosLinearProbing = new TablaHashLinearProbing<>(14);//14, 5013
-		datosSeparateChaining = new TablaHashSeparateChaining<>(201);//201, 75189
+		datosLinearProbing = new TablaHashLinearProbing<>(5013);//14, 5013
+		datosSeparateChaining = new TablaHashSeparateChaining<>(75189);//201, 75189
 		listaPaises = new ArregloDinamico<>(7);
 	}
 
@@ -538,7 +538,7 @@ public class Modelo
 			leerCategorias();
 			int cont = 0;
 			int cont2 = 0;
-			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/videos-small.csv")),"UTF-8");
+			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/videos-all.csv")),"UTF-8");
 			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 			for(final CSVRecord excel : separador)
 			{		

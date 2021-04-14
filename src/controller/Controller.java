@@ -55,7 +55,11 @@ public class Controller {
 				if(!cargados)
 				{
 					view.printMessage("Inicio de lectura de los archivos.\n----------------"); 
+					TInicio = System.currentTimeMillis();
 					modelo.leerDatosTablasHash();
+					tiempo = System.currentTimeMillis() - TInicio;
+					System.out.println(tiempo);
+					tiempo = 0;
 					view.printMessage("El total de videos cargados es: " + modelo.darCantidadVideos());
 					view.printMessage("El total de categorías cargadas es: " + modelo.darCantidadCategorias());
 	
@@ -81,8 +85,11 @@ public class Controller {
 					categoria = lector.nextLine();
 				}
 				
+				TInicio = System.currentTimeMillis();
 				ILista<Video> solucion = modelo.videoPorPaisLinear(numero, pais, categoria);
-				
+				tiempo = System.currentTimeMillis() - TInicio;
+				System.out.println(tiempo);
+				tiempo = 0;
 				if ( solucion == null) 
 					view.printMessage("No se pudo encontro respuesta al requerimiento");
 				else
@@ -112,7 +119,11 @@ public class Controller {
 				{
 					pais = lector.nextLine();
 				}
-				Video resp = modelo.videoTendenciaPais(pais);
+				TInicio = System.currentTimeMillis();
+				Video resp = modelo.videoMasDiasTrendigPorPais(pais);
+				tiempo = System.currentTimeMillis() - TInicio;
+				System.out.println(tiempo);
+				tiempo = 0;
 				if ( resp == null) 
 					view.printMessage("No se pudo encontro respuesta al requerimiento");
 				else
@@ -133,7 +144,12 @@ public class Controller {
 				{
 					categoria = lector.nextLine();
 				}
-				Video respCat = modelo.videoTendenciaCategoría(categoria);
+				
+				TInicio = System.currentTimeMillis();
+				Video respCat = modelo.videoMasDiasTrendigPorCategoria(categoria);
+				tiempo = System.currentTimeMillis() - TInicio;
+				System.out.println(tiempo);
+				
 				if ( respCat == null) 
 					view.printMessage("No se pudo encontro respuesta al requerimiento");
 				else
@@ -159,7 +175,11 @@ public class Controller {
 				{
 					pais = lector.nextLine();
 				}
-				ILista<Video> solucionReq4 = modelo.videosMasLikesPorTagSeparate(pais, numero);
+				TInicio = System.currentTimeMillis();
+				ILista<Video> solucionReq4 = modelo.videosMasLikesPorTagLinear(pais, numero);
+				tiempo = System.currentTimeMillis() - TInicio;
+				System.out.println(tiempo);
+				
 				
 				if ( solucionReq4 == null) 
 					view.printMessage("No se pudo encontro respuesta al requerimiento");

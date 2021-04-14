@@ -155,7 +155,7 @@ public class Video implements Comparable<Video>
 		for(int i = 0; i < darTags().size() && !termino; i++)
 		{
 			String act = darTags().getElement(i);
-			if(act.equals(pEt))
+			if(act.equalsIgnoreCase(pEt))
 			{
 				etiqueta = act;
 				termino = true;

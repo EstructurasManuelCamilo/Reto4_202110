@@ -667,18 +667,16 @@ public class Modelo
 	// Requerimiento 1. Separate chaining
 	public ILista<Video> videoPorPaisSeparate(int n, String pPais, String pCategoria)
 	{
-		ILista<Video> resp = new ArregloDinamico<Video>(7);
-
 		String llave = pPais + "-" + pCategoria;
-		ILista<Video> actual = datosSeparateChaining.get(llave);
-		if(!actual.isEmpty() || actual != null)
-		{
+		ILista<Video> resp = new ArregloDinamico<Video>(7);
+		ILista<Video> lista = datosSeparateChaining.get(llave);
+		if(!lista.isEmpty())
+		{	
 			Video.ComparadorXVistas comp = new Video.ComparadorXVistas();
-			ordenamientos.ordenarShell(actual, comp, true);
-
-			for(int i = 0; i < n && i < actual.size();i++)
+			ordenamientos.ordenarShell(lista, comp, true);
+			for(int i = 0; i < n && i < lista.size();i++)
 			{
-				resp.addLast(actual.getElement(i));
+				resp.addLast(lista.getElement(i));
 			}
 		}
 		return resp;
@@ -757,16 +755,6 @@ public class Modelo
 		diasTendencia = masDias;
 		return resp;
 	}
-	// Requerimiento 4 n videos diferentes con más likes dado un tag específico
-	public ILista<Video> videosMasLikesPorTag(String pTag, int n)
-	{
-		ILista<Video> resp = new ArregloDinamico<>(n);
-		Video.ComparadorXLikes comp = new ComparadorXLikes();
-		
-//		for(int i = 0; i < )
-//		{
-//			
-//		}
-		return null;
-	}
+	// Requerimiento 4 n videos diferentes con más likes dado un tag específico linear
+
 }

@@ -760,6 +760,13 @@ public class Modelo
 	// Requerimiento 4 n videos diferentes con más likes dado un tag específico
 	public ILista<Video> videosMasLikesPorTag(String pTag, int n)
 	{
+		ILista<Video> resp = new ArregloDinamico<>(n);
+		Video.ComparadorXLikes comp = new ComparadorXLikes();
 		
+//		for(int i = 0; i < )
+//		{
+//			
+//		}
+		return null;
 	}
 }

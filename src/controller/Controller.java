@@ -117,9 +117,9 @@ public class Controller {
 				else
 				{
 					view.printMessage("El título es: " + resp.getTitle());
-					view.printMessage("El número de views son: " + resp.darVistas());
-					view.printMessage("El número de likes son: " + resp.darLikes());
-					view.printMessage("El número de dislikes son: " + resp.darDisLikes());
+					view.printMessage("El nombre del canal: " + resp.getChannel());
+					view.printMessage("El país es: " + resp.darPais());
+					view.printMessage("El número de días en tendencia es: " + modelo.darDiasTendencia());
 				}
 				pais = "";
 				break;
@@ -137,9 +137,9 @@ public class Controller {
 				else
 				{
 					view.printMessage("El título es: " + respCat.getTitle());
-					view.printMessage("El número de views son: " + respCat.darVistas());
-					view.printMessage("El número de likes son: " + respCat.darLikes());
-					view.printMessage("El número de dislikes son: " + respCat.darDisLikes());
+					view.printMessage("El nombre del canal: " + respCat.getChannel());
+					view.printMessage("El país es: " + respCat.darPais());
+					view.printMessage("El número de días en tendencia es: " + modelo.darDiasTendencia());
 				}
 				pais = "";
 				break;

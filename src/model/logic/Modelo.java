@@ -69,7 +69,7 @@ public class Modelo
 		cantidadVideos = 0;
 		datosTablaSimbolos = new TablaSimbolos<>();
 		datosLinearProbing = new TablaHashLinearProbing<>(14);
-		datosSeparateChaining = new TablaHashSeparateChaining<>(201);
+		datosSeparateChaining = new TablaHashSeparateChaining<>(201);//201
 		listaPaises = new ArregloDinamico<>(7);
 	}
 
@@ -572,14 +572,6 @@ public class Modelo
 			tiempoEjecucionPromedio /= (cont);
 			tiempoEjecucionPromedio2 /= cont2;
 			cantidadDuplas = datosSeparateChaining.darCantDuplas();
-			System.out.println(datosSeparateChaining.getLista("canada-Music").size());
-			for(int i = 0; i < datosSeparateChaining.getLista("canada-Music").size(); i++)
-			{
-				System.out.println(datosSeparateChaining.getLista("canada-Music").getElement(i).getValue().size());
-				for(int j = 0; j < datosSeparateChaining.getLista("canada-Music").getElement(i).getValue().size(); j++)
-					System.out.println(datosSeparateChaining.getLista("canada-Music").getElement(i).getValue().getElement(j).getTitle());
-		
-			}
 		}
 		catch(Exception e)
 		{
@@ -758,8 +750,8 @@ public class Modelo
 		return resp;
 	}
 	// Requerimiento 4 n videos diferentes con más likes dado un tag específico
-	public ILista<Video> videosMasLikesPorTag(String pTag, int n)
-	{
-		
-	}
+//	public ILista<Video> videosMasLikesPorTag(String pTag, int n)
+//	{
+//		
+//	}
 }

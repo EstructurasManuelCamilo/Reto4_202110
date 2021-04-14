@@ -161,136 +161,6 @@ public class Modelo
 		}
 	}
 
-	public void leerDatosVideosArregloDinamico()
-	{
-
-		try 
-		{
-			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/videos-all.csv")),"UTF-8");
-			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
-			for(final CSVRecord excel : separador)
-			{
-
-				String id = excel.get("video_id");
-				String fechaTrending = excel.get("trending_date");		
-				String titulo = excel.get("title");
-				String canal = excel.get("channel_title");
-				String categoria = excel.get("category_id");
-				String publicacion = excel.get("publish_time");
-				String tags = excel.get("tags");
-				String vistas = excel.get("views");
-				String likes =excel.get("likes");
-				String dislikes = excel.get("dislikes");
-				String pais = excel.get("country");
-				Video nuevo = new Video(id, fecha1(fechaTrending), titulo, canal, Integer.valueOf(categoria), fecha2(publicacion), publicacion, tags, Integer.valueOf(vistas), likes, dislikes, darNomCat(Integer.valueOf(categoria),categorias), pais);
-				datosArreglo.addLast(nuevo);
-				datosLista.addLast(nuevo);
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-
-
-	public Date fecha1(String pFecha) throws ParseException
-	{
-		String[] partes = pFecha.split("\\.");
-		String anio  = "20"+partes[0];
-		String dia  = partes[1];
-		String mes = partes[2];
-
-		String fecha = dia + "/" + mes + "/" + anio;
-		Date date =new SimpleDateFormat("dd/MM/yyyy").parse(fecha);  
-
-		return date;
-	}
-	public Date fecha2(String pFecha) throws ParseException
-	{
-		String[] partes = pFecha.split("T");
-		String anioMesDia  = partes[0];
-		String [] partes2 = anioMesDia.split("-");
-		String anio = partes2[0];
-		String mes = partes2[1];
-		String dia = partes2[2];
-		String fecha = dia + "/" + mes + "/" + anio;
-		Date date =new SimpleDateFormat("dd/MM/yyyy").parse(fecha);  
-
-		return date;
-	}
-
-	public ArregloDinamico<Categoria> leerCategorias()
-	{ 
-		ArregloDinamico<Categoria> resp = new ArregloDinamico<>(50);
-		try 
-		{
-			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/category-id.csv")),"UTF-8");
-			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
-			for(final CSVRecord excel : separador)
-			{
-				String id = excel.get("id");
-				String name = excel.get("name");
-				Categoria cat = new Categoria(Integer.valueOf(id), name);
-				resp.addLast(cat);
-				cantidadCategorias ++;
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		categorias = resp;
-		return resp;
-	}
-
-	public ILista<Video> mostrar(int tamanio)
-	{
-		if(!datosArreglo.isEmpty()) 
-		{
-			ArregloDinamico<Video> muestra = (ArregloDinamico<Video>) muestraArreglo(tamanio);
-			return muestra;
-		}
-		else
-		{
-			ListaEncadenada<Video> muestra = (ListaEncadenada<Video>) muestraLista(tamanio);
-			Video actual = muestra.firstElement();
-			int i = 1;
-			while(actual != null)
-			{
-				System.out.println("El titulo del video " + i + " es: " + muestra.getElement(i).getTitle());
-				i++;
-				actual = muestra.getElement(i);
-			}
-			return muestra;
-		}
-
-	}
-	public ArregloDinamico<Video> muestraArreglo(int tamanio)
-	{
-		return (ArregloDinamico<Video>) datosArreglo.sublista(tamanio);
-
-	}
-	public ListaEncadenada<Video> muestraLista(int tamanio)
-	{
-		return (ListaEncadenada<Video>) datosLista.sublista(tamanio) ;
-
-	}
-	public ArregloDinamico<Video> darArreglo()
-	{
-		return (ArregloDinamico<Video>) datosArreglo;
-	}
-
-	public ListaEncadenada<Video> darLista()
-	{
-		return (ListaEncadenada<Video>) datosLista;
-	}
-
-	public TablaSimbolos<String,ILista<Video>> darTablaSimbolos()
-	{
-		return datosTablaSimbolos;
-	}
 
 	public int darDuplas()
 	{
@@ -307,125 +177,18 @@ public class Modelo
 		return tiempoEjecucionPromedio2;
 	}
 
-	public String darNomCat(int pId, ArregloDinamico<Categoria> categorias2)
-	{
-		String resp = "";
-		for(int i = 0; i < categorias2.size() & resp.equals(""); i++)
-		{
-			if(pId == categorias2.getElement(i).darIdCat())
-			{
-				resp = categorias2.getElement(i).darNombreCat();
-			}
-
-		}
-		return resp;
-	}
-
-
-
-	public void leerDatosTablaSimbolos()
-	{
-		// TODO Leer datos con tabla simbolo
-		try 
-		{
-			leerCategorias();
-			int cont = 0;
-			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/videos-small.csv")),"UTF-8");
-			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
-			for(final CSVRecord excel : separador)
-			{		
-				String id = excel.get("video_id");
-				String fechaTrending = excel.get("trending_date");		
-				String titulo = excel.get("title");
-				String canal = excel.get("channel_title");
-				String categoria = excel.get("category_id");
-				String publicacion = excel.get("publish_time");
-				String tags = excel.get("tags");
-				String vistas = excel.get("views");
-				String likes =excel.get("likes");
-				String dislikes = excel.get("dislikes");
-				String pais = excel.get("country");
-				Video nuevo = new Video(id, fecha1(fechaTrending), titulo, canal, Integer.valueOf(categoria), fecha2(publicacion), publicacion, tags, Integer.valueOf(vistas), likes, dislikes, darNomCat(Integer.valueOf(categoria),categorias), pais);
-
-				String llave = pais +"-" +darCategoria(categoria);
-				if (!datosTablaSimbolos.contains(llave))
-				{
-					cont ++;
-					ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
-					lista.addFirst(nuevo);
-					TInicio = System.currentTimeMillis();
-					datosTablaSimbolos.put(llave, lista);
-					tiempo = System.currentTimeMillis() - TInicio;
-					tiempoEjecucionPromedio += tiempo;
-				}
-				else
-				{
-					cont ++;
-					cantidadDuplas ++;
-					TInicio = System.currentTimeMillis();
-					datosTablaSimbolos.get(llave).addLast(nuevo);
-					tiempo = System.currentTimeMillis() - TInicio;
-					tiempoEjecucionPromedio += tiempo;
-				}
-				cantidadVideos = cont;
-			}
-			tiempoEjecucionPromedio /= cont;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-
-	}
 	public void leerDatosTablasHash()
 	{
 		try 
 		{
-			leerCategorias();
-			int cont = 0;
-			int cont2 = 0;
-			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/videos-all.csv")),"UTF-8");
+			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/contex_content_features-small.csv")),"UTF-8");
 			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 			for(final CSVRecord excel : separador)
 			{		
-				String id = excel.get("video_id");
-				String fechaTrending = excel.get("trending_date");		
-				String titulo = excel.get("title");
-				String canal = excel.get("channel_title");
-				String categoria = excel.get("category_id");
-				String publicacion = excel.get("publish_time");
-				String tags = excel.get("tags");
-				String vistas = excel.get("views");
-				String likes =excel.get("likes");
-				String dislikes = excel.get("dislikes");
-				String pais = excel.get("country");
-				
-				Video nuevo = new Video(id, fecha1(fechaTrending), titulo, canal, Integer.valueOf(categoria), fecha2(publicacion), publicacion, tags, Integer.valueOf(vistas), likes, dislikes, darNomCat(Integer.valueOf(categoria),categorias), pais);
-				if(listaPaises.isPresent(pais) == -1)
-					listaPaises.addLast(pais);
-				
-				String llave = pais + "-" +darCategoria(categoria);
-				
-				TInicio = System.currentTimeMillis();
-				datosLinearProbing.put(llave, nuevo);
-				tiempo = System.currentTimeMillis() - TInicio;
-				cont ++;
-				tiempoEjecucionPromedio += tiempo;
-				cantidadVideos = cont;
-
-				cont2 ++;
-				ArregloDinamico<Video> lista = new ArregloDinamico<>(1);
-				lista.addLast(nuevo);
-				TInicio2 = System.currentTimeMillis();
-				datosSeparateChaining.put(llave, lista);
-				tiempo2 = System.currentTimeMillis() - TInicio2;
-				tiempoEjecucionPromedio2 += tiempo2;
-
-				cantidadVideos = cont2;
+				String dance = excel.get("danceability");
+				double danceability = Double.parseDouble(dance);
+				Reproduccion nuevo = new Reproduccion(danceability);
 			}
-			tiempoEjecucionPromedio /= (cont);
-			tiempoEjecucionPromedio2 /= cont2;
-			cantidadDuplas = datosSeparateChaining.darCantDuplas();
 		}
 		catch(Exception e)
 		{
@@ -438,24 +201,9 @@ public class Modelo
 	 * @param pCategoria
 	 * @return Lista con el número y los videos
 	 */
-	public ILista informarVideosPorPaisCategoria(String pPais, String pCategoria)
-	{
-		return null;
-	}
 
-	public String darCategoria(String pId)
-	{
-		String resp = null;
-		for(int i = 0; i < categorias.size(); i ++)
-		{
-			if (categorias.getElement(i).darIdCat() == Integer.parseInt(pId)) 
-			{
-				resp = categorias.getElement(i).darNombreCat();
-			}
-		}
-		return resp;
-	}
 
+	
 
 	public float desempenioMetodoGetLlavesExistentes() 
 	{

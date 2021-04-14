@@ -58,7 +58,7 @@ public class TablaHashSeparateChaining <K extends Comparable<K>,V extends Compar
 		b = (int) (Math.random()* (p-1));
 	}
 	
-	private ILista <ILista<NodoTS<K, V>>> darListaNodos()
+	public ILista <ILista<NodoTS<K, V>>> darListaNodos()
 	{
 		return listaListasNodos;
 	}

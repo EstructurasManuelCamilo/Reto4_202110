@@ -55,9 +55,8 @@ public class Controller {
 					view.printMessage("Inicio de lectura de los archivos.\n----------------"); 
 					modelo.leerDatosTablasHash();
 					view.printMessage("El total de videos cargados es: " + modelo.darCantidadVideos());
-					view.printMessage("El total de duplas en separate chaining es: " + modelo.darDuplas());
-					view.printMessage("El tiempo de ejecución promedio del método put() por separate chaining es: "+ modelo.darTiempoEjecucionPromedio2());
-					view.printMessage("El tiempo de ejecución promedio del método put() por linear proving es: "+ modelo.darTiempoEjecucionPromedio());
+					view.printMessage("El total de categorías cargadas es: " + modelo.darCantidadCategorias());
+	
 				}
 				cargados = true;
 				break;
@@ -80,7 +79,7 @@ public class Controller {
 					categoria = lector.nextLine();
 				}
 
-				ILista<Video> solucion = modelo.videoPorPaisLinear(numero, pais, categoria);
+				ILista<Video> solucion = modelo.videoPorPaisSeparate(numero, pais, categoria);
 				
 				if ( solucion == null) 
 					view.printMessage("No se pudo encontro respuesta al requerimiento");
@@ -111,7 +110,7 @@ public class Controller {
 				{
 					pais = lector.nextLine();
 				}
-				Video resp = modelo.videoMasDiasTrendigPorPais(pais);
+				Video resp = modelo.videoTendenciaPais(pais);
 				if ( resp == null) 
 					view.printMessage("No se pudo encontro respuesta al requerimiento");
 				else
@@ -122,6 +121,7 @@ public class Controller {
 					view.printMessage("El número de días en tendencia es: " + modelo.darDiasTendencia());
 				}
 				pais = "";
+				
 				break;
 				
 			case 4:
@@ -131,7 +131,7 @@ public class Controller {
 				{
 					categoria = lector.nextLine();
 				}
-				Video respCat = modelo.videoMasDiasTrendigPorCategoria(categoria);
+				Video respCat = modelo.videoTendenciaCategoría(categoria);
 				if ( respCat == null) 
 					view.printMessage("No se pudo encontro respuesta al requerimiento");
 				else
@@ -142,10 +142,45 @@ public class Controller {
 					view.printMessage("El número de días en tendencia es: " + modelo.darDiasTendencia());
 				}
 				pais = "";
+				categoria = "";
 				break;
 				
 			case 5: 
 				//REQUERIMIENTO 4
+				view.printMessage("Ingrese la cantidad de videos que desea consultar"); 
+				while(numero == 0)
+				{
+					numero = lector.nextInt();
+				}
+				view.printMessage("Ingrese el tag (entre comillas) de los videos que desea consultar"); 
+				while(pais.equals(""))
+				{
+					pais = lector.nextLine();
+				}
+				ILista<Video> solucionReq4 = modelo.videosMasLikesPorTagSeparate(pais, numero);
+				
+				if ( solucionReq4 == null) 
+					view.printMessage("No se pudo encontro respuesta al requerimiento");
+				else
+				{
+					int i = 0;
+					int j = 1;
+					while(numero > i)
+					{
+						view.printMessage("----------------" + " \n Video " + j);
+						view.printMessage("El título es: " + solucionReq4.getElement(i).getTitle());
+						view.printMessage("El canal es: " + solucionReq4.getElement(i).getChannel());
+						view.printMessage("La fecha de publicación es: " + solucionReq4.getElement(i).darPublishTime());
+						view.printMessage("El número de views es: " + solucionReq4.getElement(i).darVistas());
+						view.printMessage("El número de likes son: " + solucionReq4.getElement(i).darLikes());
+						view.printMessage("El número de dislikes son: " + solucionReq4.getElement(i).darDisLikes());
+						view.printMessage("El número de tags son: " + solucionReq4.getElement(i).darListags());
+						i++;
+						j++;
+					}
+				}
+				numero = 0;
+				pais = "";
 				
 			case 6: 
 				view.printMessage("--------- \n Hasta pronto !! \n---------"); 

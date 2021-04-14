@@ -53,6 +53,8 @@ public class Modelo
 
 	private int cantidadVideos;
 	
+	private int cantidadCategorias;
+	
 	private ArregloDinamico<String> listaPaises;
 
 	/**
@@ -67,9 +69,10 @@ public class Modelo
 		cantidadDuplas = 0;
 		tiempoEjecucionPromedio = 0;
 		cantidadVideos = 0;
+		cantidadCategorias = 0;
 		datosTablaSimbolos = new TablaSimbolos<>();
-		datosLinearProbing = new TablaHashLinearProbing<>(14);
-		datosSeparateChaining = new TablaHashSeparateChaining<>(201);//201
+		datosLinearProbing = new TablaHashLinearProbing<>(14);//14, 5013
+		datosSeparateChaining = new TablaHashSeparateChaining<>(201);//201, 75189
 		listaPaises = new ArregloDinamico<>(7);
 	}
 
@@ -101,6 +104,10 @@ public class Modelo
 		return cantidadVideos;
 	}
 
+	public int darCantidadCategorias()
+	{
+		return cantidadCategorias;
+	}
 	/**
 	 * Requerimiento de agregar dato
 	 * @param dato
@@ -227,6 +234,7 @@ public class Modelo
 				String name = excel.get("name");
 				Categoria cat = new Categoria(Integer.valueOf(id), name);
 				resp.addLast(cat);
+				cantidadCategorias ++;
 			}
 		}
 		catch(Exception e)
@@ -696,7 +704,7 @@ public class Modelo
 					cont++;
 
 				}
-				else if(cont > masDias)
+				else if(cont >= masDias)
 				{
 					resp = act;
 					masDias =  cont;
@@ -733,7 +741,7 @@ public class Modelo
 					cont++;
 
 				}
-				else if(cont > masDias)
+				else if(cont >= masDias)
 				{
 					resp = act;
 					masDias = cont;
@@ -749,9 +757,65 @@ public class Modelo
 		diasTendencia = masDias;
 		return resp;
 	}
+	 
 	// Requerimiento 4 n videos diferentes con más likes dado un tag específico
-//	public ILista<Video> videosMasLikesPorTag(String pTag, int n)
-//	{
-//		
-//	}
+	public ILista<Video> videosMasLikesPorTagSeparate(String pTag, int n)
+	{
+		Video.ComparadorXLikes comp = new Video.ComparadorXLikes();
+		ArregloDinamico<Video>  solucion = new ArregloDinamico<>(n*2);
+		ArregloDinamico<Video>  resp = new ArregloDinamico<>(n*2);
+		
+		for(int i = 0; i < datosSeparateChaining.darListaNodos().size(); i++) //O(N)
+		{
+			ILista<NodoTS<String,ILista <Video>>> act = datosSeparateChaining.darListaNodos().getElement(i);
+			for(int j = 0; j < act.size(); j ++)
+			{
+				if(act.getElement(j) != null)
+				{
+					ILista<Video> act2 = act.getElement(j).getValue();
+					for(int k = 0; k < act2.size(); i ++)
+					{
+							if(act2.getElement(k) != null)
+							{
+								if(act2.getElement(k).buscarEtiqueta(pTag))
+								{
+									solucion.addLast(act2.getElement(k));
+								}
+							}
+					}
+				}
+			}
+		}
+		ordenamientos.ordenarShell(solucion, comp, true); //O(N^1,25 -- caso promedio) O(N^1,5 -- peor caso)
+		for(int j = 0; j < n; j++)
+		{
+			resp.addLast(solucion.getElement(j));
+		}
+		return resp;
+	}
+	
+	public ILista<Video> videosMasLikesPorTagLinear(String pTag, int n)
+	{
+		Video.ComparadorXLikes comp = new Video.ComparadorXLikes();
+		ArregloDinamico<Video>  solucion = new ArregloDinamico<>(n*2);
+		ArregloDinamico<Video>  resp = new ArregloDinamico<>(n*2);
+		
+		for(int i = 0; i < datosLinearProbing.darListaNodos().size(); i++) //O(N)
+		{
+			NodoTS<String, Video> act = datosLinearProbing.darListaNodos().getElement(i);
+			if(act != null)
+			{
+				if(act.getValue().buscarEtiqueta(pTag) && act.getValue() != null)
+				{
+					solucion.addLast(act.getValue());
+				}
+			}
+		}
+		ordenamientos.ordenarShell(solucion, comp, true); //O(N^1,25 -- caso promedio) O(N^1,5 -- peor caso)
+		for(int j = 0; j < n; j++)
+		{
+			resp.addLast(solucion.getElement(j));
+		}
+		return resp;
+	}
 }

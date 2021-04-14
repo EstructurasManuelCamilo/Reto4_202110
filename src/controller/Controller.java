@@ -25,6 +25,8 @@ public class Controller {
 	private ComparadorXLikes comparar;
 
 	private boolean cargados;
+	
+	long TInicio, TFin, tiempo;
 	/**
 	 * Crear la vista y el modelo del proyecto
 	 * @param capacidad tamaNo inicial del arreglo
@@ -78,8 +80,8 @@ public class Controller {
 				{
 					categoria = lector.nextLine();
 				}
-
-				ILista<Video> solucion = modelo.videoPorPaisSeparate(numero, pais, categoria);
+				
+				ILista<Video> solucion = modelo.videoPorPaisLinear(numero, pais, categoria);
 				
 				if ( solucion == null) 
 					view.printMessage("No se pudo encontro respuesta al requerimiento");

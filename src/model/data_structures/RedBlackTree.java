@@ -2,84 +2,90 @@ package model.data_structures;
 
 public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> implements ITablaSimbolosOrdenada <K,V>
 {
-
+	private NodoRBT root;
+	
 	@Override
 	public ILista<K> keySet() 
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ILista<V> valueSet() 
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public V get(K key) {
-		// TODO Auto-generated method stub
-		return null;
+	public V get(K key) 
+	{
+		return get(root, key);
 	}
 
 	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int size() 
+	{
+	
+		return size(root);
 	}
 
 	@Override
-	public void put(K key, V val) {
-		// TODO Auto-generated method stub
+	public void put(K key, V val) 
+	{
+		if(root != null)
+			root = (root.put(key, val));
+		else
+		{
+			root = new NodoRBT<>(key, val);
+			root.cambiarColor(root);
+		}
+	}
+
+	@Override
+	public void remove(K key) 
+	{
 		
 	}
 
 	@Override
-	public void remove(K key) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean contains(K key) {
-		// TODO Auto-generated method stub
+	public boolean contains(K key)
+	{
 		return false;
 	}
 
 	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
+	public boolean isEmpty() 
+	{
 		return false;
 	}
 
 	@Override
-	public int hash(K key) {
-		// TODO Auto-generated method stub
+	public int hash(K key) 
+	{
 		return 0;
 	}
 
 	@Override
-	public int getHeight(K key) {
-		// TODO Auto-generated method stub
+	public int getHeight(K key) 
+	{
 		return 0;
 	}
 
 	@Override
-	public int height() {
-		// TODO Auto-generated method stub
+	public int height() 
+	{
 		return 0;
 	}
 
 	@Override
-	public K min() {
-		// TODO Auto-generated method stub
+	public K min() 
+	{
 		return null;
 	}
 
 	@Override
-	public K max() {
-		// TODO Auto-generated method stub
+	public K max() 
+	{
 		return null;
 	}
 

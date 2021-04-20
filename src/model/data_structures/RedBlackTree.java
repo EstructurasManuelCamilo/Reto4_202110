@@ -5,7 +5,7 @@ import java.awt.Color;
 public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> implements ITablaSimbolosOrdenada <K,V>
 {
 	private NodoRBT root;
-	
+
 	@Override
 	public ILista<K> keySet() 
 	{
@@ -27,8 +27,8 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 	@Override
 	public int size() 
 	{
-	
-		return null;
+
+		return 0;
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 	@Override
 	public void remove(K key) 
 	{
-		
+
 	}
 
 	@Override

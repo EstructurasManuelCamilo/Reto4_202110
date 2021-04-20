@@ -5,6 +5,7 @@ import java.awt.Color;
 public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implements Comparable<NodoRBT<K,V>>
 {
 	K llave;
+	V valor;
 	ArregloDinamico<V> valores;
 	NodoRBT derecho, izquierdo;
 	int numeroNodos;
@@ -13,7 +14,9 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 
 	public NodoRBT(K llave, V valor)
 	{
-
+		this.llave = llave;
+		this.valor = valor;
+		color = Color.RED;
 	}
 
 	public int compareTo(NodoRBT<K, V> otro)

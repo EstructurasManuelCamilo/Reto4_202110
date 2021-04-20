@@ -9,7 +9,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 	NodoRBT derecho, izquierdo;
 	int numeroNodos;
 
-	public static Color color;
+	public Color color;
 
 	public NodoRBT(K llave, V valor)
 	{
@@ -34,7 +34,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 			{
 				if(izquierdo != null)
 				{
-					izquierdo.put(llave, val);
+					izquierdo = ((NodoRBT<K, V>)izquierdo).put(llave, val);
 				}
 				else
 				{
@@ -45,7 +45,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 			{
 				if(derecho != null)
 				{
-					derecho.put(llave, val);
+					derecho = ((NodoRBT<K, V>)derecho).put(llave, val);
 				}
 				else
 				{
@@ -53,7 +53,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 				}
 			}
 		}
-		
+
 		NodoRBT<K, V> raiz = evaluarYcorregir();
 		raiz = raiz.evaluarYcorregir();
 		return raiz;
@@ -62,8 +62,8 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 	private NodoRBT<K, V> evaluarYcorregir()
 	{
 		NodoRBT<K, V> raizSubArbol = this;
-		NodoRBT<K, V> der = this.derecho;
-		NodoRBT<K, V> izq = this.izquierdo;
+		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
+		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
 		if(der != null && der.color == Color.RED)
 		{
 			if(izq != null && izq.color == Color.RED)
@@ -77,8 +77,8 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 				raizSubArbol = rotarIzquierda();
 			}
 		}
-		
-		if(izq != null && izq.color == Color.RED && izq.izquierdo != null )//Falta
+
+		if(izq != null && izq.color == Color.RED && izq.izquierdo != null && izq.izquierdo.color == Color.RED)//Falta
 		{
 			raizSubArbol = rotarDerecha();
 		}
@@ -88,18 +88,34 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 	private NodoRBT<K, V> rotarDerecha() 
 	{
 
-		return null;
+		NodoRBT<K, V> raizSubArbol = (NodoRBT<K, V>) this.izquierdo;
+
+		Color act = this.color;
+		this.color = raizSubArbol.color;
+		raizSubArbol.color = act;
+
+		this.izquierdo = raizSubArbol.derecho;
+		raizSubArbol.derecho = this;
+
+		return raizSubArbol;
 	}
 
 	private NodoRBT<K, V> rotarIzquierda() 
 	{
-		return null;
+		NodoRBT<K, V> raizSubArbol = (NodoRBT<K, V>) this.derecho;
+
+		Color act = this.color;
+		this.color = raizSubArbol.color;
+		raizSubArbol.color = act;
+
+		this.derecho = raizSubArbol.izquierdo;
+		raizSubArbol.izquierdo = this;
+
+		return raizSubArbol;
 	}
 
-	public void cambiarColor(NodoRBT x) 
+	public void cambiarColor(Color pColor) 
 	{
-		x.color = Color.RED;
-		x.izquierdo.color = Color.BLACK ;
-		x.derecho.color = Color.BLACK;
+		this.color = pColor;
 	}	
 }

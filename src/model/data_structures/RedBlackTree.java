@@ -1,5 +1,7 @@
 package model.data_structures;
 
+import java.awt.Color;
+
 public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> implements ITablaSimbolosOrdenada <K,V>
 {
 	private NodoRBT root;
@@ -19,25 +21,25 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 	@Override
 	public V get(K key) 
 	{
-		return get(root, key);
+		return null;
 	}
 
 	@Override
 	public int size() 
 	{
 	
-		return size(root);
+		return null;
 	}
 
 	@Override
 	public void put(K key, V val) 
 	{
 		if(root != null)
-			root = (root.put(key, val));
+			root = ((NodoRBT<K, V>)root.put(key, val));
 		else
 		{
 			root = new NodoRBT<>(key, val);
-			root.cambiarColor(root);
+			((NodoRBT<K, V>)root).cambiarColor(Color.BLACK);
 		}
 	}
 

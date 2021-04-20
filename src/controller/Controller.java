@@ -60,15 +60,16 @@ public class Controller {
 					tiempo = System.currentTimeMillis() - TInicio;
 					System.out.println(tiempo);
 					tiempo = 0;
-					view.printMessage("El total de videos cargados es: " + modelo.darCantidadVideos());
-					view.printMessage("El total de categorías cargadas es: " + modelo.darCantidadCategorias());
-	
+					view.printMessage("El número total de reproducciones: " + modelo.darCantidadVideos());
+					view.printMessage("El número de llaves presentes en el árbol RBT: " + modelo.darCantidadCategorias());
+					view.printMessage("La altura del árbol RBT: " + modelo.darCantidadCategorias());
+					view.printMessage("La llave menor es:" + modelo.darCantidadCategorias() + "y el total de sus reproducciones en el árbol RBT es: " + modelo.darCantidadCategorias());
+					view.printMessage("La llave mayor es:" + modelo.darCantidadCategorias() + "y el total de sus reproducciones en el árbol RBT es: " + modelo.darCantidadCategorias());
+					view.printMessage("El número de hojas en el árbol RBT: " + modelo.darCantidadCategorias());
 				}
 				cargados = true;
 				break;
 
-			case 2:
-				break;
 			case 3:
 				break;
 				
@@ -78,7 +79,7 @@ public class Controller {
 			case 5: 
 				break;
 				
-			case 6: 
+			case 2: 
 				view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 				lector.close();
 				fin = true;

@@ -141,9 +141,15 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 		return null;
 	}
 
-	public String darAlturaTotal() {
-		// TODO Auto-generated method stub
-		return null;
+	public int darAlturaTotal() 
+	{
+		int altura = 0;
+		if(root != null)
+		{
+			altura++;
+			root.darAltura();
+		}
+		return altura;
 	}
 
 	public int darNumeroHojas() 

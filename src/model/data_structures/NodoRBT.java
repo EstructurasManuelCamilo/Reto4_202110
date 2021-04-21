@@ -8,7 +8,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 	V valor;
 	ArregloDinamico<V> valores;
 	NodoRBT derecho, izquierdo;
-
+	int alturaDerecha, alturaIzquierda;
 	public Color color;
 
 	public NodoRBT(K llave, V valor)
@@ -18,6 +18,8 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		this.valores = new ArregloDinamico<>(10);
 		this.valores.addLast(valor);
 		color = Color.RED;
+		this.alturaDerecha = 1;
+		this.alturaIzquierda = 1;
 	}
 
 	public int compareTo(NodoRBT<K, V> otro)
@@ -271,7 +273,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 
 		if(der != null)
 		{
-			 numeroHojas = der.darNumeroHojas(numeroHojas);
+			numeroHojas = der.darNumeroHojas(numeroHojas);
 		}
 		if(izq != null)
 		{
@@ -282,5 +284,27 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 			numeroHojas++;
 		}
 		return numeroHojas;
+	}
+
+	public int darAltura() 
+	{
+		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
+		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
+
+		if(der != null)
+		{
+			alturaDerecha++;
+			alturaDerecha = der.darAltura();
+		}
+		if(izq != null)
+		{
+			alturaIzquierda++;
+			alturaIzquierda = izq.darAltura();
+		}
+		
+		if(alturaDerecha>=alturaIzquierda)
+			return alturaDerecha;
+		else
+			return alturaIzquierda;
 	}	
 }

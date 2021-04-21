@@ -13,7 +13,7 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 		ArregloDinamico<K> lista = new ArregloDinamico<>(502);
 		if(root != null)
 		{
-			root.insertarSiguienteLLave(lista);
+			lista = root.insertarSiguienteLLave(lista);
 		}
 
 		return lista;
@@ -26,7 +26,7 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 		ArregloDinamico<V> lista = new ArregloDinamico<>(502);
 		if(root != null)
 		{
-			root.insertarSiguienteValor(lista);
+			lista = root.insertarSiguienteValor(lista);
 		}
 
 		return lista;
@@ -128,17 +128,21 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 	}
 
 	@Override
-	public ILista<K> keysInRange(K init, K end) 
+	public ArregloDinamico<K> keysInRange(K init, K end) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		ArregloDinamico<K> llaves = new ArregloDinamico<>(30);
+		if(root != null)
+			llaves = root.llavesEnRango(llaves, init, end);
+		return llaves;
 	}
 
 	@Override
 	public ILista<V> valuesInRange(K init, K end) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		ArregloDinamico<V> valores = new ArregloDinamico<>(30);
+		if(root != null)
+			valores = root.valoresEnRango(valores, init, end);
+		return valores;
 	}
 
 	public int darAlturaTotal() 

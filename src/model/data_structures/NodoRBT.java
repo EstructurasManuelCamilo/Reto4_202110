@@ -257,7 +257,8 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		}
 		for(int i = 0; i < this.valores.size(); i++)
 		{
-			lista.addLast(this.valores.getElement(i));
+			if(this.valores.getElement(i)!= null)
+				lista.addLast(this.valores.getElement(i));
 		}
 		if(der != null)
 		{
@@ -301,10 +302,47 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 			alturaIzquierda++;
 			alturaIzquierda = izq.darAltura();
 		}
-		
+
 		if(alturaDerecha>=alturaIzquierda)
 			return alturaDerecha;
 		else
 			return alturaIzquierda;
+	}
+
+
+	public ArregloDinamico<K> llavesEnRango(ArregloDinamico<K> llaves, K init, K end) 
+	{
+		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
+		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
+
+		if(llave.compareTo(init)>=0 && llave.compareTo(end) <=0)
+		{
+			llaves.addLast(llave);
+			if(izq != null)
+				izq.llavesEnRango(llaves, init, end);
+			if(der != null)
+				der.llavesEnRango(llaves, init, end);
+		}
+		return llaves;
+	}
+
+	public ArregloDinamico<V> valoresEnRango(ArregloDinamico<V> vals, K init, K end) 
+	{
+		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
+		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
+
+		if(llave.compareTo(init)>=0 && llave.compareTo(end) <=0)
+		{
+			for(int i = 0; i < this.valores.size(); i++)
+			{
+				if(this.valores.getElement(i)!= null)
+					vals.addLast(this.valores.getElement(i));
+			}
+			if(izq != null)
+				izq.valoresEnRango(vals, init, end);
+			if(der != null)
+				der.valoresEnRango(vals, init, end);
+		}
+		return null;
 	}	
 }

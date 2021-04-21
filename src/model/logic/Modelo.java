@@ -51,11 +51,11 @@ public class Modelo
 
 	private float tiempoEjecucionPromedio2;
 
-	private int cantidadVideos;
-	
-	private int cantidadCategorias;
+	private int cantidadReproducciones;
 	
 	private ArregloDinamico<String> listaPaises;
+	
+	private RedBlackTree<Double, Reproduccion> arbol;
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
@@ -68,12 +68,12 @@ public class Modelo
 		diasTendencia = 0;
 		cantidadDuplas = 0;
 		tiempoEjecucionPromedio = 0;
-		cantidadVideos = 0;
-		cantidadCategorias = 0;
+		cantidadReproducciones = 0;
 		datosTablaSimbolos = new TablaSimbolos<>();
 		datosLinearProbing = new TablaHashLinearProbing<>(5013);//14, 5013
 		datosSeparateChaining = new TablaHashSeparateChaining<>(75189);//201, 75189
 		listaPaises = new ArregloDinamico<>(7);
+		
 	}
 
 	/**
@@ -99,15 +99,11 @@ public class Modelo
 		return diasTendencia;
 	}
 
-	public int darCantidadVideos()
+	public int darCantidadReproducciones()
 	{
-		return cantidadVideos;
+		return cantidadReproducciones;
 	}
 
-	public int darCantidadCategorias()
-	{
-		return cantidadCategorias;
-	}
 	/**
 	 * Requerimiento de agregar dato
 	 * @param dato
@@ -177,7 +173,8 @@ public class Modelo
 		return tiempoEjecucionPromedio2;
 	}
 
-	public void leerDatosTablasHash()
+
+	public void leerDatosRBT()
 	{
 		try 
 		{
@@ -188,6 +185,8 @@ public class Modelo
 				String dance = excel.get("danceability");
 				double danceability = Double.parseDouble(dance);
 				Reproduccion nuevo = new Reproduccion(danceability);
+				arbol.put(danceability, nuevo);
+				cantidadReproducciones++;
 			}
 		}
 		catch(Exception e)
@@ -195,14 +194,6 @@ public class Modelo
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * Informa el número y los videos que pertenecen a un mismo país y nombre de categoría
-	 * @param pPais
-	 * @param pCategoria
-	 * @return Lista con el número y los videos
-	 */
-
-
 	
 
 	public float desempenioMetodoGetLlavesExistentes() 
@@ -237,6 +228,11 @@ public class Modelo
 		prom2 /= 300;
 		tiempoEjecucionPromedio = (prom1 + prom2)/2;
 		return tiempoEjecucionPromedio;
+	}
+
+	public RedBlackTree<Double, Reproduccion> darArbol() 
+	{
+		return arbol;
 	}
 
 }

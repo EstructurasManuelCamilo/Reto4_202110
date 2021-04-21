@@ -19,7 +19,7 @@ public interface ITablaSimbolosOrdenada <K extends Comparable<K>, V extends Comp
 	 * @param key LLave del valor que se desea.
 	 * @return Valor de la llace dada.
 	 */
-	public V get (K key);
+	public ILista<V> get (K key);
 	
 	/**
 	 * Retorna el tamaÒo de la tabla.

@@ -1,6 +1,6 @@
 package model.logic;
 
-public class Reproduccion 
+public class Reproduccion implements Comparable<Reproduccion>
 {
 	double danceability;
 	
@@ -12,6 +12,12 @@ public class Reproduccion
 	public double darDanceability()
 	{
 		return danceability;
+	}
+
+	@Override
+	public int compareTo(Reproduccion o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

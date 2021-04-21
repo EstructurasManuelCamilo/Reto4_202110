@@ -262,5 +262,25 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 			lista = der.insertarSiguienteValor(lista);
 		}
 		return lista;
+	}
+
+	public int darNumeroHojas(int numeroHojas) 
+	{
+		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
+		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
+
+		if(der != null)
+		{
+			 numeroHojas = der.darNumeroHojas(numeroHojas);
+		}
+		if(izq != null)
+		{
+			numeroHojas = izq.darNumeroHojas(numeroHojas);
+		}
+		else
+		{
+			numeroHojas++;
+		}
+		return numeroHojas;
 	}	
 }

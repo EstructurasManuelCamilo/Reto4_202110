@@ -33,11 +33,11 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 	}
 
 	@Override
-	public V get(K key) 
+	public ArregloDinamico<V> get(K key) 
 	{
-		V val = null;
+		ArregloDinamico<V> val = null;
 		if(root != null)
-			val = (V) root.get(key);
+			val = root.get(key);
 		return val;
 	}
 
@@ -139,6 +139,21 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String darAlturaTotal() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int darNumeroHojas() 
+	{
+		int numeroHojas = 0;
+		if(root != null)
+		{
+			root.darNumeroHojas(numeroHojas);
+		}
+		return numeroHojas;
 	}
 
 }

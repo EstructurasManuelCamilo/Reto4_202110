@@ -35,12 +35,6 @@ public interface ITablaSimbolosOrdenada <K extends Comparable<K>, V extends Comp
 	public void put(K key, V val);
 	
 	/**
-	 * Quita una tupla de la tabla.
-	 * @param key Llave de kla tupla que se desea eliminar.
-	 */
-	public void remove (K key);
-	
-	/**
 	 * Verifica si una llave se encuentra dentro de la tabla
 	 * @param key Llave que se desea buscar en la tabla.
 	 * @return True si la llave esta en la tabla. False de lo contrario.
@@ -52,8 +46,6 @@ public interface ITablaSimbolosOrdenada <K extends Comparable<K>, V extends Comp
 	 * @return True en caso de que la tabla este vacia. False de lo contrario.
 	 */
 	public boolean isEmpty();
-
-	public int hash(K key);	
 	
 	public int getHeight(K key);
 	
@@ -62,4 +54,9 @@ public interface ITablaSimbolosOrdenada <K extends Comparable<K>, V extends Comp
 	public K min();
 	
 	public K max();
+	
+	public ILista<K> keysInRange(K init, K end);
+	
+	public ILista<V> valuesInRange(K init, K end);
+	
 }

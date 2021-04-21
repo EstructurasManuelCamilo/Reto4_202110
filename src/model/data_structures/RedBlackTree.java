@@ -9,13 +9,27 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 	@Override
 	public ILista<K> keySet() 
 	{
-		return null;
+		//Recorrido inroden
+		ArregloDinamico<K> lista = new ArregloDinamico<>(502);
+		if(root != null)
+		{
+			root.insertarSiguienteLLave(lista);
+		}
+
+		return lista;
 	}
 
 	@Override
 	public ILista<V> valueSet() 
 	{
-		return null;
+		//Recorrido inroden
+		ArregloDinamico<V> lista = new ArregloDinamico<>(502);
+		if(root != null)
+		{
+			root.insertarSiguienteValor(lista);
+		}
+
+		return lista;
 	}
 
 	@Override

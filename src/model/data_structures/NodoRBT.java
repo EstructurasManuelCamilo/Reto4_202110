@@ -224,5 +224,43 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		if(this.derecho != null)
 			resp = (K) derecho.min();
 		return resp;
+	}
+
+	public ArregloDinamico<K> insertarSiguienteLLave(ArregloDinamico<K> lista) 
+	{
+		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
+		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
+
+		if(izq != null)
+		{
+			lista = izq.insertarSiguienteLLave(lista);
+		}
+		lista.addLast(this.llave);
+		if(der != null)
+		{
+			lista = der.insertarSiguienteLLave(lista);
+		}
+
+		return lista;
+	}
+
+	public ArregloDinamico<V> insertarSiguienteValor(ArregloDinamico<V> lista)
+	{
+		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
+		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
+
+		if(izq != null)
+		{
+			lista = izq.insertarSiguienteValor(lista);
+		}
+		for(int i = 0; i < this.valores.size(); i++)
+		{
+			lista.addLast(this.valores.getElement(i));
+		}
+		if(der != null)
+		{
+			lista = der.insertarSiguienteValor(lista);
+		}
+		return lista;
 	}	
 }

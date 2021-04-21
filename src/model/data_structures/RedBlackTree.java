@@ -21,14 +21,19 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 	@Override
 	public V get(K key) 
 	{
-		return null;
+		V val = null;
+		if(root != null)
+			val = (V) root.get(key);
+		return val;
 	}
 
 	@Override
 	public int size() 
 	{
-
-		return 0;
+		int size = 0;
+		if(root != null)
+			size = root.size(size);
+		return size;
 	}
 
 	@Override
@@ -44,50 +49,81 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 	}
 
 	@Override
-	public void remove(K key) 
-	{
-
-	}
-
-	@Override
 	public boolean contains(K key)
 	{
-		return false;
+		if(get(key) != null)
+			return true; 
+		else
+			return false;
 	}
 
 	@Override
 	public boolean isEmpty() 
 	{
-		return false;
+		if(size()==0)
+			return true;
+		else
+			return false;
 	}
-
-	@Override
-	public int hash(K key) 
-	{
-		return 0;
-	}
-
 	@Override
 	public int getHeight(K key) 
 	{
-		return 0;
+		int h = -1;
+		if(root != null)
+		{
+			h = root.getHeight(key, 0);
+		}
+		if(h == 0)
+		{
+			h = -1;
+		}
+		return h;
 	}
 
 	@Override
 	public int height() 
 	{
-		return 0;
+		int h = 0;
+		if(root != null)
+		{
+			h = root.height(0);
+		}
+		return h;
 	}
 
 	@Override
 	public K min() 
 	{
-		return null;
+		K min = null;
+		if(root != null)
+		{
+			min = (K) root.min();
+		}
+		return min;
 	}
 
 	@Override
 	public K max() 
 	{
+		K max = null;
+		if(root != null)
+		{
+			max = (K) root.max();
+		}
+		return max;
+	}
+
+	@Override
+	public ILista<K> keysInRange(K init, K end) 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ILista<V> valuesInRange(K init, K end) 
+	{
+		// TODO Auto-generated method stub
 		return null;
 	}
 

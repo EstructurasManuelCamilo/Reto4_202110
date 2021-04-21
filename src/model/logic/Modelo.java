@@ -178,7 +178,7 @@ public class Modelo
 	{
 		try 
 		{
-			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/contex_content_features-small.csv")),"UTF-8");
+			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/context_content_features-small.csv")),"UTF-8");
 			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 			for(final CSVRecord excel : separador)
 			{		

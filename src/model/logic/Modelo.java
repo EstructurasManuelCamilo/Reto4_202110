@@ -181,10 +181,28 @@ public class Modelo
 			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/context_content_features-small.csv")),"UTF-8");
 			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 			for(final CSVRecord excel : separador)
-			{		
-				String dance = excel.get("danceability");
-				double danceability = Double.parseDouble(dance);
-				Reproduccion nuevo = new Reproduccion(danceability);
+			{	
+				double instrumentalness = Double.parseDouble(excel.get("instrumentalness"));
+				double danceability = Double.parseDouble(excel.get("danceability"));
+				double liveness = Double.parseDouble(excel.get("liveness"));
+				double speechiness = Double.parseDouble(excel.get("speechiness"));
+				double valence = Double.parseDouble(excel.get("valence"));
+				double loudness = Double.parseDouble(excel.get("loudness"));
+				double tempo = Double.parseDouble(excel.get("tempo"));
+				double acousticness = Double.parseDouble(excel.get("acousticness"));
+				double energy = Double.parseDouble(excel.get("energy"));
+				double mode = Double.parseDouble(excel.get("mode"));
+				double key = Double.parseDouble(excel.get("key"));
+				String artist_id = excel.get("artist_id");
+				String tweet_lang = excel.get("tweet_lang");
+				String track_id = excel.get("track_id");
+				String created_at = excel.get("created_at");
+				String lang = excel.get("lang");
+				String time_zone = excel.get("time_zone");
+				String user_id = excel.get("user_id");
+				String id = excel.get("id");
+								
+				Reproduccion nuevo = new Reproduccion(danceability, instrumentalness, liveness, speechiness, valence, loudness, tempo, acousticness, energy, mode, key, id, artist_id, track_id, user_id, created_at);
 				arbol.put(danceability, nuevo);
 				cantidadReproducciones++;
 			}
@@ -233,6 +251,14 @@ public class Modelo
 	public RedBlackTree<Double, Reproduccion> darArbol() 
 	{
 		return arbol;
+	}
+	
+	// Requirimiento 1 
+	public ArregloDinamico<String> darReproduccionesPorCaracteristica(double pCaracteristica, double pMin, double pMax)
+	{
+		ArregloDinamico<double> arreglo = new ArregloDinamico<>(7);
+		arbol.keysInRange(pMin, pMax);
+		return null;
 	}
 
 }

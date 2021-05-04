@@ -74,10 +74,7 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 	@Override
 	public boolean isEmpty() 
 	{
-		if(size()==0)
-			return true;
-		else
-			return false;
+		return size()==0;
 	}
 	@Override
 	public int getHeight(K key) 

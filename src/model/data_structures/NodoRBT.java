@@ -161,11 +161,11 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 
 		if(der != null)
 		{
-			der.size(actual);
+			actual = der.size(actual);
 		}
 		if(izq != null)
 		{
-			izq.size(actual);
+			actual = izq.size(actual);
 		}
 		return actual;
 	}
@@ -287,28 +287,23 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		return numeroHojas;
 	}
 
-	public int darAltura() 
+	public int darAltura(NodoRBT<K, V> actual) 
 	{
-		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
-		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
-
-		if(der != null)
-		{
-			alturaDerecha++;
-			alturaDerecha = der.darAltura();
-		}
-		if(izq != null)
-		{
-			alturaIzquierda++;
-			alturaIzquierda = izq.darAltura();
-		}
-
-		if(alturaDerecha>=alturaIzquierda)
-			return alturaDerecha;
-		else
-			return alturaIzquierda;
+		if (actual == null)
+	    {
+	        return 0;
+	    }
+	    else
+	    {
+	    	NodoRBT<K, V> der = (NodoRBT<K, V>) actual.derecho;
+			NodoRBT<K, V> izq = (NodoRBT<K, V>) actual.izquierdo;
+	        return 1 +
+	        Math.max(darAltura(izq),
+	        		darAltura(der));
+	    }
 	}
-
+	
+	
 
 	public ArregloDinamico<K> llavesEnRango(ArregloDinamico<K> llaves, K init, K end) 
 	{

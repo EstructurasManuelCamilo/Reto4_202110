@@ -256,8 +256,11 @@ public class Modelo
 	// Requirimiento 1 
 	public ArregloDinamico<String> darReproduccionesPorCaracteristica(double pCaracteristica, double pMin, double pMax)
 	{
-		ArregloDinamico<double> arreglo = new ArregloDinamico<>(7);
-		arbol.keysInRange(pMin, pMax);
+		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
+		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
+		arreglo = arbol.keysInRange(pMin, pMax);
+		// for arreglo
+			// mirar cuales tiene la caract
 		return null;
 	}
 

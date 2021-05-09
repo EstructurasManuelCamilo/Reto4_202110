@@ -61,8 +61,21 @@ public class Modelo
 	
 	private RedBlackTree<Double, Reproduccion> arbolSonoridad;
 	
-	private RedBlackTree<Double, Reproduccion> arbol;
+	private RedBlackTree<Double, Reproduccion> arbolTempo;
 	
+	private RedBlackTree<Double, Reproduccion> arbolEnergia;
+	
+	private RedBlackTree<Double, Reproduccion> arbolInstrumentalidad;
+	
+	private RedBlackTree<Double, Reproduccion> arbolViveza;
+
+	private RedBlackTree<Double, Reproduccion> arbolClave;
+	
+	private RedBlackTree<Double, Reproduccion> arbolModo;
+	
+	private RedBlackTree<Double, Reproduccion> arbolhabla;
+	
+	private RedBlackTree<Double, Reproduccion> arbolAcustica;
 	
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
@@ -80,7 +93,18 @@ public class Modelo
 		datosLinearProbing = new TablaHashLinearProbing<>(5013);//14, 5013
 		datosSeparateChaining = new TablaHashSeparateChaining<>(75189);//201, 75189
 		listaPaises = new ArregloDinamico<>(7);
-		arbol = new RedBlackTree<>();
+		
+		arbolAcustica = new RedBlackTree<>();
+		arbolClave = new RedBlackTree<>();
+		arbolDance = new RedBlackTree<>();
+		arbolEnergia = new RedBlackTree<>();
+		arbolhabla = new RedBlackTree<>();
+		arbolInstrumentalidad = new RedBlackTree<>();
+		arbolModo = new RedBlackTree<>();
+		arbolSonoridad = new RedBlackTree<>();
+		arbolTempo = new RedBlackTree<>();
+		arbolValencia = new RedBlackTree<>();
+		arbolViveza = new RedBlackTree<>();
 	}
 
 	/**
@@ -210,7 +234,11 @@ public class Modelo
 				String id = excel.get("id");
 								
 				Reproduccion nuevo = new Reproduccion(danceability, instrumentalness, liveness, speechiness, valence, loudness, tempo, acousticness, energy, mode, key, id, artist_id, track_id, user_id, created_at);
-				arbol.put(danceability, nuevo);
+				arbolDance.put(danceability, nuevo);
+				arbolValencia.put(valence, nuevo);
+				arbolSonoridad.put(loudness, nuevo);
+				arbolInstrumentalidad.put(instrumentalness, nuevo);
+				arbolEnergia.put(energy, nuevo);
 				cantidadReproducciones++;
 			}
 		}
@@ -255,9 +283,25 @@ public class Modelo
 		return tiempoEjecucionPromedio;
 	}
 
-	public RedBlackTree<Double, Reproduccion> darArbol() 
+	public RedBlackTree<Double, Reproduccion> darArbolDance() 
 	{
-		return arbol;
+		return arbolDance;
+	}
+	public RedBlackTree<Double, Reproduccion> darArbolValencia() 
+	{
+		return arbolValencia;
+	}
+	public RedBlackTree<Double, Reproduccion> darArbolSonoridad() 
+	{
+		return arbolSonoridad;
+	}
+	public RedBlackTree<Double, Reproduccion> darArbolInstrumentalidad() 
+	{
+		return arbolInstrumentalidad;
+	}
+	public RedBlackTree<Double, Reproduccion> darArbolEnergia() 
+	{
+		return arbolEnergia;
 	}
 	
 	
@@ -265,9 +309,9 @@ public class Modelo
 	// Requirimiento 1. Conocer cuántas reproducciones (eventos de escucha) se tienen en el sistema de recomendación
 	public ArregloDinamico<Reproduccion> darReproduccionesPorCaracteristica(String  pCaracteristica, double pMin, double pMax)
 	{
-		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
-		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
-		arreglo = arbol.keysInRange(pMin, pMax);
+		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(30);
+		ArregloDinamico<Double> resp = new ArregloDinamico<>(30);
+		arreglo = arbolDance.keysInRange(pMin, pMax);
 		for(int i = 0; i < arreglo.size(); i++ )
 		{
 			

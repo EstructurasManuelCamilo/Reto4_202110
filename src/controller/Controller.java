@@ -69,11 +69,11 @@ public class Controller {
 					System.out.println(tiempo);
 					tiempo = 0;
 					view.printMessage("El número total de reproducciones: " + modelo.darCantidadReproducciones());
-					view.printMessage("El número de llaves presentes en el árbol RBT: " + modelo.darArbol().size());
-					view.printMessage("La altura del árbol RBT: " + modelo.darArbol().darAlturaTotal());
-					view.printMessage("La llave menor es: " + modelo.darArbol().min() + " y el total de sus reproducciones en el árbol RBT es: " + modelo.darArbol().get(modelo.darArbol().min()).size());
-					view.printMessage("La llave mayor es: " + modelo.darArbol().max() + " y el total de sus reproducciones en el árbol RBT es: " + modelo.darArbol().get(modelo.darArbol().max()).size());
-					view.printMessage("El número de hojas en el árbol RBT: " + modelo.darArbol().darNumeroHojas());
+					view.printMessage("El número de llaves presentes en el árbol RBT: " + modelo.darArbolDance().size());
+					view.printMessage("La altura del árbol RBT: " + modelo.darArbolDance().darAlturaTotal());
+					view.printMessage("La llave menor es: " + modelo.darArbolDance().min() + " y el total de sus reproducciones en el árbol RBT es: " + modelo.darArbolDance().get(modelo.darArbolDance().min()).size());
+					view.printMessage("La llave mayor es: " + modelo.darArbolDance().max() + " y el total de sus reproducciones en el árbol RBT es: " + modelo.darArbolDance().get(modelo.darArbolDance().max()).size());
+					view.printMessage("El número de hojas en el árbol RBT: " + modelo.darArbolDance().darNumeroHojas());
 				}
 				cargados = true;
 				break;

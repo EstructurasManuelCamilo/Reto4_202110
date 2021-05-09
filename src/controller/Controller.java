@@ -244,7 +244,37 @@ public class Controller {
 				break;
 				
 			case 6:
-				
+				view.printMessage("Requerimiento 5.\n--------------------"); 
+				view.printMessage("Ingrese el valor mínimo de la hora del día"); 
+				while(numero == 0)
+				{
+					numero = lector.nextInt();
+				}
+				view.printMessage("Ingrese el valor máximo de la hora del día.");
+				while(num2 == 0)
+				{
+					num2 = lector.nextInt();
+				}
+				ArregloDinamico<Reproduccion> solucion5 = modelo.darEstimarReproduccionesPorGenero(caracteristica, nuevoGeneroMusical, numero, num2);
+				if ( solucion5 == null) 
+					view.printMessage("No se pudo encontrar respuesta al requerimiento");
+				else
+				{
+					view.printMessage("El Total de los eventos de escucha de los géneros analizados es: " + solucion4.size());
+					for(int i = 0; i < solucion4.size(); i++)
+					{
+						// Falta cambiar tiene que ser lista de listas
+						view.printMessage("El Total de los eventos de escucha en el género "  + " género es: ");
+						view.printMessage("El número de artistas únicos es: " );
+					}
+				}
+				numero = 0;
+				num2 = 0;
+				num3 = 0;
+				num4 = 0; 
+				caracteristica = "";
+				nuevoGeneroMusical = "";
+				break;
 				
 			case 7: 
 				view.printMessage("--------- \n Hasta pronto !! \n---------"); 

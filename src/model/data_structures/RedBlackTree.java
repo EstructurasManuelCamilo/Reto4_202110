@@ -142,13 +142,13 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 		return valores;
 	}
 
-	public ILista<V> valoresLlave(K llave)
-	{
-		ArregloDinamico<V> valores = new ArregloDinamico<>(30);
-		if(root != null)
-			valores = root.valoresLlave(valores);
-		return valores;
-	}
+//	public ILista<V> valoresLlave(K llave)
+//	{
+//		ArregloDinamico<V> valores = new ArregloDinamico<>(30);
+//		if(root != null)
+//			valores = root.valoresLlave(valores);
+//		return valores;
+//	}
 	public int darAlturaTotal() 
 	{
 		int altura = 0;

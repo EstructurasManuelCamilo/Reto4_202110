@@ -253,15 +253,55 @@ public class Modelo
 		return arbol;
 	}
 	
-	// Requirimiento 1 
-	public ArregloDinamico<String> darReproduccionesPorCaracteristica(double pCaracteristica, double pMin, double pMax)
+	
+	
+	// Requirimiento 1. Conocer cuántas reproducciones (eventos de escucha) se tienen en el sistema de recomendación
+	public ArregloDinamico<Reproduccion> darReproduccionesPorCaracteristica(String  pCaracteristica, double pMin, double pMax)
 	{
 		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
 		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
 		arreglo = arbol.keysInRange(pMin, pMax);
+		for(int i = 0; i < arreglo.size(); i++ )
+		{
+			
+		}
 		// for arreglo
 			// mirar cuales tiene la caract
 		return null;
+	}
+	// Requerimiento 2. Encontrar la lista de pistas que se tienen en el sistema de recomendación
+	public ArregloDinamico<Reproduccion> darListaPorPistasFestejar(double pMinEnergy, double pMaxEnergy, double pMinDanceability, double pMaxDanceability)
+	{
+		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
+		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
+		return null;
+		
+	}
+	// Requerimiento 3. Encontrar la lista de pistas que se tienen en el sistema de recomendación
+	public ArregloDinamico<Reproduccion> darListaPorPistasEstudiar(double pMinInstrumentalness, double pMaxInstrumentalness, double pMinTempo, double pMaxTempo)
+	{
+		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
+		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
+		return null;
+		
+	}
+	// Requerimiento 4. Encontrar la lista de pistas que se tienen en el sistema de recomendación
+	// Toca hacer un arreglo dinámico de arreglos dinámicos
+	public ArregloDinamico<Reproduccion> darEstimarReproduccionesPorGenero(String pListaGenero, String pNombreGenero, double pMinTempo, double pMaxTempo )
+	{
+		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
+		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
+		return null;
+		
+	}
+	// Requerimiento 5. indicar el género de música más escuchado en un rango teniendo en cuenta
+	// todos los días disponibles e informar el promedio VADER
+	public ArregloDinamico<Reproduccion> darEstimarReproduccionesPorGenero(double pMinHora, double pMaxHora )
+	{
+		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
+		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
+		return null;
+		
 	}
 
 }

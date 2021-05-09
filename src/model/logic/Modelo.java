@@ -73,7 +73,7 @@ public class Modelo
 		datosLinearProbing = new TablaHashLinearProbing<>(5013);//14, 5013
 		datosSeparateChaining = new TablaHashSeparateChaining<>(75189);//201, 75189
 		listaPaises = new ArregloDinamico<>(7);
-		
+		arbol = new RedBlackTree<>();
 	}
 
 	/**

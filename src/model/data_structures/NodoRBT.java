@@ -161,11 +161,11 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 
 		if(der != null)
 		{
-			der.size(actual);
+			actual = der.size(actual);
 		}
 		if(izq != null)
 		{
-			izq.size(actual);
+			actual = izq.size(actual);
 		}
 		return actual;
 	}
@@ -215,16 +215,20 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 
 	public K min() 
 	{
+		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
 		K resp = this.llave;
-		if(this.izquierdo != null)
-			resp = (K) izquierdo.min();
+		
+		if(izq != null)
+			resp = (K) izq.min();
 		return resp;
 	}	
 	public K max() 
 	{
+		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
 		K resp = this.llave;
-		if(this.derecho != null)
-			resp = (K) derecho.min();
+		
+		if(der != null)
+			resp = (K) der.min();
 		return resp;
 	}
 
@@ -287,28 +291,23 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		return numeroHojas;
 	}
 
-	public int darAltura() 
+	public int darAltura(NodoRBT<K, V> actual) 
 	{
-		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
-		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
-
-		if(der != null)
-		{
-			alturaDerecha++;
-			alturaDerecha = der.darAltura();
-		}
-		if(izq != null)
-		{
-			alturaIzquierda++;
-			alturaIzquierda = izq.darAltura();
-		}
-
-		if(alturaDerecha>=alturaIzquierda)
-			return alturaDerecha;
-		else
-			return alturaIzquierda;
+		if (actual == null)
+	    {
+	        return 0;
+	    }
+	    else
+	    {
+	    	NodoRBT<K, V> der = (NodoRBT<K, V>) actual.derecho;
+			NodoRBT<K, V> izq = (NodoRBT<K, V>) actual.izquierdo;
+	        return 1 +
+	        Math.max(darAltura(izq),
+	        		darAltura(der));
+	    }
 	}
-
+	
+	
 
 	public ArregloDinamico<K> llavesEnRango(ArregloDinamico<K> llaves, K init, K end) 
 	{
@@ -319,9 +318,9 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		{
 			llaves.addLast(llave);
 			if(izq != null)
-				izq.llavesEnRango(llaves, init, end);
+				llaves = izq.llavesEnRango(llaves, init, end);
 			if(der != null)
-				der.llavesEnRango(llaves, init, end);
+				llaves = der.llavesEnRango(llaves, init, end);
 		}
 		return llaves;
 	}
@@ -331,6 +330,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
 		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
 
+		
 		if(llave.compareTo(init)>=0 && llave.compareTo(end) <=0)
 		{
 			for(int i = 0; i < this.valores.size(); i++)
@@ -346,7 +346,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		return null;
 	}
 
-	public ArregloDinamico<V> valoresLlave(K pLlave) 
+	public ArregloDinamico<V> valoresLlave(ArregloDinamico<V> pValores, K pLlave) 
 	{
 		ArregloDinamico<V> resp = new ArregloDinamico<>(7);
 		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
@@ -358,11 +358,11 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		}
 		else if(izq != null)
 		{
-			resp = izq.valoresLlave(pLlave);
+			resp = izq.valoresLlave(resp, pLlave);
 		}
 		else if(der != null)
 		{
-			resp = der.valoresLlave(pLlave);
+			resp = der.valoresLlave(resp, pLlave);
 		}
 		return resp;
 	}	

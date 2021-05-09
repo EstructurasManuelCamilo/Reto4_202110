@@ -55,8 +55,15 @@ public class Modelo
 	
 	private ArregloDinamico<String> listaPaises;
 	
-	private RedBlackTree<Double, Reproduccion> arbol;
+	private RedBlackTree<Double, Reproduccion> arbolDance;
 
+	private RedBlackTree<Double, Reproduccion> arbolValencia;
+	
+	private RedBlackTree<Double, Reproduccion> arbolSonoridad;
+	
+	private RedBlackTree<Double, Reproduccion> arbol;
+	
+	
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */

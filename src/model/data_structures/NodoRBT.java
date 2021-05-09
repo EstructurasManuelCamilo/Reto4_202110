@@ -340,5 +340,26 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 				der.valoresEnRango(vals, init, end);
 		}
 		return null;
+	}
+
+	public ArregloDinamico<V> valoresLlave(ArregloDinamico<V> pValores, K pLlave) 
+	{
+		ArregloDinamico<V> resp = new ArregloDinamico<>(7);
+		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
+		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
+		
+		if(llave.compareTo(pLlave) == 0)
+		{
+			resp = valores;
+		}
+		else if(izq != null)
+		{
+			resp = izq.valoresLlave(resp, pLlave);
+		}
+		else if(der != null)
+		{
+			resp = der.valoresLlave(resp, pLlave);
+		}
+		return resp;
 	}	
 }

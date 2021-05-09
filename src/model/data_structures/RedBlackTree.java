@@ -74,10 +74,7 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 	@Override
 	public boolean isEmpty() 
 	{
-		if(size()==0)
-			return true;
-		else
-			return false;
+		return size()==0;
 	}
 	@Override
 	public int getHeight(K key) 
@@ -145,6 +142,13 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 		return valores;
 	}
 
+	public ILista<V> valoresLlave(K llave)
+	{
+		ArregloDinamico<V> valores = new ArregloDinamico<>(30);
+		if(root != null)
+			valores = root.valoresLlave(valores, llave);
+		return valores;
+	}
 	public int darAlturaTotal() 
 	{
 		int altura = 0;

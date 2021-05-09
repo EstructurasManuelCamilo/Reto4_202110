@@ -215,16 +215,20 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 
 	public K min() 
 	{
+		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
 		K resp = this.llave;
-		if(this.izquierdo != null)
-			resp = (K) izquierdo.min();
+		
+		if(izq != null)
+			resp = (K) izq.min();
 		return resp;
 	}	
 	public K max() 
 	{
+		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
 		K resp = this.llave;
-		if(this.derecho != null)
-			resp = (K) derecho.min();
+		
+		if(der != null)
+			resp = (K) der.min();
 		return resp;
 	}
 
@@ -314,9 +318,9 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		{
 			llaves.addLast(llave);
 			if(izq != null)
-				izq.llavesEnRango(llaves, init, end);
+				llaves = izq.llavesEnRango(llaves, init, end);
 			if(der != null)
-				der.llavesEnRango(llaves, init, end);
+				llaves = der.llavesEnRango(llaves, init, end);
 		}
 		return llaves;
 	}

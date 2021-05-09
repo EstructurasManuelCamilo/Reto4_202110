@@ -164,7 +164,7 @@ public class RedBlackTree <K extends Comparable<K>,V extends Comparable<V>> impl
 		int numeroHojas = 0;
 		if(root != null)
 		{
-			root.darNumeroHojas(numeroHojas);
+			numeroHojas = root.darNumeroHojas(numeroHojas);
 		}
 		return numeroHojas;
 	}

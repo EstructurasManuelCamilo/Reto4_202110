@@ -326,6 +326,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
 		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
 
+		
 		if(llave.compareTo(init)>=0 && llave.compareTo(end) <=0)
 		{
 			for(int i = 0; i < this.valores.size(); i++)

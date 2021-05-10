@@ -365,5 +365,11 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 			resp = der.valoresLlave(resp, pLlave);
 		}
 		return resp;
+	}
+
+	public ArregloDinamico<V> darValDif(K key) 
+	{
+		
+		return null;
 	}	
 }

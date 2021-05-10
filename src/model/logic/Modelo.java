@@ -52,31 +52,31 @@ public class Modelo
 	private float tiempoEjecucionPromedio2;
 
 	private int cantidadReproducciones;
-	
+
 	private ArregloDinamico<String> listaPaises;
-	
+
 	private RedBlackTree<Double, Reproduccion> arbolDance;
 
 	private RedBlackTree<Double, Reproduccion> arbolValencia;
-	
+
 	private RedBlackTree<Double, Reproduccion> arbolSonoridad;
-	
+
 	private RedBlackTree<Double, Reproduccion> arbolTempo;
-	
+
 	private RedBlackTree<Double, Reproduccion> arbolEnergia;
-	
+
 	private RedBlackTree<Double, Reproduccion> arbolInstrumentalidad;
-	
+
 	private RedBlackTree<Double, Reproduccion> arbolViveza;
 
 	private RedBlackTree<Double, Reproduccion> arbolClave;
-	
+
 	private RedBlackTree<Double, Reproduccion> arbolModo;
-	
+
 	private RedBlackTree<Double, Reproduccion> arbolhabla;
-	
+
 	private RedBlackTree<Double, Reproduccion> arbolAcustica;
-	
+
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
@@ -93,7 +93,7 @@ public class Modelo
 		datosLinearProbing = new TablaHashLinearProbing<>(5013);//14, 5013
 		datosSeparateChaining = new TablaHashSeparateChaining<>(75189);//201, 75189
 		listaPaises = new ArregloDinamico<>(7);
-		
+
 		arbolAcustica = new RedBlackTree<>();
 		arbolClave = new RedBlackTree<>();
 		arbolDance = new RedBlackTree<>();
@@ -232,13 +232,16 @@ public class Modelo
 				String time_zone = excel.get("time_zone");
 				String user_id = excel.get("user_id");
 				String id = excel.get("id");
-								
+
 				Reproduccion nuevo = new Reproduccion(danceability, instrumentalness, liveness, speechiness, valence, loudness, tempo, acousticness, energy, mode, key, id, artist_id, track_id, user_id, created_at);
 				arbolDance.put(danceability, nuevo);
 				arbolValencia.put(valence, nuevo);
 				arbolSonoridad.put(loudness, nuevo);
 				arbolInstrumentalidad.put(instrumentalness, nuevo);
 				arbolEnergia.put(energy, nuevo);
+				arbolTempo.put(tempo, nuevo);
+				arbolAcustica.put(acousticness, nuevo);
+				arbolhabla.put(speechiness, nuevo);
 				cantidadReproducciones++;
 			}
 		}
@@ -247,7 +250,7 @@ public class Modelo
 			e.printStackTrace();
 		}
 	}
-	
+
 
 	public float desempenioMetodoGetLlavesExistentes() 
 	{
@@ -261,7 +264,7 @@ public class Modelo
 			int max = datosTablaSimbolos.keySet().size() - 1;
 			int random_int = (int)(Math.random() * (max - min + 1) + min);
 			String llaveTemp = datosTablaSimbolos.keySet().getElement(random_int);
-			
+
 			TInicio = System.currentTimeMillis();
 			datosTablaSimbolos.get(llaveTemp);
 			tiempo = System.currentTimeMillis() - TInicio;
@@ -303,22 +306,71 @@ public class Modelo
 	{
 		return arbolEnergia;
 	}
-	
-	
-	
+	public RedBlackTree<Double, Reproduccion> darArbolTempo() 
+	{
+		return arbolTempo;
+	}
+	public RedBlackTree<Double, Reproduccion> darArbolAcustica() 
+	{
+		return arbolAcustica;
+	}
+	public RedBlackTree<Double, Reproduccion> darArbolHabla() 
+	{
+		return arbolhabla;
+	}
+
+
+
 	// Requirimiento 1. Conocer cuántas reproducciones (eventos de escucha) se tienen en el sistema de recomendación
-	public ArregloDinamico<Reproduccion> darReproduccionesPorCaracteristica(String  pCaracteristica, double pMin, double pMax)
+	public int darReproduccionesPorCaracteristica(String  pCaracteristica, double pMin, double pMax) throws Exception
 	{
 		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(30);
-		ArregloDinamico<Double> resp = new ArregloDinamico<>(30);
-		arreglo = arbolDance.keysInRange(pMin, pMax);
-		for(int i = 0; i < arreglo.size(); i++ )
+		ArregloDinamico<Reproduccion> lista = new ArregloDinamico<>(30);
+
+		RedBlackTree<Double, Reproduccion> arbol = null;
+		
+		int contador = 0;
+		
+		if(pCaracteristica.equals("Danceability"))
 		{
-			
+			arbol = arbolDance;
 		}
-		// for arreglo
-			// mirar cuales tiene la caract
-		return null;
+		else if(pCaracteristica.equals("Instrumentalness"))
+		{
+			arbol = arbolInstrumentalidad;
+		}
+		else if(pCaracteristica.equals("Valence"))
+		{
+			arbol = arbolValencia;
+		}
+		else if(pCaracteristica.equals("Energy"))
+		{
+			arbol = arbolEnergia;
+		}
+		else if(pCaracteristica.equals("Acousticness"))
+		{
+			arbol = arbolAcustica;
+		}
+		else if(pCaracteristica.equals("Speechiness"))
+		{
+			arbol = arbolhabla;
+		}
+		else
+		{
+			throw new Exception("No se encontro a categoria buscada. ");
+		}
+		arreglo = arbol.keysInRange(pMin, pMax);
+		for(int i = 0; i < arreglo.size(); i++)
+		{
+			if(arreglo.getElement(i)!=null)
+			{
+				lista = arbol.get(arreglo.getElement(i));
+				lista = darRepDiferentes(lista);
+				contador += lista.size();
+			}
+		}
+
+		return contador;
 	}
 	// Requerimiento 2. Encontrar la lista de pistas que se tienen en el sistema de recomendación
 	public ArregloDinamico<Reproduccion> darListaPorPistasFestejar(double pMinEnergy, double pMaxEnergy, double pMinDanceability, double pMaxDanceability)
@@ -326,7 +378,7 @@ public class Modelo
 		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
 		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
 		return null;
-		
+
 	}
 	// Requerimiento 3. Encontrar la lista de pistas que se tienen en el sistema de recomendación
 	public ArregloDinamico<Reproduccion> darListaPorPistasEstudiar(double pMinInstrumentalness, double pMaxInstrumentalness, double pMinTempo, double pMaxTempo)
@@ -334,7 +386,7 @@ public class Modelo
 		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
 		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
 		return null;
-		
+
 	}
 	// Requerimiento 4. Encontrar la lista de pistas que se tienen en el sistema de recomendación
 	// Toca hacer un arreglo dinámico de arreglos dinámicos
@@ -343,7 +395,7 @@ public class Modelo
 		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
 		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
 		return null;
-		
+
 	}
 	// Requerimiento 5. indicar el género de música más escuchado en un rango teniendo en cuenta
 	// todos los días disponibles e informar el promedio VADER
@@ -352,7 +404,49 @@ public class Modelo
 		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
 		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
 		return null;
-		
+
 	}
 
+	public ArregloDinamico<Reproduccion> darRepDiferentes(ArregloDinamico<Reproduccion> lista) 
+	{
+		ArregloDinamico<Reproduccion> resp = new ArregloDinamico(30);
+		for(int i = 0; i < lista.size(); i++)
+		{
+			Reproduccion actual = lista.getElement(i);
+			Boolean yaEsta = false;
+			for(int j = 0; j < resp.size() && !yaEsta; j++)
+			{
+				if(actual.darId().equals(resp.getElement(j)))
+				{
+					yaEsta = true;
+				}
+			}
+			if(!yaEsta)
+			{
+				resp.addLast(actual);
+			}
+		}
+		return resp;
+	}
+	public ArregloDinamico<String> darArtistasDiferentes(ArregloDinamico<Reproduccion> lista)
+	{
+		ArregloDinamico<String> resp = new ArregloDinamico(30);
+		for(int i = 0; i < lista.size(); i++)
+		{
+			Reproduccion actual = lista.getElement(i);
+			Boolean yaEsta = false;
+			for(int j = 0; j < resp.size() && !yaEsta; j++)
+			{
+				if(actual.darArtistId().equals(resp.getElement(j)))
+				{
+					yaEsta = true;
+				}
+			}
+			if(!yaEsta)
+			{
+				resp.addLast(actual.darArtistId());
+			}
+		}
+		return resp;
+	}
 }

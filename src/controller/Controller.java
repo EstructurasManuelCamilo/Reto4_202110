@@ -47,8 +47,8 @@ public class Controller {
 		String caracteristica = "";
 		String caracteristica2 = "";
 		String nuevoGeneroMusical = "";
-		int valorMin = 0;
-		int valorMax = 0; 
+		Double valorMin = 0.0;
+		Double valorMax = 0.0; 
 		int numero = 0;
 		int num2 = 0;
 		int num3 = 0;
@@ -85,34 +85,34 @@ public class Controller {
 					caracteristica = lector.nextLine();
 				}
 				view.printMessage("Ingrese el valor mínimo de la característica de contenido que desea consultar"); 
-				while(numero == 0)
+				while(valorMin == 0)
 				{
-					numero = lector.nextInt();
+					valorMin = Double.parseDouble(lector.nextLine());
 				}
 				view.printMessage("Ingrese el valor máximo de la característica de contenido que desea consultar");
-				while(num2 == 0)
+				while(valorMax == 0)
 				{
-					num2 = lector.nextInt();
+					valorMax = Double.parseDouble(lector.nextLine());
 				}
 				ArregloDinamico<Reproduccion> solucion;
-
 				try 
 				{
-					solucion = modelo.darReproduccionesPorCaracteristica(caracteristica, numero, num2);
+					solucion = modelo.darReproduccionesPorCaracteristica(caracteristica, valorMin, valorMax);
 					if ( solucion == null) 
 						view.printMessage("No se pudo encontro respuesta al requerimiento");
 					else
 					{
 						view.printMessage("El Total de los eventos de escucha es: " + solucion.size());
-						view.printMessage("El número de artistas únicos es:" + solucion);
+						view.printMessage("El número de artistas únicos es:" + modelo.darArtistasDiferentes(solucion).size());
 					}
 				}
-				catch (Exception e) 
+				catch (Exception e1)
 				{
+					view.printMessage(e1.getMessage());
 				}
 
-				numero = 0;
-				num2 = 0;
+				valorMin = 0.0;
+				valorMax = 0.0;
 				caracteristica = "";
 				break;
 			case 3:

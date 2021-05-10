@@ -79,7 +79,7 @@ public class Modelo
 
 	private RedBlackTree<Integer, Reproduccion> arbolHoras;
 
-	private ArregloDinamico<Hashtag> hashtags; 
+	private TablaSimbolos<String, String> hashtags; 
 
 	private TablaSimbolos<String, Double> vaders; 
 
@@ -114,7 +114,7 @@ public class Modelo
 
 		arbolHoras = new RedBlackTree<>();
 
-		hashtags = new ArregloDinamico<>(30);
+		hashtags = new TablaSimbolos<>();
 		vaders = new TablaSimbolos<>();
 	}
 
@@ -215,7 +215,7 @@ public class Modelo
 		return tiempoEjecucionPromedio2;
 	}
 
-	public ArregloDinamico<Hashtag> darHashtags()
+	public TablaSimbolos<String, String> darHashtags()
 	{
 		return hashtags;
 	}
@@ -266,12 +266,15 @@ public class Modelo
 				arbolhabla.put(speechiness, nuevo);
 
 				Date created_at2 = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(excel.get("created_at"));
-				int horas = created_at2.getHours();
-				arbolHoras.put(horas, nuevo);
+				String horas = String.valueOf(created_at2.getHours());
+				String minutos = String.valueOf(created_at2.getMinutes());
+				String segundo = String.valueOf(created_at2.getSeconds());
+				String union = horas + minutos + segundo;
+				int resp = Integer.parseInt(union);
+				arbolHoras.put(resp, nuevo);
 
 				cantidadReproducciones++;				
-				nuevo.asignarHashtag(hashtags);
-				
+	
 			}
 		}
 		catch(Exception e)
@@ -295,7 +298,7 @@ public class Modelo
 				{
 					Date created_at = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(excel.get("created_at"));
 					Hashtag nuevo = new Hashtag(user_id, track_id, hashtag, created_at);
-					hashtags.addLast(nuevo);
+					hashtags.put(user_id, hashtag);
 				}
 				catch (Exception e) 
 				{

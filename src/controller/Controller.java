@@ -54,6 +54,7 @@ public class Controller {
 		int num2 = 0;
 		int num3 = 0;
 		int num4 = 0;
+		String linea = "";
 		while( !fin ){
 			view.printMenu();
 
@@ -94,9 +95,9 @@ public class Controller {
 					caracteristica = lector.nextLine();
 				}
 				view.printMessage("Ingrese el valor mínimo de la característica de contenido que desea consultar"); 
-				while(numero == 0)
+				while(linea.equals(""))
 				{
-					numero = lector.nextInt();
+					linea = lector.nextLine();
 				}
 				view.printMessage("Ingrese el valor máximo de la característica de contenido que desea consultar");
 				while(num2 == 0)
@@ -263,17 +264,32 @@ public class Controller {
 				
 			case 6:
 				view.printMessage("Requerimiento 5.\n--------------------"); 
-				view.printMessage("Ingrese el valor mínimo de la hora del día (ej. 10:00 am) "); 
-				while(numero == 0)
+				view.printMessage("Ingrese el valor mínimo de la hora del día (ej. 10:00:00) "); 
+				while(caracteristica.equals(""))
 				{
-					numero = lector.nextInt();
+					caracteristica = lector.nextLine();
 				}
-				view.printMessage("Ingrese el valor máximo de la hora del día (ej. 10:00 pm)");
-				while(num2 == 0)
+				String[] partes = caracteristica.split(":");
+				String horas = partes[0];
+				String minutos = partes[1];
+				String segundos = partes[2];
+				String union = horas + minutos + segundos;
+				int resp = Integer.parseInt(union);
+
+				view.printMessage("Ingrese el valor máximo de la hora del día (ej. 12:00:00)");
+				while(caracteristica2.equals(""))
 				{
-					num2 = lector.nextInt();
+					caracteristica2 = lector.nextLine();
 				}
-				NodoTS<String, ArregloDinamico<Reproduccion>> solucion5 = modelo.darEstimarReproduccionesPorTiempo(numero, num2);
+				String[] partes2 = caracteristica2.split(":");
+				String horas2 = partes2[0];
+				String minutos2 = partes2[1];
+				String segundos2 = partes2[2];
+				String union2 = horas2 + minutos2 + segundos2;
+				int resp2 = Integer.parseInt(union2);
+				
+				
+				NodoTS<String, ArregloDinamico<Reproduccion>> solucion5 = modelo.darEstimarReproduccionesPorTiempo(resp, resp2);
 				if ( solucion5 == null) 
 					view.printMessage("No se pudo encontrar respuesta al requerimiento");
 				else

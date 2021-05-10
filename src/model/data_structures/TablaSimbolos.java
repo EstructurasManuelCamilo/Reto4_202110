@@ -8,12 +8,12 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 	 * Capacidad maxima de la tabla
 	 */
 	private int size;
-	
+
 	/**
 	 * Lista con las llaves
 	 */
 	private ILista<K> keys;
-	
+
 	/**
 	 * Retorna la lista con las llaves
 	 */
@@ -21,20 +21,20 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 	{
 		return keys;
 	}
-	
+
 	/**
 	 * Lista con los valores
 	 */
 	private ILista<V> vals;
 
-	
+
 	public TablaSimbolos()
 	{
 		keys = new ArregloDinamico<>(7);
 		listaNodos = new ArregloDinamico<NodoTS<K,V>>(7);
 		size = 0;
 	}
-	
+
 	/**
 	 * Retorna la lista de valores
 	 */
@@ -49,8 +49,8 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 	{
 		return size;
 	}
-	
-	
+
+
 	/**
 	 * Retorna el valor de la Key o null si no existe
 	 * Entra como parámetro la key
@@ -69,7 +69,10 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 		}
 		return resp != null? resp.getValue(): null;
 	}
-	
+	public NodoTS<K, V> get(int pos)
+	{
+		return  listaNodos.getElement(pos);
+	}
 	/**
 	 * Inserta una key y su valor dentro de la tabla
 	 * Entra como parámetro la llave y su valor
@@ -81,7 +84,11 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 		keys.addLast(key);
 		size ++;
 	}
-	
+	public void cambiarVal(int pos, V val)
+	{
+		NodoTS<K,V> agregar = new NodoTS<K,V>(listaNodos.getElement(pos).getKey(), val);
+		listaNodos.changeInfo(pos, agregar);
+	}
 	/**
 	 * Elimina una llave
 	 */
@@ -89,7 +96,7 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 	{
 		put(key,null);
 	}
-	
+
 	/**
 	 * Retorna un boolean si la llave existe o no
 	 */
@@ -97,7 +104,7 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 	{
 		return get(key) != null;
 	}
-	
+
 	/**
 	 * Retorn un boolean si hay llaves o no
 	 */
@@ -112,8 +119,8 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 }
-	
+
 
 

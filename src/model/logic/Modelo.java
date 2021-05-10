@@ -255,6 +255,7 @@ public class Modelo
 				String id = excel.get("id");
 
 				Reproduccion nuevo = new Reproduccion(danceability, instrumentalness, liveness, speechiness, valence, loudness, tempo, acousticness, energy, mode, key, id, artist_id, track_id, user_id, created_at);
+				insertarGeneros(nuevo, tempo);
 				arbolDance.put(danceability, nuevo);
 				arbolValencia.put(valence, nuevo);
 				arbolSonoridad.put(loudness, nuevo);
@@ -542,11 +543,53 @@ public class Modelo
 	}
 	// Requerimiento 5. indicar el género de música más escuchado en un rango teniendo en cuenta
 	// todos los días disponibles e informar el promedio VADER
-	public ArregloDinamico<Reproduccion> darEstimarReproduccionesPorGenero(double pMinHora, double pMaxHora )
+	public ArregloDinamico<Reproduccion> darEstimarReproduccionesPorGenero(int pMinHora, int pMaxHora )
 	{
-		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
-		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
-		return null;
+		ArregloDinamico<Reproduccion> resp = new ArregloDinamico<>(7);
+		ArregloDinamico<Integer> arreglo = arbolHoras.keysInRange(pMinHora, pMaxHora);
+
+		TablaSimbolos<String, Integer> tabla = new TablaSimbolos<>();
+		tabla.put("Reggae", 0);
+		tabla.put("Down-tempo", 0);
+		tabla.put("Chill-out", 0);
+		tabla.put("Hip-hop", 0);
+		tabla.put("Jazz and Funk", 0);
+		tabla.put("Pop", 0);
+		tabla.put("R&B", 0);
+		tabla.put("Rock", 0);
+		tabla.put("Metal", 0);
+
+		for(int i = 0; i < arreglo.size(); i++)
+		{
+			if(arreglo.getElement(i)!=null)
+			{
+				ArregloDinamico<Reproduccion> lista  = arbolHoras.get(arreglo.getElement(i));
+				for(int j = 0; j < lista.size(); j++)
+					resp.addLast(lista.getElement(j));
+			}
+		}
+
+		for(int i = 0; i < resp.size(); i++)
+		{
+			Reproduccion actual = resp.getElement(i);
+			ArregloDinamico<String> listaGenAct = actual.darGeneros();
+
+			for(int j = 0; j < listaGenAct.size(); j++)
+			{
+				String gen = listaGenAct.getElement(j);
+				for(int k = 0; k < tabla.size(); k++)
+				{
+					if(gen.equals(tabla.get(k).getKey()))
+					{
+						int anterior = tabla.get(k).getValue();
+						tabla.cambiarVal(k, anterior++);;
+					}
+				}
+			}
+		}
+		
+		
+		return resp;
 
 	}
 
@@ -591,5 +634,45 @@ public class Modelo
 			}
 		}
 		return resp;
+	}
+
+	public void insertarGeneros(Reproduccion nuevo, double tempo)
+	{
+		if(tempo>60 && tempo<90) 
+		{
+			nuevo.insertarGenero("Reggae");
+		}
+		if(tempo>70 && tempo<100) 
+		{
+			nuevo.insertarGenero("Down-tempo");
+		}
+		if(tempo>90 && tempo<120) 
+		{
+			nuevo.insertarGenero("Chill-out");
+		}
+		if(tempo>85 && tempo<115) 
+		{
+			nuevo.insertarGenero("Hip-hop");
+		}
+		if(tempo>120 && tempo<125) 
+		{
+			nuevo.insertarGenero("Jazz and Funk");
+		}
+		if(tempo>100 && tempo<130) 
+		{
+			nuevo.insertarGenero("Pop");
+		}
+		if(tempo>60 && tempo<80) 
+		{
+			nuevo.insertarGenero("R&B");
+		}
+		if(tempo>110 && tempo<140) 
+		{
+			nuevo.insertarGenero("Rock");
+		}
+		if(tempo>100 && tempo<160) 
+		{
+			nuevo.insertarGenero("Metal");
+		}
 	}
 }

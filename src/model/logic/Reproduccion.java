@@ -1,5 +1,7 @@
 package model.logic;
 
+import model.data_structures.ArregloDinamico;
+
 public class Reproduccion implements Comparable<Reproduccion>
 {
 	double danceability;
@@ -18,6 +20,7 @@ public class Reproduccion implements Comparable<Reproduccion>
 	String track_id;
 	String user_id;
 	String created_at;
+	ArregloDinamico<String> generos;
 	
 	public Reproduccion(double pDanceability, double pinstrumentalness, double pliveness, double pspeechiness, double pvalence, double ploudness, double ptempo, double pacousticness, double penergy, double pmode, double pkey, String pid, String partist_id, String ptrack_id, String puser_id, String pcreated_at) 
 	{
@@ -37,8 +40,16 @@ public class Reproduccion implements Comparable<Reproduccion>
 		track_id = ptrack_id;
 		user_id = puser_id;
 		created_at = pcreated_at;
+		generos = new ArregloDinamico<>(7);
 	}
-	
+	public void insertarGenero(String pGen)
+	{
+		generos.addLast(pGen);
+	}
+	public ArregloDinamico<String> darGeneros()
+	{
+		return generos;
+	}
 	public double darDanceability()
 	{
 		return danceability;

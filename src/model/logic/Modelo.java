@@ -77,9 +77,12 @@ public class Modelo
 	
 	private RedBlackTree<Double, Reproduccion> arbolAcustica;
 	
+	private RedBlackTree<Integer, Reproduccion> arbolHoras;
+	
 	private ArregloDinamico<Hashtag> hashtags; 
 	
 	private ArregloDinamico<Vader> vaders; 
+	
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
@@ -108,6 +111,8 @@ public class Modelo
 		arbolTempo = new RedBlackTree<>();
 		arbolValencia = new RedBlackTree<>();
 		arbolViveza = new RedBlackTree<>();
+		
+		arbolHoras = new RedBlackTree<>();
 		
 		hashtags = new ArregloDinamico<>(30);
 		vaders = new ArregloDinamico<>(30);
@@ -255,6 +260,11 @@ public class Modelo
 				arbolSonoridad.put(loudness, nuevo);
 				arbolInstrumentalidad.put(instrumentalness, nuevo);
 				arbolEnergia.put(energy, nuevo);
+				
+				Date created_at2 = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(excel.get("created_at"));
+				int horas = created_at2.getHours();
+				arbolHoras.put(horas, nuevo);
+				
 				cantidadReproducciones++;
 			}
 		}

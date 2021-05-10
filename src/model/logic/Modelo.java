@@ -230,6 +230,8 @@ public class Modelo
 	{
 		try 
 		{
+			leerVader();
+			leerHashtag();
 			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/context_content_features-small.csv")),"UTF-8");
 			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 			for(final CSVRecord excel: separador)
@@ -270,8 +272,6 @@ public class Modelo
 				arbolHoras.put(horas, nuevo);
 
 				cantidadReproducciones++;
-				leerHashtag();
-				leerVader();
 				
 				nuevo.asignarHashtag(hashtags);
 				nuevo.asignarVader(vaders);

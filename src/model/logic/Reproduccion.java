@@ -156,5 +156,4 @@ public class Reproduccion implements Comparable<Reproduccion>
 			}	
 		}
 	}
-	
 }

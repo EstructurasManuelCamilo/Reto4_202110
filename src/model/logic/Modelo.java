@@ -79,9 +79,9 @@ public class Modelo
 
 	private RedBlackTree<Integer, Reproduccion> arbolHoras;
 
-	private ArregloDinamico<Hashtag> hashtags; 
+	private TablaSimbolos<String, String> hashtags; 
 
-	private ArregloDinamico<Vader> vaders; 
+	private TablaSimbolos<String, Double> vaders; 
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
@@ -114,8 +114,8 @@ public class Modelo
 
 		arbolHoras = new RedBlackTree<>();
 
-		hashtags = new ArregloDinamico<>(30);
-		vaders = new ArregloDinamico<>(30);
+		hashtags = new TablaSimbolos<>();
+		vaders = new TablaSimbolos<>();
 	}
 
 	/**
@@ -215,12 +215,12 @@ public class Modelo
 		return tiempoEjecucionPromedio2;
 	}
 
-	public ArregloDinamico<Hashtag> darHashtags()
+	public TablaSimbolos<String, String> darHashtags()
 	{
 		return hashtags;
 	}
 
-	public ArregloDinamico<Vader> darVaders()
+	public TablaSimbolos<String,Double> darVaders()
 	{
 		return vaders;
 	}
@@ -268,6 +268,7 @@ public class Modelo
 				arbolhabla.put(speechiness, nuevo);
 
 				Date created_at2 = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(excel.get("created_at"));
+<<<<<<< HEAD
 				int horas = created_at2.getHours();
 				arbolHoras.put(horas, nuevo);
 
@@ -276,6 +277,17 @@ public class Modelo
 				nuevo.asignarHashtag(hashtags);
 				nuevo.asignarVader(vaders);
 				
+=======
+				String horas = String.valueOf(created_at2.getHours());
+				String minutos = String.valueOf(created_at2.getMinutes());
+				String segundo = String.valueOf(created_at2.getSeconds());
+				String union = horas + minutos + segundo;
+				int resp = Integer.parseInt(union);
+				arbolHoras.put(resp, nuevo);
+
+				cantidadReproducciones++;				
+	
+>>>>>>> d031affec992b19d6dfc79e9a74d868dbace31ae
 			}
 		}
 		catch(Exception e)
@@ -295,9 +307,16 @@ public class Modelo
 				String user_id = excel.get("user_id");
 				String track_id = excel.get("track_id");
 				String hashtag = excel.get("hashtag");
-				Date created_at = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(excel.get("created_at"));
-				Hashtag nuevo = new Hashtag(user_id, track_id, hashtag, created_at);
-				hashtags.addLast(nuevo);
+				try 
+				{
+					Date created_at = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(excel.get("created_at"));
+					Hashtag nuevo = new Hashtag(user_id, track_id, hashtag, created_at);
+					hashtags.put(user_id, hashtag);
+				}
+				catch (Exception e) 
+				{
+					// TODO: handle exception
+				}
 			}
 		}
 		catch(Exception e)
@@ -324,8 +343,7 @@ public class Modelo
 					 vaderPromedio = 2;
 				}
 				String hashtag = excel.get("hashtag");
-				Vader nuevo = new Vader(hashtag, vaderPromedio);
-				vaders.addLast(nuevo);
+				vaders.put(hashtag, vaderPromedio);
 			}
 		}
 		catch(Exception e)
@@ -711,15 +729,16 @@ public class Modelo
 		}
 	}
 	
-	public double darPromedioVaders( ArregloDinamico<Vader> pVader )
+	public double darPromedioVaders( ArregloDinamico<Hashtag> pHashtag )
 	{
 		double suma = 0;
 		int cont = 0;
-		for(int i = 0; i < pVader.size(); i ++)
+		for(int i = 0; i < pHashtag.size(); i ++)
 		{
-			if(pVader.getElement(i).vaderPromedio() != 2)
+			double valor = vaders.get(pHashtag.getElement(i).darHashtag());	
+			if(valor!= 2)
 			{
-				suma += pVader.getElement(i).vaderPromedio();
+				suma += valor;
 				cont += 1;
 			}
 		}

@@ -217,7 +217,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 	{
 		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
 		K resp = this.llave;
-		
+
 		if(izq != null)
 			resp = (K) izq.min();
 		return resp;
@@ -226,9 +226,9 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 	{
 		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
 		K resp = this.llave;
-		
+
 		if(der != null)
-			resp = (K) der.min();
+			resp = (K) der.max();
 		return resp;
 	}
 
@@ -294,20 +294,20 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 	public int darAltura(NodoRBT<K, V> actual) 
 	{
 		if (actual == null)
-	    {
-	        return 0;
-	    }
-	    else
-	    {
-	    	NodoRBT<K, V> der = (NodoRBT<K, V>) actual.derecho;
+		{
+			return 0;
+		}
+		else
+		{
+			NodoRBT<K, V> der = (NodoRBT<K, V>) actual.derecho;
 			NodoRBT<K, V> izq = (NodoRBT<K, V>) actual.izquierdo;
-	        return 1 +
-	        Math.max(darAltura(izq),
-	        		darAltura(der));
-	    }
+			return 1 +
+					Math.max(darAltura(izq),
+							darAltura(der));
+		}
 	}
-	
-	
+
+
 
 	public ArregloDinamico<K> llavesEnRango(ArregloDinamico<K> llaves, K init, K end) 
 	{
@@ -322,6 +322,15 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 			if(der != null)
 				llaves = der.llavesEnRango(llaves, init, end);
 		}
+		else if(llave.compareTo(init)<0)
+		{
+			if(der != null)
+				llaves = der.llavesEnRango(llaves, init, end);
+		}
+		else 
+			if(izq != null)
+				llaves = izq.llavesEnRango(llaves, init, end);
+
 		return llaves;
 	}
 
@@ -330,7 +339,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
 		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
 
-		
+
 		if(llave.compareTo(init)>=0 && llave.compareTo(end) <=0)
 		{
 			for(int i = 0; i < this.valores.size(); i++)
@@ -351,7 +360,7 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 		ArregloDinamico<V> resp = new ArregloDinamico<>(7);
 		NodoRBT<K, V> der = (NodoRBT<K, V>) this.derecho;
 		NodoRBT<K, V> izq = (NodoRBT<K, V>) this.izquierdo;
-		
+
 		if(llave.compareTo(pLlave) == 0)
 		{
 			resp = valores;
@@ -365,5 +374,11 @@ public class NodoRBT <K extends Comparable<K>, V extends Comparable<V>> implemen
 			resp = der.valoresLlave(resp, pLlave);
 		}
 		return resp;
+	}
+
+	public ArregloDinamico<V> darValDif(K key) 
+	{
+
+		return null;
 	}	
 }

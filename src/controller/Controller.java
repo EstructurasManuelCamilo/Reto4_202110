@@ -173,7 +173,7 @@ public class Controller {
 				}
 				ArregloDinamico<Reproduccion> solucion3 = modelo.darListaPorPistasEstudiar(numero, num2, num3, num4);
 				if ( solucion3 == null) 
-					view.printMessage("No se pudo encontro respuesta al requerimiento");
+					view.printMessage("No se pudo encontrar respuesta al requerimiento");
 				else
 				{
 					view.printMessage("El total de pistas únicas es: " + solucion3.size());
@@ -245,12 +245,12 @@ public class Controller {
 				
 			case 6:
 				view.printMessage("Requerimiento 5.\n--------------------"); 
-				view.printMessage("Ingrese el valor mínimo de la hora del día"); 
+				view.printMessage("Ingrese el valor mínimo de la hora del día (ej. 10:00 am) "); 
 				while(numero == 0)
 				{
 					numero = lector.nextInt();
 				}
-				view.printMessage("Ingrese el valor máximo de la hora del día.");
+				view.printMessage("Ingrese el valor máximo de la hora del día (ej. 10:00 pm)");
 				while(num2 == 0)
 				{
 					num2 = lector.nextInt();
@@ -260,8 +260,8 @@ public class Controller {
 					view.printMessage("No se pudo encontrar respuesta al requerimiento");
 				else
 				{
-					view.printMessage("El Total de los eventos de escucha de los géneros analizados es: " + solucion4.size());
-					for(int i = 0; i < solucion4.size(); i++)
+					view.printMessage("El Total de los eventos de escucha de los géneros analizados es: " + solucion5.size());
+					for(int i = 0; i < solucion5.size(); i++)
 					{
 						// Falta cambiar tiene que ser lista de listas
 						view.printMessage("El Total de los eventos de escucha en el género "  + " género es: ");

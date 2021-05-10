@@ -77,6 +77,9 @@ public class Modelo
 	
 	private RedBlackTree<Double, Reproduccion> arbolAcustica;
 	
+	private ArregloDinamico<Hashtag> hashtags; 
+	
+	private ArregloDinamico<Vader> vaders; 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
@@ -105,6 +108,9 @@ public class Modelo
 		arbolTempo = new RedBlackTree<>();
 		arbolValencia = new RedBlackTree<>();
 		arbolViveza = new RedBlackTree<>();
+		
+		hashtags = new ArregloDinamico<>(30);
+		vaders = new ArregloDinamico<>(30);
 	}
 
 	/**
@@ -203,6 +209,16 @@ public class Modelo
 	{
 		return tiempoEjecucionPromedio2;
 	}
+	
+	public ArregloDinamico<Hashtag> darHashtags()
+	{
+		return hashtags;
+	}
+	
+	public ArregloDinamico<Vader> darVaders()
+	{
+		return vaders;
+	}
 
 
 	public void leerDatosRBT()
@@ -240,6 +256,48 @@ public class Modelo
 				arbolInstrumentalidad.put(instrumentalness, nuevo);
 				arbolEnergia.put(energy, nuevo);
 				cantidadReproducciones++;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void leerHashtag()
+	{
+		try 
+		{
+			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/user_track_hashtag_timestamp-small.csv")),"UTF-8");
+			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
+			for(final CSVRecord excel : separador)
+			{	
+				String user_id = excel.get("user_id");
+				String track_id = excel.get("track_id");
+				String hashtag = excel.get("hashtag");
+				Date created_at = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(excel.get("created_at"));
+				Hashtag nuevo = new Hashtag(user_id, track_id, hashtag, created_at);
+				hashtags.addLast(nuevo);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void leerVader()
+	{
+		try 
+		{
+			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/sentiment_values.csv")),"UTF-8");
+			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
+			for(final CSVRecord excel : separador)
+			{	
+				double vaderPromedio = Double.parseDouble(excel.get("vader_avg"));
+				String hashtag = excel.get("hashtag");
+				Vader nuevo = new Vader(hashtag, vaderPromedio);
+				vaders.addLast(nuevo);
 			}
 		}
 		catch(Exception e)

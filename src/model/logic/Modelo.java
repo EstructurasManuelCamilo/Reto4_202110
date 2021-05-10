@@ -372,17 +372,95 @@ public class Modelo
 	// Requerimiento 2. Encontrar la lista de pistas que se tienen en el sistema de recomendación
 	public ArregloDinamico<Reproduccion> darListaPorPistasFestejar(double pMinEnergy, double pMaxEnergy, double pMinDanceability, double pMaxDanceability)
 	{
-		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
-		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
-		return null;
+		ArregloDinamico<Double> llavesEnergy = arbolEnergia.keysInRange(pMinEnergy, pMaxEnergy);
+		ArregloDinamico<Double> llavesDance = arbolDance.keysInRange(pMinDanceability, pMaxDanceability);
+
+		ArregloDinamico<Reproduccion> reproduccionesEnergy = new ArregloDinamico<>(30);
+		ArregloDinamico<Reproduccion> reproduccionesDance = new ArregloDinamico<>(30);
+
+		ArregloDinamico<Reproduccion> solucion = new ArregloDinamico<>(30);
+
+		for(int i = 0; i < llavesEnergy.size(); i++)
+		{
+			if(llavesEnergy.getElement(i)!=null)
+			{
+				ArregloDinamico<Reproduccion> listaEn  = arbolEnergia.get(llavesEnergy.getElement(i));
+				listaEn = darRepDiferentes(listaEn);
+				for(int j = 0; j < listaEn.size(); j++)
+					reproduccionesEnergy.addLast(listaEn.getElement(j));
+			}
+		}
+		for(int i = 0; i < llavesDance.size(); i++)
+		{
+			if(llavesDance.getElement(i)!=null)
+			{
+				ArregloDinamico<Reproduccion> listaDa  = arbolDance.get(llavesDance.getElement(i));
+				listaDa = darRepDiferentes(listaDa);
+				for(int j = 0; j < listaDa.size(); j++)
+					reproduccionesDance.addLast(listaDa.getElement(j));
+			}
+		}
+
+		for(int i = 0; i < reproduccionesEnergy.size(); i++)
+		{
+			Reproduccion energyActual = reproduccionesEnergy.getElement(i);
+			for(int j = 0; j < reproduccionesDance.size(); j++)
+			{
+				Reproduccion danceActual = reproduccionesDance.getElement(j);
+				if(energyActual.darId().equals(danceActual.darId()))
+				{
+					solucion.addLast(energyActual);
+				}
+			}
+		}
+		return solucion;
 
 	}
 	// Requerimiento 3. Encontrar la lista de pistas que se tienen en el sistema de recomendación
 	public ArregloDinamico<Reproduccion> darListaPorPistasEstudiar(double pMinInstrumentalness, double pMaxInstrumentalness, double pMinTempo, double pMaxTempo)
 	{
-		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
-		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
-		return null;
+		ArregloDinamico<Double> llavesIns = arbolInstrumentalidad.keysInRange(pMinInstrumentalness, pMaxInstrumentalness);
+		ArregloDinamico<Double> llavesTempo = arbolTempo.keysInRange(pMinTempo, pMaxTempo);
+
+		ArregloDinamico<Reproduccion> reproduccionesIns = new ArregloDinamico<>(30);
+		ArregloDinamico<Reproduccion> reproduccionesTempo = new ArregloDinamico<>(30);
+
+		ArregloDinamico<Reproduccion> solucion = new ArregloDinamico<>(30);
+
+		for(int i = 0; i < llavesIns.size(); i++)
+		{
+			if(llavesIns.getElement(i)!=null)
+			{
+				ArregloDinamico<Reproduccion> listaIns  = arbolInstrumentalidad.get(llavesIns.getElement(i));
+				listaIns = darRepDiferentes(listaIns);
+				for(int j = 0; j < listaIns.size(); j++)
+					reproduccionesIns.addLast(listaIns.getElement(j));
+			}
+		}
+		for(int i = 0; i < llavesTempo.size(); i++)
+		{
+			if(llavesTempo.getElement(i)!=null)
+			{
+				ArregloDinamico<Reproduccion> listaTe  = arbolTempo.get(llavesTempo.getElement(i));
+				listaTe = darRepDiferentes(listaTe);
+				for(int j = 0; j < listaTe.size(); j++)
+					reproduccionesTempo.addLast(listaTe.getElement(j));
+			}
+		}
+
+		for(int i = 0; i < reproduccionesIns.size(); i++)
+		{
+			Reproduccion insActual = reproduccionesIns.getElement(i);
+			for(int j = 0; j < reproduccionesTempo.size(); j++)
+			{
+				Reproduccion tempoActual = reproduccionesTempo.getElement(j);
+				if(insActual.darId().equals(tempoActual.darId()))
+				{
+					solucion.addLast(insActual);
+				}
+			}
+		}
+		return solucion;
 
 	}
 	// Requerimiento 4. Encontrar la lista de pistas que se tienen en el sistema de recomendación

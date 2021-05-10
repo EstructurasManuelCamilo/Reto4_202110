@@ -322,10 +322,11 @@ public class Modelo
 
 
 	// Requirimiento 1. Conocer cuántas reproducciones (eventos de escucha) se tienen en el sistema de recomendación
-	public int darReproduccionesPorCaracteristica(String  pCaracteristica, double pMin, double pMax) throws Exception
+	public ArregloDinamico<Reproduccion> darReproduccionesPorCaracteristica(String  pCaracteristica, double pMin, double pMax) throws Exception
 	{
 		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(30);
 		ArregloDinamico<Reproduccion> lista = new ArregloDinamico<>(30);
+		ArregloDinamico<Reproduccion> resp = new ArregloDinamico<>(30);
 
 		RedBlackTree<Double, Reproduccion> arbol = null;
 		
@@ -365,12 +366,12 @@ public class Modelo
 			if(arreglo.getElement(i)!=null)
 			{
 				lista = arbol.get(arreglo.getElement(i));
-				lista = darRepDiferentes(lista);
-				contador += lista.size();
+				for(int k = 0; k < lista.size(); k++)
+				resp.addFirst(lista.getElement(k));
 			}
 		}
 
-		return contador;
+		return resp;
 	}
 	// Requerimiento 2. Encontrar la lista de pistas que se tienen en el sistema de recomendación
 	public ArregloDinamico<Reproduccion> darListaPorPistasFestejar(double pMinEnergy, double pMaxEnergy, double pMinDanceability, double pMaxDanceability)

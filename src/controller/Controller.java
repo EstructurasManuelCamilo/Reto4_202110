@@ -27,7 +27,7 @@ public class Controller {
 	private ComparadorXLikes comparar;
 
 	private boolean cargados;
-	
+
 	long TInicio, TFin, tiempo;
 	/**
 	 * Crear la vista y el modelo del proyecto
@@ -94,20 +94,29 @@ public class Controller {
 				{
 					num2 = lector.nextInt();
 				}
-				ArregloDinamico<Reproduccion> solucion = modelo.darReproduccionesPorCaracteristica(caracteristica, numero, num2);
-				if ( solucion == null) 
-					view.printMessage("No se pudo encontro respuesta al requerimiento");
-				else
+				ArregloDinamico<Reproduccion> solucion;
+
+				try 
 				{
-					view.printMessage("El Total de los eventos de escucha es: " + solucion.size());
-					view.printMessage("El número de artistas únicos es:" + solucion);
+					solucion = modelo.darReproduccionesPorCaracteristica(caracteristica, numero, num2);
+					if ( solucion == null) 
+						view.printMessage("No se pudo encontro respuesta al requerimiento");
+					else
+					{
+						view.printMessage("El Total de los eventos de escucha es: " + solucion.size());
+						view.printMessage("El número de artistas únicos es:" + solucion);
+					}
 				}
+				catch (Exception e) 
+				{
+				}
+
 				numero = 0;
 				num2 = 0;
 				caracteristica = "";
 				break;
 			case 3:
-				
+
 				view.printMessage("Requerimiento 2.\n--------------------"); 
 				view.printMessage("Ingrese el valor mínimo de Energy que desea consultar"); 
 				while(numero == 0)
@@ -142,14 +151,14 @@ public class Controller {
 						view.printMessage("El danceability de la canción " + i + " selecionada al azar es: " + solucion2.getElement(aleatorio).darDanceability() + " y la energy es: " + solucion2.getElement(aleatorio).darEnergy());
 					}
 				}
-				
+
 				numero = 0;
 				num2 = 0;
 				num3 = 0;
 				num4 = 0; 
 				caracteristica = "";
 				break;
-				
+
 			case 4:
 				view.printMessage("Requerimiento 3.\n--------------------"); 
 				view.printMessage("Ingrese el valor mínimo de Instrumentalness que desea consultar"); 
@@ -191,7 +200,7 @@ public class Controller {
 				num4 = 0; 
 				caracteristica = "";
 				break;
-				
+
 			case 5: 
 				view.printMessage("Requerimiento 4.\n--------------------"); 
 				view.printMessage("Ingrese la lista de géneros musicales que se desea buscar. (ej.: Reggae, Hip-hop, Pop.)."); 
@@ -242,7 +251,7 @@ public class Controller {
 				caracteristica = "";
 				nuevoGeneroMusical = "";
 				break;
-				
+
 			case 6:
 				view.printMessage("Requerimiento 5.\n--------------------"); 
 				view.printMessage("Ingrese el valor mínimo de la hora del día"); 
@@ -275,7 +284,7 @@ public class Controller {
 				caracteristica = "";
 				nuevoGeneroMusical = "";
 				break;
-				
+
 			case 7: 
 				view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 				lector.close();

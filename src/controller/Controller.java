@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.ILista;
 import model.data_structures.ListaEncadenada;
+import model.data_structures.NodoTS;
 import model.logic.Modelo;
 import model.logic.Reproduccion;
 import model.logic.Video;
@@ -27,7 +28,7 @@ public class Controller {
 	private ComparadorXLikes comparar;
 
 	private boolean cargados;
-
+	
 	long TInicio, TFin, tiempo;
 	/**
 	 * Crear la vista y el modelo del proyecto
@@ -47,16 +48,12 @@ public class Controller {
 		String caracteristica = "";
 		String caracteristica2 = "";
 		String nuevoGeneroMusical = "";
-		Double valorMin = 0.0;
-		Double valorMax = 0.0; 
-		Double numero = 0.0;
-		Double num2 = 0.0;
-		Double num3 = 0.0;
-		Double num4 = 0.0;
-
-		String linea = "";
-		int aleatorio = 0;
-		
+		int valorMin = 0;
+		int valorMax = 0; 
+		int numero = 0;
+		int num2 = 0;
+		int num3 = 0;
+		int num4 = 0;
 		while( !fin ){
 			view.printMenu();
 
@@ -89,58 +86,58 @@ public class Controller {
 					caracteristica = lector.nextLine();
 				}
 				view.printMessage("Ingrese el valor mínimo de la característica de contenido que desea consultar"); 
-				while(valorMin == 0)
+				while(numero == 0)
 				{
-					valorMin = Double.parseDouble(lector.nextLine());
+					numero = lector.nextInt();
 				}
 				view.printMessage("Ingrese el valor máximo de la característica de contenido que desea consultar");
-				while(valorMax == 0)
+				while(num2 == 0)
 				{
-					valorMax = Double.parseDouble(lector.nextLine());
+					num2 = lector.nextInt();
 				}
 				ArregloDinamico<Reproduccion> solucion;
 				try 
 				{
-					solucion = modelo.darReproduccionesPorCaracteristica(caracteristica, valorMin, valorMax);
+					solucion = modelo.darReproduccionesPorCaracteristica(caracteristica, numero, num2);
+				
 					if ( solucion == null) 
 						view.printMessage("No se pudo encontro respuesta al requerimiento");
 					else
 					{
 						view.printMessage("El Total de los eventos de escucha es: " + solucion.size());
-						view.printMessage("El número de artistas únicos es:" + modelo.darArtistasDiferentes(solucion).size());
+						view.printMessage("El número de artistas únicos es:" + solucion);
 					}
 				}
-				catch (Exception e1)
+				catch (Exception e) 
 				{
-					view.printMessage(e1.getMessage());
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-
-				valorMin = 0.0;
-				valorMax = 0.0;
+				numero = 0;
+				num2 = 0;
 				caracteristica = "";
 				break;
 			case 3:
-
+				
 				view.printMessage("Requerimiento 2.\n--------------------"); 
 				view.printMessage("Ingrese el valor mínimo de Energy que desea consultar"); 
-				while(linea.equals(""))
+				while(numero == 0)
 				{
-					linea = lector.nextLine();
+					numero = lector.nextInt();
 				}
-				numero = Double.parseDouble(linea);
 				view.printMessage("Ingrese el valor máximo de Energy que desea consultar");
 				while(num2 == 0)
 				{
-					num2 = Double.parseDouble(lector.nextLine());
+					num2 = lector.nextInt();
 				}
 				view.printMessage("Ingrese el valor mínimo de Danceability que desea consultar"); 
 				while(num3 == 0)
 				{
-					num3 = Double.parseDouble(lector.nextLine());
-				}view.printMessage("Ingrese el valor máximo de Danceability que desea consultar"); 
+					num3 = lector.nextInt();
+				}view.printMessage("Ingrese el valor mínimo de Danceability que desea consultar"); 
 				while(num4 == 0)
 				{
-					num4 = Double.parseDouble(lector.nextLine());
+					num4 = lector.nextInt();
 				}
 				ArregloDinamico<Reproduccion> solucion2 = modelo.darListaPorPistasFestejar(numero, num2, num3, num4);
 				if ( solucion2 == null) 
@@ -148,45 +145,41 @@ public class Controller {
 				else
 				{
 					view.printMessage("El total de pistas únicas es: " + solucion2.size());
-
+					int aleatorio = 0;
 					for(int i = 0; i < 6; i++)
 					{
 						aleatorio = ThreadLocalRandom.current().nextInt(0, solucion2.size());
-						view.printMessage("Id de reproduccion unica: " + i + " selecionada al azar es: "+ solucion2.getElement(aleatorio).darId());
-						view.printMessage("El danceability de la reproduccion es: " + solucion2.getElement(aleatorio).darDanceability() + " y la energy es: " + solucion2.getElement(aleatorio).darEnergy());
+						view.printMessage("El número de artistas únicos es:" + solucion2.size());
+						view.printMessage("El danceability de la canción " + i + " selecionada al azar es: " + solucion2.getElement(aleatorio).darDanceability() + " y la energy es: " + solucion2.getElement(aleatorio).darEnergy());
 					}
 				}
-
-				numero = 0.0;
-				num2 = 0.0;
-				num3 = 0.0;
-				num4 = 0.0; 
+				numero = 0;
+				num2 = 0;
+				num3 = 0;
+				num4 = 0; 
 				caracteristica = "";
-				linea = "";
-				aleatorio = 0;
 				break;
-
+				
 			case 4:
 				view.printMessage("Requerimiento 3.\n--------------------"); 
 				view.printMessage("Ingrese el valor mínimo de Instrumentalness que desea consultar"); 
-				while(linea.equals(""))
+				while(numero == 0)
 				{
-					linea = lector.nextLine();
+					numero = lector.nextInt();
 				}
-				numero = Double.parseDouble(linea);
 				view.printMessage("Ingrese el valor máximo de Instrumentalness que desea consultar");
 				while(num2 == 0)
 				{
-					num2 = Double.parseDouble(lector.nextLine());
+					num2 = lector.nextInt();
 				}
 				view.printMessage("Ingrese el valor mínimo de Tempo que desea consultar"); 
 				while(num3 == 0)
 				{
-					num3 = Double.parseDouble(lector.nextLine());
-				}view.printMessage("Ingrese el valor máximo de Tempo que desea consultar"); 
+					num3 = lector.nextInt();
+				}view.printMessage("Ingrese el valor mínimo de Tempo que desea consultar"); 
 				while(num4 == 0)
 				{
-					num4 = Double.parseDouble(lector.nextLine());
+					num4 = lector.nextInt();
 				}
 				ArregloDinamico<Reproduccion> solucion3 = modelo.darListaPorPistasEstudiar(numero, num2, num3, num4);
 				if ( solucion3 == null) 
@@ -194,21 +187,21 @@ public class Controller {
 				else
 				{
 					view.printMessage("El total de pistas únicas es: " + solucion3.size());
-					for(int i = 1; i < 6; i++)
+					int aleatorio2 = 0;
+					for(int i = 0; i < 6; i++)
 					{
-						aleatorio = ThreadLocalRandom.current().nextInt(0, solucion3.size());
-						view.printMessage("Id de reproduccion unica: " + i + " selecionada al azar es: "+ solucion3.getElement(aleatorio).darId());
-						view.printMessage("El valor de instrumentalidad de la reproduccion es: " + solucion3.getElement(aleatorio).darInstrumentalness() + " y el Tempo es: " + solucion3.getElement(aleatorio).darTempo());
+						aleatorio2 = ThreadLocalRandom.current().nextInt(0, solucion3.size());
+						view.printMessage("El número de artistas únicos es:" + solucion3.size());
+						view.printMessage("El danceability de la canción " + i + " selecionada al azar es: " + solucion3.getElement(aleatorio2).darDanceability() + " y la energy es: " + solucion3.getElement(aleatorio2).darEnergy());
 					}
 				}
-				numero = 0.0;
-				num2 = 0.0;
-				num3 = 0.0;
-				num4 = 0.0; 
-				linea = "";
-				aleatorio = 0;
+				numero = 0;
+				num2 = 0;
+				num3 = 0;
+				num4 = 0; 
+				caracteristica = "";
 				break;
-
+				
 			case 5: 
 				view.printMessage("Requerimiento 4.\n--------------------"); 
 				view.printMessage("Ingrese la lista de géneros musicales que se desea buscar. (ej.: Reggae, Hip-hop, Pop.)."); 
@@ -231,12 +224,12 @@ public class Controller {
 					view.printMessage("Ingrese el valor mínimo del Tempo del nuevo género musical"); 
 					while(numero == 0)
 					{
-						numero = Double.parseDouble(lector.nextLine());;
+						numero = lector.nextInt();
 					}
 					view.printMessage("Ingrese el valor máximo del Tempo del nuevo género musical"); 
 					while(num2 ==  0)
 					{
-						num2 = Double.parseDouble(lector.nextLine());
+						num2 = lector.nextInt();
 					}
 				}
 				ArregloDinamico<Reproduccion> solucion4 = modelo.darEstimarReproduccionesPorGenero(caracteristica, nuevoGeneroMusical, numero, num2);
@@ -252,47 +245,47 @@ public class Controller {
 						view.printMessage("El número de artistas únicos es: " );
 					}
 				}
-				numero = 0.0;
-				num2 = 0.0;
-				num3 = 0.0;
-				num4 = 0.0; 
+				numero = 0;
+				num2 = 0;
+				num3 = 0;
+				num4 = 0; 
 				caracteristica = "";
 				nuevoGeneroMusical = "";
 				break;
-
+				
 			case 6:
 				view.printMessage("Requerimiento 5.\n--------------------"); 
 				view.printMessage("Ingrese el valor mínimo de la hora del día (ej. 10:00 am) "); 
 				while(numero == 0)
 				{
-					numero = Double.parseDouble(lector.nextLine());;
+					numero = lector.nextInt();
 				}
 				view.printMessage("Ingrese el valor máximo de la hora del día (ej. 10:00 pm)");
 				while(num2 == 0)
 				{
-					num2 = Double.parseDouble(lector.nextLine());;
+					num2 = lector.nextInt();
 				}
-				ArregloDinamico<Reproduccion> solucion5 = modelo.darEstimarReproduccionesPorGenero(caracteristica, nuevoGeneroMusical, numero, num2);
+				NodoTS<String, ArregloDinamico<Reproduccion>> solucion5 = modelo.darEstimarReproduccionesPorTiempo(numero, num2);
 				if ( solucion5 == null) 
 					view.printMessage("No se pudo encontrar respuesta al requerimiento");
 				else
 				{
-					view.printMessage("El Total de los eventos de escucha de los géneros analizados es: " + solucion5.size());
-					for(int i = 0; i < solucion5.size(); i++)
+					view.printMessage("El género más referenciado en el rango de horas es: " + solucion5.getKey());
+					view.printMessage("El Total de los eventos de escucha de los géneros analizados es: " + solucion5.getValue().size());
+					for(int i = 0; i <solucion5.getValue().size(); i++)
 					{
-						// Falta cambiar tiene que ser lista de listas
-						view.printMessage("El Total de los eventos de escucha en el género "  + " género es: ");
-						view.printMessage("El número de artistas únicos es: " );
+						Reproduccion act = solucion5.getValue().getElement(i);
+						view.printMessage("La reproducción " + i + " tiene: " + (act.darHashtag().size()-1) + "Hashtags" + " Vader promedio: " + modelo.darPromedioVaders(act.darVaderAveg()));
 					}
 				}
-				numero = 0.0;
-				num2 = 0.0;
-				num3 = 0.0;
-				num4 = 0.0; 
+				numero = 0;
+				num2 = 0;
+				num3 = 0;
+				num4 = 0; 
 				caracteristica = "";
 				nuevoGeneroMusical = "";
 				break;
-
+				
 			case 7: 
 				view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 				lector.close();

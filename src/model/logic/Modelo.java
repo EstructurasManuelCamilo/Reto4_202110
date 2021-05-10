@@ -270,6 +270,12 @@ public class Modelo
 				arbolHoras.put(horas, nuevo);
 
 				cantidadReproducciones++;
+				leerHashtag();
+				leerVader();
+				
+				nuevo.asignarHashtag(hashtags);
+				nuevo.asignarVader(vaders);
+				
 			}
 		}
 		catch(Exception e)
@@ -308,7 +314,15 @@ public class Modelo
 			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 			for(final CSVRecord excel : separador)
 			{	
-				double vaderPromedio = Double.parseDouble(excel.get("vader_avg"));
+				double vaderPromedio = 0;
+				if( !excel.get("vader_avg").equals(""))
+				{
+					 vaderPromedio = Double.parseDouble(excel.get("vader_avg"));
+				}
+				else
+				{
+					 vaderPromedio = 2;
+				}
 				String hashtag = excel.get("hashtag");
 				Vader nuevo = new Vader(hashtag, vaderPromedio);
 				vaders.addLast(nuevo);
@@ -543,7 +557,7 @@ public class Modelo
 	}
 	// Requerimiento 5. indicar el género de música más escuchado en un rango teniendo en cuenta
 	// todos los días disponibles e informar el promedio VADER
-	public ArregloDinamico<Reproduccion> darEstimarReproduccionesPorGenero(int pMinHora, int pMaxHora )
+	public NodoTS<String, ArregloDinamico<Reproduccion>> darEstimarReproduccionesPorTiempo(int pMinHora, int pMaxHora )
 	{
 		ArregloDinamico<Reproduccion> resp = new ArregloDinamico<>(7);
 		ArregloDinamico<Integer> arreglo = arbolHoras.keysInRange(pMinHora, pMaxHora);
@@ -587,10 +601,31 @@ public class Modelo
 				}
 			}
 		}
-		
-		
-		return resp;
+	
+		String genMayor = tabla.darMayor();
+		NodoTS<String, ArregloDinamico<Reproduccion>> repuesta = new NodoTS<String, ArregloDinamico<Reproduccion>>(genMayor, darPistasGenero(genMayor, resp));
+		return repuesta;
 
+	}
+
+	private ArregloDinamico<Reproduccion> darPistasGenero(String genMayor, ArregloDinamico<Reproduccion> resp) 
+	{
+		
+		ArregloDinamico<Reproduccion> solucion = new ArregloDinamico(30);
+		for(int i = 0; i < resp.size(); i++)
+		{
+			Reproduccion actual = resp.getElement(i);
+			Boolean yaEsta = false;
+			for(int j = 0; j < actual.darGeneros().size() && !yaEsta; j ++)
+			{
+				if(actual.darGeneros().getElement(j).equals(genMayor))
+				{
+					solucion.addLast(actual);
+					yaEsta = true;
+				}
+			}
+		}
+		return solucion;
 	}
 
 	public ArregloDinamico<Reproduccion> darRepDiferentes(ArregloDinamico<Reproduccion> lista) 
@@ -674,5 +709,20 @@ public class Modelo
 		{
 			nuevo.insertarGenero("Metal");
 		}
+	}
+	
+	public double darPromedioVaders( ArregloDinamico<Vader> pVader )
+	{
+		double suma = 0;
+		int cont = 0;
+		for(int i = 0; i < pVader.size(); i ++)
+		{
+			if(pVader.getElement(i).vaderPromedio() != 2)
+			{
+				suma += pVader.getElement(i).vaderPromedio();
+				cont += 1;
+			}
+		}
+		return suma/cont;
 	}
 }

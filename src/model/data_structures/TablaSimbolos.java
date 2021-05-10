@@ -120,6 +120,23 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 		return 0;
 	}
 
+	public String darMayor() 
+	{
+		int mayor = 0;
+		String mayorStr = "";
+		for(int i= 0; i < listaNodos.size(); i ++) 
+		{
+			int valor = (Integer) listaNodos.getElement(i).getValue();
+			String valor2 = (String) listaNodos.getElement(i).getKey();
+			if(valor > mayor)
+			{
+				mayor = valor;
+				mayorStr = valor2;
+			}
+		}
+		return mayorStr;
+	}
+
 }
 
 

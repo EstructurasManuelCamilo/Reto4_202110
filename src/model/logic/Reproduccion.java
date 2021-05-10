@@ -21,6 +21,8 @@ public class Reproduccion implements Comparable<Reproduccion>
 	String user_id;
 	String created_at;
 	ArregloDinamico<String> generos;
+	ArregloDinamico<Vader> vadersAverage;
+	ArregloDinamico<Hashtag> hashTags;
 	
 	public Reproduccion(double pDanceability, double pinstrumentalness, double pliveness, double pspeechiness, double pvalence, double ploudness, double ptempo, double pacousticness, double penergy, double pmode, double pkey, String pid, String partist_id, String ptrack_id, String puser_id, String pcreated_at) 
 	{
@@ -40,11 +42,25 @@ public class Reproduccion implements Comparable<Reproduccion>
 		track_id = ptrack_id;
 		user_id = puser_id;
 		created_at = pcreated_at;
+		hashTags = new ArregloDinamico<Hashtag>(7);
+		vadersAverage = new ArregloDinamico<>(7);
 		generos = new ArregloDinamico<>(7);
 	}
+//	public void insertarVaderAverage(double pNum)
+//	{
+//		vadersAverage.addLast(pNum);
+//	}
 	public void insertarGenero(String pGen)
 	{
 		generos.addLast(pGen);
+	}
+	public ArregloDinamico<Hashtag> darHashtag()
+	{
+		return hashTags;
+	}
+	public ArregloDinamico<Vader> darVaderAveg()
+	{
+		return vadersAverage;
 	}
 	public ArregloDinamico<String> darGeneros()
 	{
@@ -115,6 +131,30 @@ public class Reproduccion implements Comparable<Reproduccion>
 	{
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public void asignarHashtag(ArregloDinamico<Hashtag> pHashtags) 
+	{
+		for(int i = 0; pHashtags.size() > i; i ++)
+		{
+			if (pHashtags.getElement(i).darUserId().equals(user_id))
+			{
+				hashTags.addLast(pHashtags.getElement(i));
+			}
+		}
+	}
+	public void asignarVader(ArregloDinamico<Vader> pVaders) 
+	{
+		for(int i = 0; pVaders.size() > i; i ++)
+		{
+			for(int j = 0; hashTags.size() > j; j ++)
+			{
+				if (pVaders.getElement(i).darHashtag().equals(hashTags.getElement(j)))
+				{
+					vadersAverage.addLast(pVaders.getElement(i));
+				}
+			}	
+		}
 	}
 	
 }

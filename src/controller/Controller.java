@@ -63,6 +63,14 @@ public class Controller {
 			case 1:
 				if(!cargados)
 				{
+					view.printMessage("Inicio de hashtags");
+					modelo.leerHashtag();
+					view.printMessage("Fin de hashtags");
+					
+					view.printMessage("Inicio de Vader");
+					modelo.leerVader();
+					view.printMessage("Fin de Vader");
+					
 					view.printMessage("Inicio de lectura de los archivos.\n----------------"); 
 					TInicio = System.currentTimeMillis();
 					modelo.leerDatosRBT();
@@ -275,7 +283,7 @@ public class Controller {
 					for(int i = 0; i <solucion5.getValue().size(); i++)
 					{
 						Reproduccion act = solucion5.getValue().getElement(i);
-						view.printMessage("La reproducción " + i + " tiene: " + (act.darHashtag().size()-1) + "Hashtags" + " Vader promedio: " + modelo.darPromedioVaders(act.darVaderAveg()));
+						view.printMessage("La reproducción " + i + " tiene: " + (act.darHashtag().size()-1) + "Hashtags" + " Vader promedio: " + modelo.darPromedioVaders(act.darHashtag()));
 					}
 				}
 				numero = 0;

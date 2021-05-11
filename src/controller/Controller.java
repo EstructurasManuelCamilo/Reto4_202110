@@ -65,14 +65,8 @@ public class Controller {
 			case 1:
 				if(!cargados)
 				{
-					view.printMessage("Inicio de hashtags");
 					modelo.leerHashtag();
-					view.printMessage("Fin de hashtags");
-
-					view.printMessage("Inicio de Vader");
 					modelo.leerVader();
-					view.printMessage("Fin de Vader");
-
 					view.printMessage("Inicio de lectura de los archivos.\n----------------"); 
 					TInicio = System.currentTimeMillis();
 					modelo.leerDatosRBT();
@@ -114,7 +108,7 @@ public class Controller {
 					else
 					{
 						view.printMessage("El Total de los eventos de escucha es: " + solucion.size());
-						view.printMessage("El número de artistas únicos es:" + modelo.darArtistasDiferentes(solucion).size());
+						view.printMessage("El número de artistas únicos es:" + (modelo.darArtistasDiferentes(solucion).size()-1));
 					}
 				}
 				catch (Exception e1)
@@ -124,6 +118,7 @@ public class Controller {
 
 				valorMin = 0.0;
 				valorMax = 0.0;
+				linea = "";
 				caracteristica = "";
 				break;
 			case 3:
@@ -154,9 +149,9 @@ public class Controller {
 					view.printMessage("No se pudo encontro respuesta al requerimiento");
 				else
 				{
-					view.printMessage("El total de pistas únicas es: " + solucion2.size());
+					view.printMessage("El total de pistas únicas es: " + (modelo.darRepDiferentes(solucion2).size()-1));
 
-					for(int i = 0; i < 6; i++)
+					for(int i = 1; i < 6; i++)
 					{
 						aleatorio = ThreadLocalRandom.current().nextInt(0, solucion2.size());
 						view.printMessage("Id de reproduccion unica: " + i + " selecionada al azar es: "+ solucion2.getElement(aleatorio).darId());
@@ -200,7 +195,7 @@ public class Controller {
 					view.printMessage("No se pudo encontro respuesta al requerimiento");
 				else
 				{
-					view.printMessage("El total de pistas únicas es: " + solucion3.size());
+					view.printMessage("El total de pistas únicas es: " + (modelo.darRepDiferentes(solucion3).size()-1));
 					for(int i = 1; i < 6; i++)
 					{
 						aleatorio = ThreadLocalRandom.current().nextInt(0, solucion3.size());
@@ -245,25 +240,35 @@ public class Controller {
 					{
 						num2 = lector.nextInt();
 					}
+					modelo.asigarNuevoGenero(numero, num2, nuevoGeneroMusical);
+					caracteristica = caracteristica + ", " + nuevoGeneroMusical;
 				}
-				ArregloDinamico<Reproduccion> solucion4 = modelo.darEstimarReproduccionesPorGenero(caracteristica, nuevoGeneroMusical, numero, num2);
+				String[] cortadito = caracteristica.split(", ");
+				ArregloDinamico<NodoTS<Integer, ArregloDinamico<Reproduccion>>> solucion4 = modelo.darEstimarReproduccionesPorGenero(cortadito);
 				if ( solucion4 == null) 
 					view.printMessage("No se pudo encontrar respuesta al requerimiento");
 				else
 				{
-					view.printMessage("El Total de los eventos de escucha de los géneros analizados es: " + solucion4.size());
+					double suma = 0;
 					for(int i = 0; i < solucion4.size(); i++)
 					{
-						// Falta cambiar tiene que ser lista de listas
-						view.printMessage("El Total de los eventos de escucha en el género "  + " género es: ");
-						view.printMessage("El número de artistas únicos es: " );
+						view.printMessage("El Total de los eventos de escucha en el género: " + cortadito[i]  + " es: " + solucion4.getElement(i).getKey());
+						suma += solucion4.getElement(i).getKey();
+						view.printMessage("El número de artistas únicos es: " + (solucion4.getElement(i).getValue().size()-1));
+						for(int j = 1; j < 11; j ++)
+						{
+							view.printMessage("El ID del artista: " + j + " es" + solucion4.getElement(i).getValue().getElement(j).darArtistId());
+						}	
 					}
+						view.printMessage("El Total de los eventos de escucha de los géneros analizados es: " + suma);
+					
 				}
 				numero = 0;
 				num2 = 0;
 				num3 = 0;
 				num4 = 0; 
 				caracteristica = "";
+				caracteristica2 = "";
 				nuevoGeneroMusical = "";
 				break;
 
@@ -299,19 +304,22 @@ public class Controller {
 					view.printMessage("No se pudo encontrar respuesta al requerimiento");
 				else
 				{
-					view.printMessage("El género más referenciado en el rango de horas es: " + solucion5.getKey());
-					view.printMessage("El Total de los eventos de escucha de los géneros analizados es: " + solucion5.getValue().size());
-					for(int i = 0; i <solucion5.getValue().size(); i++)
+					view.printMessage("El género más referenciado en el rango de horas es: " + solucion5.getKey() + "--"+ solucion5.getValue().size());
+					ArregloDinamico<Reproduccion> unicos = new ArregloDinamico<Reproduccion>(7);
+					unicos = modelo.darRepDiferentes(solucion5.getValue());
+					for(int i = 1; i < 10; i++)
 					{
-						Reproduccion act = solucion5.getValue().getElement(i);
-						view.printMessage("La reproducción " + i + " tiene: " + (act.darHashtag().size()-1) + "Hashtags" + " Vader promedio: " + modelo.darPromedioVaders(act.darHashtag()));
+						Reproduccion act = unicos.getElement(i);
+						view.printMessage("La reproducción " + i + " tiene: " + (act.darHashtag().size()) + " Hashtags" + " Vader promedio: " + modelo.darPromedioVaders(act.darHashtag()));
 					}
 				}
 				numero = 0;
 				num2 = 0;
 				num3 = 0;
 				num4 = 0; 
+				linea = "";
 				caracteristica = "";
+				caracteristica2 = "";
 				nuevoGeneroMusical = "";
 				break;
 

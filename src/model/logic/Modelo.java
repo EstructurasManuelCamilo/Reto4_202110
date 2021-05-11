@@ -82,6 +82,10 @@ public class Modelo
 	private TablaSimbolos<String, String> hashtags; 
 
 	private TablaSimbolos<String, Double> vaders; 
+	
+	private ArregloDinamico<NodoTS<String, ArregloDinamico<Reproduccion> >> tabla;
+	
+	private ArregloDinamico<Genero> generos;
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
@@ -113,9 +117,10 @@ public class Modelo
 		arbolViveza = new RedBlackTree<>();
 
 		arbolHoras = new RedBlackTree<>();
-
+		tabla = new ArregloDinamico<>(7);
 		hashtags = new TablaSimbolos<>();
 		vaders = new TablaSimbolos<>();
+		generos = new ArregloDinamico<>(7);
 	}
 
 	/**
@@ -257,7 +262,6 @@ public class Modelo
 				String id = excel.get("id");
 
 				Reproduccion nuevo = new Reproduccion(danceability, instrumentalness, liveness, speechiness, valence, loudness, tempo, acousticness, energy, mode, key, id, artist_id, track_id, user_id, created_at);
-				insertarGeneros(nuevo, tempo);
 				arbolDance.put(danceability, nuevo);
 				arbolValencia.put(valence, nuevo);
 				arbolSonoridad.put(loudness, nuevo);
@@ -267,33 +271,64 @@ public class Modelo
 				arbolAcustica.put(acousticness, nuevo);
 				arbolhabla.put(speechiness, nuevo);
 
-				Date created_at2 = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(excel.get("created_at"));
-<<<<<<< HEAD
-				int horas = created_at2.getHours();
-				arbolHoras.put(horas, nuevo);
+				
+				for(int i = 0; i < nuevo.darGeneros().size(); i++)
+				{
+					boolean esta = false;
+					for (int j = 0; j < generos.size() && !esta; j++) 
+					{
+						if(generos.getElement(j).darNombre().equals(nuevo.darGeneros().getElement(i)))
+						{
+							generos.getElement(j).aniadirReproduccion(nuevo);
+							esta = true;
+						}
+					}
+				}
 
-				cantidadReproducciones++;
-				
-				nuevo.asignarHashtag(hashtags);
-				nuevo.asignarVader(vaders);
-				
-=======
+				Date created_at2 = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(excel.get("created_at"));
+
 				String horas = String.valueOf(created_at2.getHours());
 				String minutos = String.valueOf(created_at2.getMinutes());
 				String segundo = String.valueOf(created_at2.getSeconds());
 				String union = horas + minutos + segundo;
 				int resp = Integer.parseInt(union);
 				arbolHoras.put(resp, nuevo);
-
+				ArregloDinamico<Hashtag> arrHash = new ArregloDinamico<>(7);
+				arrHash = asignarHashtags(nuevo);
+				nuevo.asignarHashtag(arrHash);
 				cantidadReproducciones++;				
 	
->>>>>>> d031affec992b19d6dfc79e9a74d868dbace31ae
 			}
+			asigarNuevoGenero(60, 90, "Reggae");
+			asigarNuevoGenero(70, 100, "Down-tempo");
+			asigarNuevoGenero(90, 120, "Chill-out");
+			asigarNuevoGenero(85, 115, "Hip-hop");
+			asigarNuevoGenero(120, 125, "Jazz and Funk");
+			asigarNuevoGenero(100, 130, "Pop");
+			asigarNuevoGenero(60, 80, "R&B");
+			asigarNuevoGenero(110, 140, "Rock");
+			asigarNuevoGenero(100, 160, "Metal");
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+	}
+
+	private ArregloDinamico<Hashtag> asignarHashtags(Reproduccion nuevo) 
+	{
+		ArregloDinamico<Hashtag> arregloHash = new ArregloDinamico<Hashtag>(7);
+		for (int i = 0; i < hashtags.size(); i++) 
+		{
+			String nombre = hashtags.get(i).getValue();
+			
+			if(hashtags.get(i).getKey().equals(nuevo.darUserId()))
+			{
+				Hashtag nuevhHashtag = new Hashtag(nuevo.darUserId(), null, nombre, null);
+				arregloHash.addLast(nuevhHashtag);
+			}
+		}
+		return arregloHash;
 	}
 
 	public void leerHashtag()
@@ -566,31 +601,58 @@ public class Modelo
 	}
 	// Requerimiento 4. Encontrar la lista de pistas que se tienen en el sistema de recomendación
 	// Toca hacer un arreglo dinámico de arreglos dinámicos
-	public ArregloDinamico<Reproduccion> darEstimarReproduccionesPorGenero(String pListaGenero, String pNombreGenero, double pMinTempo, double pMaxTempo )
+	public ArregloDinamico<NodoTS<Integer, ArregloDinamico<Reproduccion>>> darEstimarReproduccionesPorGenero(String[] cortadito)
 	{
-		ArregloDinamico<Double> arreglo = new ArregloDinamico<>(7);
-		ArregloDinamico<Double> resp = new ArregloDinamico<>(7);
-		return null;
-
+		ArregloDinamico<NodoTS<Integer, ArregloDinamico<Reproduccion>>> resp = new ArregloDinamico<>(7);
+		for(int i = 0; i < cortadito.length; i++)
+		{
+			for (int j = 0; j < generos.size(); j++) 
+			{
+				if(generos.getElement(j).darNombre().equals(cortadito[i]))
+				{
+					NodoTS<Integer, ArregloDinamico<Reproduccion>> nuevoNodo = new NodoTS<Integer, ArregloDinamico<Reproduccion>>(generos.getElement(j).darReproducciones().size()-1, darArtistasDiferentesReproduccion(generos.getElement(j).darReproducciones()));
+					resp.addLast(nuevoNodo);
+					break;
+				}
+			}
+		}
+		return resp;
 	}
+	
+	public void asigarNuevoGenero (double pMin, double pMax, String pNombre) 
+	{
+		
+		Genero gen = new Genero(pMin, pMax, pNombre);
+	
+		generos.addLast(gen);
+		ArregloDinamico<Reproduccion> resp = new ArregloDinamico<>(7);
+		ArregloDinamico<Double> llavesTempo = arbolTempo.keysInRange(pMin, pMax);
+		
+		for(int i = 0; i < llavesTempo.size(); i++)
+		{
+			if(llavesTempo.getElement(i)!=null)
+			{
+				ArregloDinamico<Reproduccion> lista  = arbolTempo.get(llavesTempo.getElement(i));
+				for(int j = 0; j < lista.size(); j++)
+					resp.addLast(lista.getElement(j));
+			}
+		}
+	
+		for (int i = 0; i < resp.size(); i++) 
+		{
+			resp.getElement(i).insertarGenero(gen.darNombre());
+			generos.getElement(gen).aniadirReproduccion(resp.getElement(i));
+		}	
+		
+	}
+	
 	// Requerimiento 5. indicar el género de música más escuchado en un rango teniendo en cuenta
 	// todos los días disponibles e informar el promedio VADER
 	public NodoTS<String, ArregloDinamico<Reproduccion>> darEstimarReproduccionesPorTiempo(int pMinHora, int pMaxHora )
 	{
 		ArregloDinamico<Reproduccion> resp = new ArregloDinamico<>(7);
 		ArregloDinamico<Integer> arreglo = arbolHoras.keysInRange(pMinHora, pMaxHora);
-
-		TablaSimbolos<String, Integer> tabla = new TablaSimbolos<>();
-		tabla.put("Reggae", 0);
-		tabla.put("Down-tempo", 0);
-		tabla.put("Chill-out", 0);
-		tabla.put("Hip-hop", 0);
-		tabla.put("Jazz and Funk", 0);
-		tabla.put("Pop", 0);
-		tabla.put("R&B", 0);
-		tabla.put("Rock", 0);
-		tabla.put("Metal", 0);
-
+		
 		for(int i = 0; i < arreglo.size(); i++)
 		{
 			if(arreglo.getElement(i)!=null)
@@ -600,32 +662,41 @@ public class Modelo
 					resp.addLast(lista.getElement(j));
 			}
 		}
-
-		for(int i = 0; i < resp.size(); i++)
+		
+		int[] contGeneros = new int[generos.size()];
+		ArregloDinamico<NodoTS<Integer, ArregloDinamico<Reproduccion>>> arregloArre = new ArregloDinamico<NodoTS<Integer,ArregloDinamico<Reproduccion>>>(30);
+		for(int i = 0; i < generos.size(); i++)
 		{
-			Reproduccion actual = resp.getElement(i);
-			ArregloDinamico<String> listaGenAct = actual.darGeneros();
-
-			for(int j = 0; j < listaGenAct.size(); j++)
+			int cont = 0;
+			ArregloDinamico<Reproduccion> arregloRep = new ArregloDinamico<>(7);
+			for (int j = 0; j < resp.size(); j++) 
 			{
-				String gen = listaGenAct.getElement(j);
-				for(int k = 0; k < tabla.size(); k++)
+				if(resp.getElement(j).darGeneros().isPresent(generos.getElement(i).darNombre())!=-1)
 				{
-					if(gen.equals(tabla.get(k).getKey()))
-					{
-						int anterior = tabla.get(k).getValue();
-						tabla.cambiarVal(k, anterior++);;
-					}
+					arregloRep.addLast(resp.getElement(j));
+					cont ++;
 				}
 			}
+			NodoTS<Integer, ArregloDinamico<Reproduccion>> nuevoNodo = new NodoTS<Integer, ArregloDinamico<Reproduccion>>(cont, arregloRep);
+			arregloArre.addLast(nuevoNodo);
+			contGeneros[i] = cont;
 		}
-	
-		String genMayor = tabla.darMayor();
-		NodoTS<String, ArregloDinamico<Reproduccion>> repuesta = new NodoTS<String, ArregloDinamico<Reproduccion>>(genMayor, darPistasGenero(genMayor, resp));
-		return repuesta;
+		int mayor = 0;
+		int posicion = 0;
+		for (int i = 0; i < contGeneros.length; i++) 
+		{
+			if(contGeneros[i] > mayor)
+			{
+				mayor = contGeneros[i];
+				posicion = i;
+			}
+		}
+		String generoMasRef = generos.getElement(posicion).darNombre();
+		
+		NodoTS<String, ArregloDinamico<Reproduccion>> nodoResultado = new NodoTS<String, ArregloDinamico<Reproduccion>> (generoMasRef, arregloArre.getElement(posicion).getValue());
+		return nodoResultado;
 
 	}
-
 	private ArregloDinamico<Reproduccion> darPistasGenero(String genMayor, ArregloDinamico<Reproduccion> resp) 
 	{
 		
@@ -655,7 +726,7 @@ public class Modelo
 			Boolean yaEsta = false;
 			for(int j = 0; j < resp.size() && !yaEsta; j++)
 			{
-				if(actual.darId().equals(resp.getElement(j)))
+				if(actual.darId().equals(resp.getElement(j).darId()))
 				{
 					yaEsta = true;
 				}
@@ -689,6 +760,27 @@ public class Modelo
 		return resp;
 	}
 
+	public ArregloDinamico<Reproduccion> darArtistasDiferentesReproduccion(ArregloDinamico<Reproduccion> lista)
+	{
+		ArregloDinamico<Reproduccion> resp = new ArregloDinamico(30);
+		for(int i = 0; i < lista.size(); i++)
+		{
+			Reproduccion actual = lista.getElement(i);
+			Boolean yaEsta = false;
+			for(int j = 0; j < resp.size() && !yaEsta; j++)
+			{
+				if(actual.darArtistId().equals(resp.getElement(j).darArtistId()))
+				{
+					yaEsta = true;
+				}
+			}
+			if(!yaEsta)
+			{
+				resp.addLast(actual);
+			}
+		}
+		return resp;
+	}
 	public void insertarGeneros(Reproduccion nuevo, double tempo)
 	{
 		if(tempo>60 && tempo<90) 
@@ -728,6 +820,8 @@ public class Modelo
 			nuevo.insertarGenero("Metal");
 		}
 	}
+	
+	
 	
 	public double darPromedioVaders( ArregloDinamico<Hashtag> pHashtag )
 	{

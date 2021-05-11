@@ -50,10 +50,45 @@ public class Reproduccion implements Comparable<Reproduccion>
 //	{
 //		vadersAverage.addLast(pNum);
 //	}
-	public void insertarGenero(String pGen)
-	{
-		generos.addLast(pGen);
-	}
+//	public void insertarGeneros( double tempo)
+//	{
+//		if(tempo>60 && tempo<90) 
+//		{
+//			generos.addLast("Reggae");
+//		}
+//		if(tempo>70 && tempo<100) 
+//		{
+//			nuevo.insertarGenero("Down-tempo");
+//		}
+//		if(tempo>90 && tempo<120) 
+//		{
+//			nuevo.insertarGenero("Chill-out");
+//		}
+//		if(tempo>85 && tempo<115) 
+//		{
+//			nuevo.insertarGenero("Hip-hop");
+//		}
+//		if(tempo>120 && tempo<125) 
+//		{
+//			nuevo.insertarGenero("Jazz and Funk");
+//		}
+//		if(tempo>100 && tempo<130) 
+//		{
+//			nuevo.insertarGenero("Pop");
+//		}
+//		if(tempo>60 && tempo<80) 
+//		{
+//			nuevo.insertarGenero("R&B");
+//		}
+//		if(tempo>110 && tempo<140) 
+//		{
+//			nuevo.insertarGenero("Rock");
+//		}
+//		if(tempo>100 && tempo<160) 
+//		{
+//			nuevo.insertarGenero("Metal");
+//		}
+//	}
 	public ArregloDinamico<Hashtag> darHashtag()
 	{
 		return hashTags;
@@ -155,5 +190,9 @@ public class Reproduccion implements Comparable<Reproduccion>
 				}
 			}	
 		}
+	}
+	public void insertarGenero(String darNombre) 
+	{
+		generos.addLast(darNombre);
 	}
 }

@@ -310,6 +310,7 @@ public class Controller {
 					for(int i = 1; i < 10; i++)
 					{
 						Reproduccion act = unicos.getElement(i);
+						modelo.asignarHashtags(act);
 						view.printMessage("La reproducción " + i + " tiene: " + (act.darHashtag().size()) + " Hashtags" + " Vader promedio: " + modelo.darPromedioVaders(act.darHashtag()));
 					}
 				}

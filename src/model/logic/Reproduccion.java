@@ -168,16 +168,6 @@ public class Reproduccion implements Comparable<Reproduccion>
 		return 0;
 	}
 
-	public void asignarHashtag(ArregloDinamico<Hashtag> pHashtags) 
-	{
-		for(int i = 0; pHashtags.size() > i; i ++)
-		{
-			if (pHashtags.getElement(i).darUserId().equals(user_id))
-			{
-				hashTags.addLast(pHashtags.getElement(i));
-			}
-		}
-	}
 	public void asignarVader(ArregloDinamico<Vader> pVaders) 
 	{
 		for(int i = 0; pVaders.size() > i; i ++)
@@ -194,5 +184,10 @@ public class Reproduccion implements Comparable<Reproduccion>
 	public void insertarGenero(String darNombre) 
 	{
 		generos.addLast(darNombre);
+	}
+	public void aniadirHashtag(Hashtag element)
+	{
+		hashTags.addLast(element);
+		
 	}
 }

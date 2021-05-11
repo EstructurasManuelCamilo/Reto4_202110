@@ -79,8 +79,10 @@ public class Modelo
 
 	private RedBlackTree<Integer, Reproduccion> arbolHoras;
 
-	private TablaSimbolos<String, String> hashtags; 
+//	private TablaSimbolos<String, String> hashtags; 
 
+	private ArregloDinamico<Hashtag> hashtags; 
+	
 	private TablaSimbolos<String, Double> vaders; 
 	
 	private ArregloDinamico<NodoTS<String, ArregloDinamico<Reproduccion> >> tabla;
@@ -118,7 +120,7 @@ public class Modelo
 
 		arbolHoras = new RedBlackTree<>();
 		tabla = new ArregloDinamico<>(7);
-		hashtags = new TablaSimbolos<>();
+		hashtags = new ArregloDinamico<>(7);
 		vaders = new TablaSimbolos<>();
 		generos = new ArregloDinamico<>(7);
 	}
@@ -220,7 +222,7 @@ public class Modelo
 		return tiempoEjecucionPromedio2;
 	}
 
-	public TablaSimbolos<String, String> darHashtags()
+	public ArregloDinamico<Hashtag> darHashtags()
 	{
 		return hashtags;
 	}
@@ -293,11 +295,7 @@ public class Modelo
 				String union = horas + minutos + segundo;
 				int resp = Integer.parseInt(union);
 				arbolHoras.put(resp, nuevo);
-				ArregloDinamico<Hashtag> arrHash = new ArregloDinamico<>(7);
-				arrHash = asignarHashtags(nuevo);
-				nuevo.asignarHashtag(arrHash);
 				cantidadReproducciones++;				
-	
 			}
 			asigarNuevoGenero(60, 90, "Reggae");
 			asigarNuevoGenero(70, 100, "Down-tempo");
@@ -315,20 +313,15 @@ public class Modelo
 		}
 	}
 
-	private ArregloDinamico<Hashtag> asignarHashtags(Reproduccion nuevo) 
+	public void asignarHashtags(Reproduccion nuevo) 
 	{
-		ArregloDinamico<Hashtag> arregloHash = new ArregloDinamico<Hashtag>(7);
 		for (int i = 0; i < hashtags.size(); i++) 
-		{
-			String nombre = hashtags.get(i).getValue();
-			
-			if(hashtags.get(i).getKey().equals(nuevo.darUserId()))
+		{			
+			if(hashtags.getElement(i).darUserId().equals(nuevo.darUserId()))
 			{
-				Hashtag nuevhHashtag = new Hashtag(nuevo.darUserId(), null, nombre, null);
-				arregloHash.addLast(nuevhHashtag);
+				nuevo.aniadirHashtag(hashtags.getElement(i));
 			}
 		}
-		return arregloHash;
 	}
 
 	public void leerHashtag()
@@ -346,7 +339,7 @@ public class Modelo
 				{
 					Date created_at = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(excel.get("created_at"));
 					Hashtag nuevo = new Hashtag(user_id, track_id, hashtag, created_at);
-					hashtags.put(user_id, hashtag);
+					hashtags.addLast(nuevo);
 				}
 				catch (Exception e) 
 				{
@@ -378,6 +371,7 @@ public class Modelo
 					 vaderPromedio = 2;
 				}
 				String hashtag = excel.get("hashtag");
+				hashtag = hashtag.toLowerCase();
 				vaders.put(hashtag, vaderPromedio);
 			}
 		}
@@ -829,11 +823,23 @@ public class Modelo
 		int cont = 0;
 		for(int i = 0; i < pHashtag.size(); i ++)
 		{
-			double valor = vaders.get(pHashtag.getElement(i).darHashtag());	
-			if(valor!= 2)
+			String temp = pHashtag.getElement(i).darHashtag();
+			temp = temp.toLowerCase();
+			if(temp != null)
 			{
-				suma += valor;
-				cont += 1;
+				try
+				{
+					double valor = vaders.get(temp);		
+					if(valor!= 2)
+					{
+						suma += valor;
+						cont += 1;
+					}
+				}
+				catch (Exception e) 
+				{
+					// TODO: handle exception
+				}
 			}
 		}
 		return suma/cont;

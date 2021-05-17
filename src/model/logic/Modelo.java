@@ -55,7 +55,7 @@ public class Modelo
 
 	private ArregloDinamico<String> listaPaises;
 
-	
+	private NoDirectedGraph<LandingPoint, >
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
@@ -73,7 +73,6 @@ public class Modelo
 		datosLinearProbing = new TablaHashLinearProbing<>(5013);//14, 5013
 		datosSeparateChaining = new TablaHashSeparateChaining<>(75189);//201, 75189
 		listaPaises = new ArregloDinamico<>(7);
-
 	}
 
 	/**
@@ -182,37 +181,9 @@ public class Modelo
 			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 			for(final CSVRecord excel: separador)
 			{	
-				double instrumentalness = Double.parseDouble(excel.get("instrumentalness"));
-				double danceability = Double.parseDouble(excel.get("danceability"));
-				double liveness = Double.parseDouble(excel.get("liveness"));
-				double speechiness = Double.parseDouble(excel.get("speechiness"));
-				double valence = Double.parseDouble(excel.get("valence"));
-				double loudness = Double.parseDouble(excel.get("loudness"));
-				double tempo = Double.parseDouble(excel.get("tempo"));
-				double acousticness = Double.parseDouble(excel.get("acousticness"));
-				double energy = Double.parseDouble(excel.get("energy"));
-				double mode = Double.parseDouble(excel.get("mode"));
 				double key = Double.parseDouble(excel.get("key"));
 				String artist_id = excel.get("artist_id");
-				String tweet_lang = excel.get("tweet_lang");
-				String track_id = excel.get("track_id");
-				String created_at = excel.get("created_at");
-				String lang = excel.get("lang");
-				String time_zone = excel.get("time_zone");
-				String user_id = excel.get("user_id");
-				String id = excel.get("id");
-
-				Reproduccion nuevo = new Reproduccion(danceability, instrumentalness, liveness, speechiness, valence, loudness, tempo, acousticness, energy, mode, key, id, artist_id, track_id, user_id, created_at);
-
-
-
-				Date created_at2 = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(excel.get("created_at"));
-
-				String horas = String.valueOf(created_at2.getHours());
-				String minutos = String.valueOf(created_at2.getMinutes());
-				String segundo = String.valueOf(created_at2.getSeconds());
-				String union = horas + minutos + segundo;
-				int resp = Integer.parseInt(union);
+				
 				cantidadReproducciones++;				
 			}
 		}

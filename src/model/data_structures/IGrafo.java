@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public interface IGrafo <K extends Comparable<K>, V>
+public interface IGrafo <K extends Comparable<K>, V >
 {
 	public boolean containsVertex(K id);
 	public int numVertices();
@@ -10,10 +10,10 @@ public interface IGrafo <K extends Comparable<K>, V>
 	public Vertex<K,V> getVertex(K id);
 	public Edge<K,V> getEdge(K idS, K idD);
 	public ILista<Edge<K,V>> adjacentEdges(K id);
-	public ILista<Vertex<<K,V>> adjacentVertex(K id);
+	public ILista<Vertex<K,V>> adjacentVertex(K id);
 	public int indegree(K vertex);
 	public int outdegree(K vertex); 
-	public ILista<Edge<K,V>>> edges();
+	public ILista<Edge<K,V>> edges();
 	public ILista<Vertex<K,V>> vertices();
 	public void unmark();
 	public void dfs(K id);

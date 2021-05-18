@@ -8,8 +8,8 @@ public class Vertex <K extends Comparable<K>,V > implements Comparable<Vertex<K,
 	private V value;
 	private ArregloDinamico<Edge<K, V>> edge;
 	private boolean marked;
-	  
-	
+
+
 	public Vertex(K pId, V pValue)
 	{
 		id = pId;
@@ -70,7 +70,7 @@ public class Vertex <K extends Comparable<K>,V > implements Comparable<Vertex<K,
 		}
 		return vertices;
 	}
-	
+
 	public ILista<Edge<K,V>> edges()
 	{
 		ILista<Edge<K, V>> vertices = new ArregloDinamico<>(0);
@@ -80,7 +80,7 @@ public class Vertex <K extends Comparable<K>,V > implements Comparable<Vertex<K,
 		}
 		return vertices;
 	}
-	
+
 	public void dfs(Edge<K,V> edgeTo)
 	{
 		mark(edgeTo);
@@ -93,16 +93,30 @@ public class Vertex <K extends Comparable<K>,V > implements Comparable<Vertex<K,
 			}
 		}
 	}
-	
+
 	public void bfs()
 	{
-		// Falta 
+		Cola<Vertex<K, V>> cola = new Cola<Vertex<K, V>>();
+		cola.enqueue(this);
+		while(cola.peek() != null)
+		{
+			Vertex<K, V> actual = cola.dequeue();
+			for(int i = 1; i < actual.edges().size(); i++)
+			{
+				Vertex<K, V> dest = actual.edges().getElement(i).getDestination();
+				if(!dest.marked)
+				{
+					dest.mark(actual.edges().getElement(i));
+					cola.enqueue(dest);
+				}
+			}
+		}
 	}
-	
+
 	@Override
 	public int compareTo(Vertex<K, V> o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 }

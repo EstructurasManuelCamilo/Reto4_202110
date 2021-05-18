@@ -181,7 +181,7 @@ public class Modelo
 			{	
 				double key = Double.parseDouble(excel.get("key"));
 				String artist_id = excel.get("artist_id");
-				
+
 				cantidadReproducciones++;				
 			}
 		}
@@ -205,10 +205,10 @@ public class Modelo
 				String name = excel.get("name");
 				String latitude = excel.get("latitude");
 				String longitude = excel.get("longitude");
-				
+
 				LandingPoint land = new LandingPoint(landing_point_id, id, name, latitude, longitude);
-				
-				
+
+
 			}
 		}
 		catch(Exception e)
@@ -216,7 +216,7 @@ public class Modelo
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Jason Winn
 	 * http://jasonwinn.org
@@ -233,23 +233,23 @@ public class Modelo
 	 */
 	private static final int EARTH_RADIUS = 6371; // Approx Earth radius in KM
 
-    public static double distance(double startLat, double startLong,
-                                  double endLat, double endLong) {
+	public static double distance(double startLat, double startLong,
+			double endLat, double endLong) {
 
-        double dLat  = Math.toRadians((endLat - startLat));
-        double dLong = Math.toRadians((endLong - startLong));
+		double dLat  = Math.toRadians((endLat - startLat));
+		double dLong = Math.toRadians((endLong - startLong));
 
-        startLat = Math.toRadians(startLat);
-        endLat   = Math.toRadians(endLat);
+		startLat = Math.toRadians(startLat);
+		endLat   = Math.toRadians(endLat);
 
-        double a = haversin(dLat) + Math.cos(startLat) * Math.cos(endLat) * haversin(dLong);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		double a = haversin(dLat) + Math.cos(startLat) * Math.cos(endLat) * haversin(dLong);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return EARTH_RADIUS * c; // <-- d
-    }
+		return EARTH_RADIUS * c; // <-- d
+	}
 
-    public static double haversin(double val) {
-        return Math.pow(Math.sin(val / 2), 2);
-    }
+	public static double haversin(double val) {
+		return Math.pow(Math.sin(val / 2), 2);
+	}
 
 }

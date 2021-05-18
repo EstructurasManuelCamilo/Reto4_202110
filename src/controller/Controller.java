@@ -67,7 +67,7 @@ public class Controller {
 				{
 					view.printMessage("Inicio de lectura de los archivos.\n----------------"); 
 					TInicio = System.currentTimeMillis();
-					modelo.leerDatosRBT();
+					modelo.leerDatosGrafo();
 					tiempo = System.currentTimeMillis() - TInicio;
 					System.out.println(tiempo);
 					tiempo = 0;
@@ -88,21 +88,7 @@ public class Controller {
 				{
 					caracteristica = lector.nextLine();
 				}
-				NodoTS<String, ArregloDinamico<Reproduccion>> solucion5 = modelo.darEstimarReproduccionesPorTiempo(resp, resp2);
-				if ( solucion5 == null) 
-					view.printMessage("No se pudo encontrar respuesta al requerimiento");
-				else
-				{
-					view.printMessage("El género más referenciado en el rango de horas es: " + solucion5.getKey() + "--"+ solucion5.getValue().size());
-					ArregloDinamico<Reproduccion> unicos = new ArregloDinamico<Reproduccion>(7);
-					unicos = modelo.darRepDiferentes(solucion5.getValue());
-					for(int i = 1; i < 10; i++)
-					{
-						Reproduccion act = unicos.getElement(i);
-						modelo.asignarHashtags(act);
-						view.printMessage("La reproducción " + i + " tiene: " + (act.darHashtag().size()) + " Hashtags" + " Vader promedio: " + modelo.darPromedioVaders(act.darHashtag()));
-					}
-				}
+
 				numero = 0;
 				num2 = 0;
 				num3 = 0;

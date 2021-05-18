@@ -55,8 +55,6 @@ public class Modelo
 
 	private ArregloDinamico<String> listaPaises;
 
-	private NoDirectedGraph<LandingPoint, >
-
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */

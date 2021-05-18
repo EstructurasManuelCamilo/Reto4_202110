@@ -127,9 +127,9 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 	}
 
 	@Override
-	public ILista<Vertex<K, V>> vertices() 
+	public ArregloDinamico<Vertex<K, V>> vertices() 
 	{
-		ILista<Vertex<K, V>> resp = new ArregloDinamico<>(7);
+		ArregloDinamico<Vertex<K, V>> resp = new ArregloDinamico<>(7);
 
 		for (int i = 0; i < vertices.size(); i++) 
 		{

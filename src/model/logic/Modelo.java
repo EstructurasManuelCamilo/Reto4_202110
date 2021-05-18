@@ -234,7 +234,13 @@ public class Modelo
 				Vertex<String, LandingPoint> nuevo2 = new Vertex<String, LandingPoint>(capital, land);
 				listaVertices.addLast(nuevo2);
 				graph.insertVertex(capital, nuevo2);
-
+				ArregloDinamico<Vertex<String, LandingPoint>> verticesPais = darVarticesPais(nombre);
+				for(int i = 0; i < verticesPais.size(); i++)
+				{
+					Vertex<String, LandingPoint> actual = verticesPais.getElement(i);
+					Float distancia = (float) distance(Double.parseDouble(capLatitude), Double.parseDouble(capLongitude), Double.parseDouble(actual.getInfo().getLatitude()), Double.parseDouble(actual.getInfo().getLongitude()));
+					graph.addEdge(capital,actual.getId(),distancia);
+				}
 			}
 		}
 		catch(Exception e)
@@ -258,7 +264,7 @@ public class Modelo
 	 */
 	private static final int EARTH_RADIUS = 6371; // Approx Earth radius in KM
 
-	public static double distance(double startLat, double startLong,
+	public double distance(double startLat, double startLong,
 			double endLat, double endLong) {
 
 		double dLat  = Math.toRadians((endLat - startLat));
@@ -277,4 +283,18 @@ public class Modelo
 		return Math.pow(Math.sin(val / 2), 2);
 	}
 
+	public ArregloDinamico<Vertex<String, LandingPoint>> darVarticesPais(String pais)
+	{
+		ArregloDinamico<Vertex<String, LandingPoint>> vertices = new ArregloDinamico<>(10);
+		for(int i = 0; i < graph.numVertices(); i++)
+		{
+			Vertex<String, LandingPoint> actual = graph.vertices().getElement(i).getInfo();
+			String[] partesNombre = actual.getInfo().getName().split(", ");
+			if(partesNombre[1].equals(pais))
+			{
+				vertices.addLast(actual);
+			}
+		}
+		return vertices;
+	}
 }

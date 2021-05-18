@@ -233,6 +233,7 @@ public class Modelo
 				LandingPoint land = new LandingPoint(capital, codigo, capital, capLatitude, capLongitude);
 				Vertex<String, LandingPoint> nuevo2 = new Vertex<String, LandingPoint>(capital, land);
 				listaVertices.addLast(nuevo2);
+				graph.insertVertex(capital, nuevo2);
 
 			}
 		}

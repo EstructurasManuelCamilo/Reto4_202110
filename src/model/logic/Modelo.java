@@ -1,8 +1,7 @@
 package model.logic;
 
 import model.data_structures.*;
-import model.logic.Video.ComparadorXLikes;
-import model.logic.Video.ComparadorXVistas;
+
 import model.utils.Ordenamientos;
 
 import org.apache.commons.csv.CSVFormat;
@@ -29,20 +28,6 @@ public class Modelo
 	long TInicio, TFin, tiempo;
 	long TInicio2, TFin2, tiempo2;
 
-	private ArregloDinamico<Video> datosArreglo; 
-
-	private ListaEncadenada<Video> datosLista;
-
-	private TablaSimbolos<String, ILista<Video>> datosTablaSimbolos;
-
-	private TablaHashLinearProbing<String,Video> datosLinearProbing;
-
-	private TablaHashSeparateChaining<String, ILista<Video>> datosSeparateChaining;
-
-	private Ordenamientos<Video> ordenamientos;
-
-	private ArregloDinamico<Categoria> categorias; 
-
 	private int diasTendencia;
 
 	private int cantidadDuplas;
@@ -53,24 +38,24 @@ public class Modelo
 
 	private int cantidadReproducciones;
 
-	private ArregloDinamico<String> listaPaises;
+	private ArregloDinamico<Pais> listaPaises;
+
+	private ArregloDinamico<Vertex<String, LandingPoint>> listaVertices;//arreglar
+
+	private NoDirectedGraph<String, Vertex<String, LandingPoint>> graph;
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
 	public Modelo()
 	{
-		datosArreglo = new ArregloDinamico<Video>(501);
-		datosLista = new ListaEncadenada<Video>();
-		ordenamientos = new Ordenamientos<>();
 		diasTendencia = 0;
 		cantidadDuplas = 0;
 		tiempoEjecucionPromedio = 0;
 		cantidadReproducciones = 0;
-		datosTablaSimbolos = new TablaSimbolos<>();
-		datosLinearProbing = new TablaHashLinearProbing<>(5013);//14, 5013
-		datosSeparateChaining = new TablaHashSeparateChaining<>(75189);//201, 75189
 		listaPaises = new ArregloDinamico<>(7);
+		listaVertices = new ArregloDinamico<>(10);
+		graph = new NoDirectedGraph<>(20);
 	}
 
 	/**
@@ -79,7 +64,7 @@ public class Modelo
 	 */
 	public Modelo(int capacidad)
 	{
-		datosArreglo = new ArregloDinamico(capacidad);
+		listaVertices = new ArregloDinamico(capacidad);
 	}
 
 	/**
@@ -88,7 +73,7 @@ public class Modelo
 	 */
 	public int darTamanoArreglo()
 	{
-		return datosArreglo.size();
+		return listaVertices.size();
 	}
 
 	public int darDiasTendencia()
@@ -105,9 +90,9 @@ public class Modelo
 	 * Requerimiento de agregar dato
 	 * @param dato
 	 */
-	public void agregar(Video element)
+	public void agregar(Vertex element)
 	{	
-		datosArreglo.addLast(element); // es O(1)
+		listaVertices.addLast(element); // es O(1)
 	}
 
 	/**
@@ -115,10 +100,10 @@ public class Modelo
 	 * @param dato Dato a buscar
 	 * @return dato encontrado
 	 */
-	public Video buscar(Video dato)
+	public Vertex buscar(Vertex dato)
 	{
-		if(datosArreglo.isPresent(dato)!= -1)
-			return datosArreglo.getElement(dato);
+		if(listaVertices.isPresent(dato)!= -1)
+			return listaVertices.getElement(dato);
 		else
 			return null;
 	}
@@ -128,14 +113,14 @@ public class Modelo
 	 * @param dato Dato a eliminar
 	 * @return dato eliminado
 	 */
-	public Video eliminar(Video dato)
+	public Vertex eliminar(Vertex dato)
 	{
-		return datosArreglo.deleteElement(dato);
+		return listaVertices.deleteElement(dato);
 	}
 
 	public void invertir()
 	{
-		datosArreglo.invertir();
+		listaVertices.invertir();
 	}
 
 	@Override 
@@ -147,9 +132,9 @@ public class Modelo
 			String resp = "[";
 			for (int i = 0; i < darTamanoArreglo() - 1; i++) 
 			{
-				resp += datosArreglo.getElement(i) + ",";
+				resp += listaVertices.getElement(i) + ",";
 			}
-			resp += datosArreglo.getElement(darTamanoArreglo() - 1) +"]";
+			resp += listaVertices.getElement(darTamanoArreglo() - 1) +"]";
 			return resp;
 		}
 	}
@@ -175,14 +160,24 @@ public class Modelo
 	{
 		try 
 		{
-			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/context_content_features-small.csv")),"UTF-8");
+			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/connetions.csv")),"UTF-8");
 			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 			for(final CSVRecord excel: separador)
 			{	
-				double key = Double.parseDouble(excel.get("key"));
-				String artist_id = excel.get("artist_id");
+				String origen = excel.get("origin");
+				String destino = excel.get("destination");
+				String nombreCable = excel.get("cable_name");
+				String idCable = excel.get("cable_id");
+				String longitudCable = excel.get("cable_length");
+				String[] partesLon = longitudCable.split(" ");
+				String[] partes2 = partesLon[0].split(",");
+				String mil = partes2[0];
+				String cien = partes2[1];
+				String dis = mil + cien;
+				Float distancia = Float.parseFloat(dis);
 
-				cantidadReproducciones++;				
+				graph.addEdge(origen, destino, distancia);
+
 			}
 		}
 		catch(Exception e)
@@ -207,7 +202,9 @@ public class Modelo
 				String longitude = excel.get("longitude");
 
 				LandingPoint land = new LandingPoint(landing_point_id, id, name, latitude, longitude);
-
+				Vertex<String, LandingPoint> nuevo = new Vertex<String, LandingPoint>(landing_point_id, land);
+				listaVertices.addLast(nuevo);
+				graph.insertVertex(landing_point_id, nuevo);
 
 			}
 		}
@@ -217,6 +214,33 @@ public class Modelo
 		}
 	}
 
+	public void leerPaises()
+	{
+		try 
+		{
+			final Reader pDatos = new InputStreamReader (new FileInputStream(new File("./data/countries.csv")),"UTF-8");
+			final CSVParser separador = new CSVParser(pDatos, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
+			for(final CSVRecord excel : separador)
+			{	
+				String nombre = excel.get("CountryName");
+				String capital = excel.get("CapitalName");
+				String capLatitude = excel.get("CapitalLatitude");
+				String capLongitude = excel.get("CapitalLongitude");
+				String codigo = excel.get("CountryCode");
+
+				Pais nuevo = new Pais(nombre, capital, capLatitude, capLongitude, codigo);
+				listaPaises.addLast(nuevo);
+				LandingPoint land = new LandingPoint(capital, codigo, capital, capLatitude, capLongitude);
+				Vertex<String, LandingPoint> nuevo2 = new Vertex<String, LandingPoint>(capital, land);
+				listaVertices.addLast(nuevo2);
+
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * Jason Winn
 	 * http://jasonwinn.org

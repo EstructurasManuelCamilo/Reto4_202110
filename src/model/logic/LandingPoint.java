@@ -1,6 +1,6 @@
 package model.logic;
 
-public class LandingPoint 
+public class LandingPoint implements Comparable<LandingPoint>
 {
 	private String landing_point_id; 
 	private String id;
@@ -56,6 +56,12 @@ public class LandingPoint
 
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
+	}
+
+	@Override
+	public int compareTo(LandingPoint o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

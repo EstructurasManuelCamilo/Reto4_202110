@@ -3,13 +3,13 @@ package model.data_structures;
 public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, V>
 {
 	private ITablaSimbolos<K, Vertex<K, V>> vertices;
-	
-	
+
+
 	public NoDirectedGraph(int pTamanio) 
 	{
 		vertices = new TablaHashLinearProbing<K, Vertex<K, V>>(pTamanio);
 	}
-	
+
 	@Override
 	public boolean containsVertex(K id) 
 	{
@@ -50,12 +50,16 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 		{
 			Vertex<K, V> origin = getVertex(source);
 			Vertex<K, V> destination = getVertex(dest);
-			origin.addEdge(new Edge<K, V>(origin, destination, weight));
-			destination.addEdge(new Edge<K, V>(origin, destination, weight));
+			if(origin!= null && destination!= null)
+			{
+				origin.addEdge(new Edge<K, V>(origin, destination, weight));
+				destination.addEdge(new Edge<K, V>(origin, destination, weight));
+
+			}
 		}
 		else
 		{
-			
+
 		}
 	}
 
@@ -108,7 +112,7 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 	public ILista<Edge<K, V>> edges() 
 	{
 		ILista<Edge<K, V>> resp = new ArregloDinamico<>(7);
-		
+
 		for (int i = 0; i < vertices.size(); i++) 
 		{
 			for(int j = 0; j < vertices().getElement(i).edges().size(); j++)
@@ -116,8 +120,8 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 				if(resp.isPresent(vertices().getElement(i).edges().getElement(j)) == -1)
 				{
 					resp.addLast(vertices().getElement(i).edges().getElement(j));
+				}
 			}
-		}
 		}
 		return resp;
 	}
@@ -126,7 +130,7 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 	public ILista<Vertex<K, V>> vertices() 
 	{
 		ILista<Vertex<K, V>> resp = new ArregloDinamico<>(7);
-		
+
 		for (int i = 0; i < vertices.size(); i++) 
 		{
 			resp.addLast(vertices.valueSet().getElement(i));
@@ -159,6 +163,6 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 		inicio.bfs();
 		unmark();
 	}
-	
-	
+
+
 }

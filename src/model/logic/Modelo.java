@@ -36,11 +36,11 @@ public class Modelo
 
 	private float tiempoEjecucionPromedio2;
 
-	private int cantidadReproducciones;
+	private int cantidadLP;
 
 	private ArregloDinamico<Pais> listaPaises;
 
-	private ArregloDinamico<Vertex<String, LandingPoint>> listaVertices;//arreglar
+	private ArregloDinamico<Vertex<String, LandingPoint>> listaVertices;
 
 	private NoDirectedGraph<String, Vertex<String, LandingPoint>> graph;
 
@@ -52,7 +52,7 @@ public class Modelo
 		diasTendencia = 0;
 		cantidadDuplas = 0;
 		tiempoEjecucionPromedio = 0;
-		cantidadReproducciones = 0;
+		cantidadLP = 0;
 		listaPaises = new ArregloDinamico<>(7);
 		listaVertices = new ArregloDinamico<>(10);
 		graph = new NoDirectedGraph<>(20);
@@ -67,6 +67,20 @@ public class Modelo
 		listaVertices = new ArregloDinamico(capacidad);
 	}
 
+	public NoDirectedGraph<String, Vertex<String, LandingPoint>> darGraph()
+	{
+		return graph;
+	}
+
+	public ArregloDinamico<Pais> darPaises()
+	{
+		return listaPaises;
+	}
+
+	public ArregloDinamico<Vertex<String, LandingPoint>> darVertices()
+	{
+		return listaVertices;
+	}
 	/**
 	 * Servicio de consulta de numero de elementos presentes en el modelo 
 	 * @return numero de elementos presentes en el modelo
@@ -79,11 +93,6 @@ public class Modelo
 	public int darDiasTendencia()
 	{
 		return diasTendencia;
-	}
-
-	public int darCantidadReproducciones()
-	{
-		return cantidadReproducciones;
 	}
 
 	/**
@@ -169,15 +178,16 @@ public class Modelo
 				String nombreCable = excel.get("cable_name");
 				String idCable = excel.get("cable_id");
 				String longitudCable = excel.get("cable_length");
-				String[] partesLon = longitudCable.split(" ");
-				String[] partes2 = partesLon[0].split(",");
-				String mil = partes2[0];
-				String cien = partes2[1];
-				String dis = mil + cien;
-				Float distancia = Float.parseFloat(dis);
 
-				graph.addEdge(origen, destino, distancia);
 
+				Vertex<String, LandingPoint> orig = graph.getVertex(origen).getInfo();
+				Vertex<String, LandingPoint> des = graph.getVertex(destino).getInfo();
+
+				if(orig != null && des != null)
+				{
+					Float distancia = (float) distance(Double.parseDouble(orig.getInfo().getLatitude()), Double.parseDouble(orig.getInfo().getLongitude()), Double.parseDouble(des.getInfo().getLatitude()), Double.parseDouble(des.getInfo().getLongitude()));
+					graph.addEdge(origen, destino, distancia);
+				}
 			}
 		}
 		catch(Exception e)
@@ -200,12 +210,16 @@ public class Modelo
 				String name = excel.get("name");
 				String latitude = excel.get("latitude");
 				String longitude = excel.get("longitude");
+				String[] partesName = name.split(", ");
+				String pais = partesName[1];
 
-				LandingPoint land = new LandingPoint(landing_point_id, id, name, latitude, longitude);
+				LandingPoint land = new LandingPoint(landing_point_id, id, name, latitude, longitude, pais);
 				Vertex<String, LandingPoint> nuevo = new Vertex<String, LandingPoint>(landing_point_id, land);
 				listaVertices.addLast(nuevo);
 				graph.insertVertex(landing_point_id, nuevo);
 
+
+				cantidadLP++;
 			}
 		}
 		catch(Exception e)
@@ -227,19 +241,27 @@ public class Modelo
 				String capLatitude = excel.get("CapitalLatitude");
 				String capLongitude = excel.get("CapitalLongitude");
 				String codigo = excel.get("CountryCode");
+				String poblacion = excel.get("Population");
+				String cantUsuarios = excel.get("Internet users");
 
-				Pais nuevo = new Pais(nombre, capital, capLatitude, capLongitude, codigo);
-				listaPaises.addLast(nuevo);
-				LandingPoint land = new LandingPoint(capital, codigo, capital, capLatitude, capLongitude);
-				Vertex<String, LandingPoint> nuevo2 = new Vertex<String, LandingPoint>(capital, land);
-				listaVertices.addLast(nuevo2);
-				graph.insertVertex(capital, nuevo2);
-				ArregloDinamico<Vertex<String, LandingPoint>> verticesPais = darVarticesPais(nombre);
-				for(int i = 0; i < verticesPais.size(); i++)
+
+				Pais nuevo = new Pais(nombre, capital, capLatitude, capLongitude, codigo, poblacion, cantUsuarios);
+
+				if(listaPaises.isPresent(nuevo) == -1)
 				{
-					Vertex<String, LandingPoint> actual = verticesPais.getElement(i);
-					Float distancia = (float) distance(Double.parseDouble(capLatitude), Double.parseDouble(capLongitude), Double.parseDouble(actual.getInfo().getLatitude()), Double.parseDouble(actual.getInfo().getLongitude()));
-					graph.addEdge(capital,actual.getId(),distancia);
+					listaPaises.addLast(nuevo);
+					LandingPoint land = new LandingPoint(capital, codigo, capital, capLatitude, capLongitude, nombre);
+					Vertex<String, LandingPoint> nuevo2 = new Vertex<String, LandingPoint>(capital, land);
+					listaVertices.addLast(nuevo2);
+					cantidadLP++;
+					graph.insertVertex(capital, nuevo2);
+					ArregloDinamico<Vertex<String, LandingPoint>> verticesPais = darVarticesPais(nombre);
+					for(int i = 0; i < verticesPais.size(); i++)
+					{
+						Vertex<String, LandingPoint> actual = verticesPais.getElement(i);
+						Float distancia = (float) distance(Double.parseDouble(capLatitude), Double.parseDouble(capLongitude), Double.parseDouble(actual.getInfo().getLatitude()), Double.parseDouble(actual.getInfo().getLongitude()));
+						graph.addEdge(capital,actual.getId(),distancia);
+					}
 				}
 			}
 		}
@@ -289,12 +311,16 @@ public class Modelo
 		for(int i = 0; i < graph.numVertices(); i++)
 		{
 			Vertex<String, LandingPoint> actual = graph.vertices().getElement(i).getInfo();
-			String[] partesNombre = actual.getInfo().getName().split(", ");
-			if(partesNombre[1].equals(pais))
+			if(actual.getInfo().getPais().equals(pais))
 			{
 				vertices.addLast(actual);
 			}
 		}
 		return vertices;
+	}
+
+	public int darCantidadLandingPoints() 
+	{
+		return cantidadLP;
 	}
 }

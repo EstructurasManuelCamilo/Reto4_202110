@@ -7,14 +7,16 @@ public class LandingPoint implements Comparable<LandingPoint>
 	private String name;
 	private String latitude;
 	private String longitude;
-	
-	public LandingPoint(String pLand, String pId, String pName, String pLat, String pLong)
+	private String pais;
+
+	public LandingPoint(String pLand, String pId, String pName, String pLat, String pLong, String pPais)
 	{
 		setId(pId);
 		setLanding_point_id(pLand);
 		setName(pName);
 		setLatitude(pLat);
 		setLongitude(pLong);
+		setPais(pPais);
 	}
 
 	public String getLanding_point_id() {
@@ -32,7 +34,13 @@ public class LandingPoint implements Comparable<LandingPoint>
 	public void setId(String id) {
 		this.id = id;
 	}
+	public String getPais() {
+		return pais;
+	}
 
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
 	public String getName() {
 		return name;
 	}
@@ -63,5 +71,6 @@ public class LandingPoint implements Comparable<LandingPoint>
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
+
 }

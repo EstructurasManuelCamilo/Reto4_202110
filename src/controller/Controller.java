@@ -8,6 +8,7 @@ import model.data_structures.ArregloDinamico;
 import model.data_structures.ILista;
 import model.data_structures.ListaEncadenada;
 import model.data_structures.NodoTS;
+import model.logic.LandingPoint;
 import model.logic.Modelo;
 
 import model.utils.Ordenamientos;
@@ -66,6 +67,24 @@ public class Controller {
 					modelo.leerDatosGrafo();
 					tiempo = System.currentTimeMillis() - TInicio;
 					System.out.println(tiempo);
+
+					System.out.println("El total de Landing points es de: " + modelo.darCantidadLandingPoints());
+					System.out.println("El total de conecciones entre Landing Points es de: " + modelo.darGraph().numEdges());
+					System.out.println("El total de paises es de: " + modelo.darPaises().size());
+					System.out.println("La informacion del primer Landing Point es: ");
+					model.data_structures.Vertex<String, LandingPoint> primero = modelo.darVertices().getElement(0);
+					System.out.println("ID: " + primero.getId());
+					System.out.println("Nombre: " + primero.getInfo().getName());
+					System.out.println("Pais: " + primero.getInfo().getPais());
+					System.out.println("Latitud: " + primero.getInfo().getLatitude());
+					System.out.println("Longitud: " + primero.getInfo().getLongitude());
+
+					System.out.println("La informacion del último pais cargado es: " );
+					System.out.println("Capital: " + modelo.darPaises().lastElement().getCapital());
+					System.out.println("Poblacion: " + modelo.darPaises().lastElement().getPoblacion());
+					System.out.println("Numero de usuarios de internet: " + modelo.darPaises().lastElement().getCantUsuarios());
+
+
 					tiempo = 0;
 				}
 				cargados = true;

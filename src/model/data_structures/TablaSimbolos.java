@@ -15,22 +15,15 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 	private ILista<K> keys;
 
 	/**
-	 * Retorna la lista con las llaves
-	 */
-	public ILista<K> keySet()
-	{
-		return keys;
-	}
-
-	/**
 	 * Lista con los valores
 	 */
 	private ILista<V> vals;
 
-
+	
 	public TablaSimbolos()
 	{
 		keys = new ArregloDinamico<>(7);
+		vals = new ArregloDinamico<>(7);
 		listaNodos = new ArregloDinamico<NodoTS<K,V>>(7);
 		size = 0;
 	}
@@ -42,6 +35,15 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 	{
 		return vals;
 	}
+	/**
+	 * Retorna la lista con las llaves
+	 */
+	public ILista<K> keySet()
+	{
+		return keys;
+	}
+
+	
 	/**
 	 * Retorna el número de duplas en la Tabla de Símbolos
 	 */
@@ -82,6 +84,7 @@ public class TablaSimbolos<K extends Comparable<K>,V extends Comparable<V>> impl
 		NodoTS<K,V> agregar = new NodoTS<K,V>(key, val);
 		listaNodos.addLast(agregar);
 		keys.addLast(key);
+		vals.addLast(val);
 		size ++;
 	}
 	public void cambiarVal(int pos, V val)

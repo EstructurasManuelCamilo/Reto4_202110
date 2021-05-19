@@ -169,7 +169,7 @@ public class ArregloDinamico <T extends Comparable<T>> implements ILista <T>
 
 	public T lastElement() 
 	{
-		return getElement(tamanoAct);
+		return getElement(tamanoAct-1);
 	}
 
 	public int size() 

@@ -8,68 +8,72 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	private int p;
 	private int a;
 	private int b;
-	
+	private ILista<K> keys;
+	private ILista<V> vals;
+
 	public int darP()
 	{
 		return p;
 	}
-	
+
 	public int darA()
 	{
 		return a;
 	}
-	
+
 	public int darB()
 	{
 		return b;
 	}
-	
+
 	public void setP(int pP)
 	{
 		p = pP;
 	}
-	
+
 	public void setA(int pA)
 	{
 		a = pA;
 	}
-	
+
 	public void setB(int pB)
 	{
 		b = pB;
 	}
-	
+
 	public TablaHashLinearProbing(int pTamanioIncial) 
 	{
 		tamanioTabla = nextPrime(pTamanioIncial);
 		listaNodos = new ArregloDinamico<NodoTS<K,V>> (tamanioTabla);
+		keys = new ArregloDinamico<K> (tamanioTabla);
+		vals = new ArregloDinamico<V> (tamanioTabla);
+
 		tamanioActual = 0;
 		for (int i = 0 ; i < tamanioTabla; i++)
 		{
 			listaNodos.addLast(null);
 		}
-		
+
 		p = nextPrime(tamanioTabla);
 		a = (int) (Math.random()* (p-1));
 		b = (int) (Math.random()* (p-1));
 	}
-	
+
 	public ILista <NodoTS<K, V>> darListaNodos()
 	{
 		return listaNodos;
 	}
-	
+
 	@Override
 	public ILista<K> keySet() 
 	{ 
-		// TODO Auto-generated method stub
-		return null;
+		return keys;
 	}
 
 	@Override
-	public ILista<V> valueSet() {
-		// TODO Auto-generated method stub
-		return null;
+	public ILista<V> valueSet() 
+	{
+		return vals;
 	}
 
 	@Override
@@ -108,11 +112,12 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		{
 			posicion = getNextEmpty(posicion);
 		}
-		
+
 		NodoTS<K, V> no = new  NodoTS<K, V>(key, val);
 		listaNodos.changeInfo(posicion, no);
 		nodo = listaNodos.getElement(posicion);
-		
+		keys.addLast(key);
+		vals.addLast(val);
 		tamanioActual ++;
 		double div2 = (double)tamanioActual/(double)tamanioTabla;
 		if(div2 >= 0.75)
@@ -147,7 +152,7 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 				}
 			}
 		}
-		
+
 		if(resp != null)
 		{
 			listaNodos.getElement(posicion).setEmpty();
@@ -196,44 +201,44 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 	{
 		return Math.abs((key.hashCode()*a + b) % p) % tamanioTabla;
 	}
-	
+
 	// Function that returns true if n
-    // is prime else returns false
-    static boolean isPrime(int n)
-    {
-        // Corner cases
-        if (n <= 1) return false;
-        if (n <= 3) return true;
-        // This is checked so that we can skip
-        // middle five numbers in below loop
-        if (n % 2 == 0 || n % 3 == 0) return false;
-        
-        for (int i = 5; i * i <= n; i = i + 6)
-            if (n % i == 0 || n % (i + 2) == 0)
-            return false;
-        return true;
-    }
+	// is prime else returns false
+	static boolean isPrime(int n)
+	{
+		// Corner cases
+		if (n <= 1) return false;
+		if (n <= 3) return true;
+		// This is checked so that we can skip
+		// middle five numbers in below loop
+		if (n % 2 == 0 || n % 3 == 0) return false;
 
-    // Function to return the smallest
-    // prime number greater than N
-    static int nextPrime(int N)
-    {
-        // Base case
-        if (N <= 1)
-            return 2;
-        int prime = N;
-        boolean found = false;
-        // Loop continuously until isPrime returns
-        // true for a number greater than n
-        while (!found)
-        {
-            prime++;
-            if (isPrime(prime))
-                found = true;
-        }
-        return prime;
+		for (int i = 5; i * i <= n; i = i + 6)
+			if (n % i == 0 || n % (i + 2) == 0)
+				return false;
+		return true;
+	}
 
-    }
+	// Function to return the smallest
+	// prime number greater than N
+	static int nextPrime(int N)
+	{
+		// Base case
+		if (N <= 1)
+			return 2;
+		int prime = N;
+		boolean found = false;
+		// Loop continuously until isPrime returns
+		// true for a number greater than n
+		while (!found)
+		{
+			prime++;
+			if (isPrime(prime))
+				found = true;
+		}
+		return prime;
+
+	}
 	private int getNextEmpty(int posicion)
 	{
 		int p1 = posicion;
@@ -246,7 +251,7 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 		}
 		return p1;
 	}
-	
+
 	private void rehash(int cap)
 	{
 		TablaHashLinearProbing<K,V> nueva = new TablaHashLinearProbing<>(cap);
@@ -282,7 +287,7 @@ public class TablaHashLinearProbing <K extends Comparable<K>,V extends Comparabl
 				resp.addLast(nodoActual.getValue());
 			}
 			posicion ++;
-			
+
 			if(posicion > tamanioTabla - 1)
 			{
 				posicion = 1;

@@ -45,7 +45,7 @@ public class Controller {
 		String nuevoGeneroMusical = "";
 		double valorMin = 0;
 		double valorMax = 0; 
-		double numero = 0;
+		int numero = 0;
 		double num2 = 0;
 		double num3 = 0;
 		double num4 = 0;
@@ -69,7 +69,7 @@ public class Controller {
 					System.out.println(tiempo);
 
 					System.out.println("El total de Landing points es de: " + modelo.darCantidadLandingPoints());
-					System.out.println("El total de conecciones entre Landing Points es de: " + modelo.darGraph().numEdges());
+					System.out.println("El total de conecciones entre Landing Points es de: " + modelo.darNumEdges());
 					System.out.println("El total de paises es de: " + modelo.darPaises().size());
 					System.out.println("La informacion del primer Landing Point es: ");
 					model.data_structures.Vertex<String, LandingPoint> primero = modelo.darVertices().getElement(0);
@@ -97,7 +97,8 @@ public class Controller {
 				{
 					caracteristica = lector.nextLine();
 				}
-
+				numero = modelo.gradoPuntoConeccion(caracteristica);
+				System.out.println("El grado de conectividad del Landing Point " + caracteristica + "es: " + numero);
 				numero = 0;
 				num2 = 0;
 				num3 = 0;

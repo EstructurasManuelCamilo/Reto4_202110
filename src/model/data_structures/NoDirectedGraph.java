@@ -1,13 +1,16 @@
 package model.data_structures;
 
+import model.logic.LandingPoint;
+
 public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, V>
 {
 	private ITablaSimbolos<K, Vertex<K, V>> vertices;
-
+	private int numEdges;
 
 	public NoDirectedGraph(int pTamanio) 
 	{
 		vertices = new TablaHashLinearProbing<K, Vertex<K, V>>(pTamanio);
+		numEdges = 0;
 	}
 
 	@Override
@@ -33,7 +36,7 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 	@Override
 	public int numEdges() 
 	{
-		return edges().size();
+		return numEdges;
 	}
 
 	@Override
@@ -56,6 +59,7 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 				destination.addEdge(new Edge<K, V>(origin, destination, weight));
 
 			}
+			numEdges++;
 		}
 		else
 		{
@@ -70,12 +74,13 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 		Vertex<K, V> resp = null;
 		for(int i = 0; i <= vertices.size(); i++)
 		{
-			if(vertices.getElement(i).getId().equals(id))
-			{
-				resp = vertices.getElement(i);
-			}
+			if(vertices.getElement(i)!=null)
+				if(vertices.getElement(i).getId().equals(id))
+				{
+					resp = vertices.getElement(i);
+				}
 		}
-		return resp;
+		return (Vertex<K, V>) resp;
 	}
 
 	@Override
@@ -113,15 +118,17 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 	{
 		ILista<Edge<K, V>> resp = new ArregloDinamico<>(7);
 
-		for (int i = 0; i < vertices.size(); i++) 
+		for (int i = 0; i < vertices().size(); i++) 
 		{
-			for(int j = 0; j < vertices().getElement(i).edges().size(); j++)
-			{
-				if(resp.isPresent(vertices().getElement(i).edges().getElement(j)) == -1)
+			Vertex<K, V> actual = vertices().getElement(i);
+			if(actual!=null)
+				for(int j = 0; j < actual.edges().size(); j++)
 				{
-					resp.addLast(vertices().getElement(i).edges().getElement(j));
+					if(resp.isPresent(vertices().getElement(i).edges().getElement(j)) == -1)
+					{
+						resp.addLast(vertices().getElement(i).edges().getElement(j));
+					}
 				}
-			}
 		}
 		return resp;
 	}
@@ -133,7 +140,9 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 
 		for (int i = 0; i < vertices.size(); i++) 
 		{
-			resp.addLast(vertices.valueSet().getElement(i));
+			ArregloDinamico<Vertex<K, V>> valores =  (ArregloDinamico<Vertex<K, V>>) vertices.valueSet();
+			if(valores!=null)
+				resp.addLast(valores.getElement(i));
 		}
 		return resp;
 	}

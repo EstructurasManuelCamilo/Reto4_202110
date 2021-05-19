@@ -71,9 +71,9 @@ public class Pais implements Comparable<Pais>
 
 
 	@Override
-	public int compareTo(Pais o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int compareTo(Pais o) 
+	{
+		return this.nombre.compareTo(o.nombre);
 	}
 
 }

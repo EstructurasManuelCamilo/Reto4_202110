@@ -1,5 +1,7 @@
 package model.logic;
 
+import model.data_structures.ArregloDinamico;
+
 public class LandingPoint implements Comparable<LandingPoint>
 {
 	private String landing_point_id; 
@@ -8,6 +10,7 @@ public class LandingPoint implements Comparable<LandingPoint>
 	private String latitude;
 	private String longitude;
 	private String pais;
+	private ArregloDinamico<LandingPoint> adyacentes;
 
 	public LandingPoint(String pLand, String pId, String pName, String pLat, String pLong, String pPais)
 	{
@@ -17,6 +20,7 @@ public class LandingPoint implements Comparable<LandingPoint>
 		setLatitude(pLat);
 		setLongitude(pLong);
 		setPais(pPais);
+		adyacentes = new ArregloDinamico<>(7);
 	}
 
 	public String getLanding_point_id() {
@@ -65,7 +69,14 @@ public class LandingPoint implements Comparable<LandingPoint>
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
-
+	public void añadirAdyacente(LandingPoint ady)
+	{
+		adyacentes.addLast(ady);
+	}
+	public ArregloDinamico<LandingPoint> darAdyacentes()
+	{
+		return adyacentes;
+	}
 	@Override
 	public int compareTo(LandingPoint o) {
 		// TODO Auto-generated method stub

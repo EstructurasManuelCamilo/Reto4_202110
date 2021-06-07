@@ -28,11 +28,19 @@ public class Vertex <K extends Comparable<K>,V > implements Comparable<Vertex<K,
 	{
 		return marked;
 	}
+	public ArregloDinamico<Edge<K, V>> getEdges()
+	{
+		return edge;
+	}
 	public void addEdge( Edge<K,V> pEdge ) 
 	{
 		edge.addLast(pEdge);
 	}
 	public void mark(Edge<K,V> edgeTo) 
+	{
+		marked = true;
+	}
+	public void mark()
 	{
 		marked = true;
 	}
@@ -48,6 +56,7 @@ public class Vertex <K extends Comparable<K>,V > implements Comparable<Vertex<K,
 	{
 		return 0;
 	}
+	
 	// Retorna el último edge que tiene vertice SO SÉ SI ESTÁ BIEN
 	public Edge<K,V> getEdge(K vertex)
 	{
@@ -113,10 +122,45 @@ public class Vertex <K extends Comparable<K>,V > implements Comparable<Vertex<K,
 		}
 	}
 
+	public void topologicalOrder(Cola<Vertex<K, V>> pre, Cola<Vertex<K, V>> pos, Pila<Vertex<K, V>> reversePos )
+	{
+		mark();
+		pre.enqueue(this);
+		for(int i = 1; i <= edge.size(); i ++)
+		{
+			Vertex<K, V> destino = edge.getElement(i).getDestination();
+			if(!destino.getMark())
+			{
+				destino.topologicalOrder(pre, pos, reversePos);
+			}
+		}
+		pos.enqueue(this);
+		reversePos.push(this);
+	}
+
+	public ILista<Edge<K, V>> mstPrimLazy() 
+	{
+		
+		return null;
+	}
+	
 	@Override
 	public int compareTo(Vertex<K, V> o) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	public void getSCC(ITablaSimbolos<K, Integer> tabla, int idCompon) 
+	{
+		mark();
+		tabla.put(id,  idCompon);
+		for(int i = 1; 1 <= edge.size(); i++)
+		{
+			Vertex<K,V> actual= edge.getElement(i).getDestination();
+			if(!actual.getMark())
+			{
+				actual.getSCC(tabla, idCompon);
+			}
+		}
 	}
 
 }

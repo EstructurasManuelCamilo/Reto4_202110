@@ -172,6 +172,13 @@ public class NoDirectedGraph < K extends Comparable<K>, V> implements IGrafo<K, 
 		inicio.bfs();
 		unmark();
 	}
-
-
+	
+	public ILista<Edge<K, V>> mstPrimLazy(K idOrigen)
+	{
+		ILista<Edge<K, V>> mst = getVertex(idOrigen).mstPrimLazy();
+		unmark();
+		return mst;
+	}
+	
+	
 }

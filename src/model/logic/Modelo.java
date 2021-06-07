@@ -12,6 +12,7 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
@@ -45,6 +46,8 @@ public class Modelo
 	private ArregloDinamico<Vertex<String, LandingPoint>> listaVertices;
 
 	private NoDirectedGraph<String, Vertex<String, LandingPoint>> graph;
+	
+	private DirectedGraph<String, Vertex<String, LandingPoint>> graphDirected;
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
@@ -59,6 +62,7 @@ public class Modelo
 		listaPaises = new ArregloDinamico<>(7);
 		listaVertices = new ArregloDinamico<>(10);
 		graph = new NoDirectedGraph<>(20);
+		graphDirected = new DirectedGraph<>(7);
 	}
 
 	/**
@@ -190,6 +194,7 @@ public class Modelo
 				{
 					Float distancia = (float) distance(Double.parseDouble(orig.getInfo().getInfo().getLatitude()), Double.parseDouble(orig.getInfo().getInfo().getLongitude()), Double.parseDouble(des.getInfo().getInfo().getLatitude()), Double.parseDouble(des.getInfo().getInfo().getLongitude()));
 					graph.addEdge(origen, destino, distancia);
+					graphDirected.addEdge(origen, destino, distancia);
 					orig.getInfo().getInfo().añadirAdyacente(des.getInfo().getInfo());
 					numEdges++;
 				}
@@ -222,7 +227,7 @@ public class Modelo
 				Vertex<String, LandingPoint> nuevo = new Vertex<String, LandingPoint>(landing_point_id, land);
 				listaVertices.addLast(nuevo);
 				graph.insertVertex(landing_point_id, nuevo);
-
+				graphDirected.insertVertex(landing_point_id, nuevo);
 
 				cantidadLP++;
 			}
@@ -260,6 +265,7 @@ public class Modelo
 					listaVertices.addLast(nuevo2);
 					cantidadLP++;
 					graph.insertVertex(capital, nuevo2);
+					graphDirected.insertVertex(capital, nuevo2);
 					ArregloDinamico<Vertex<String, LandingPoint>> verticesPais = darVarticesPais(nombre);
 					for(int i = 0; i < verticesPais.size(); i++)
 					{
@@ -267,12 +273,14 @@ public class Modelo
 						try {
 							Float distancia = (float) distance(Double.parseDouble(capLatitude), Double.parseDouble(capLongitude), Double.parseDouble(actual.getInfo().getLatitude()), Double.parseDouble(actual.getInfo().getLongitude()));
 							graph.addEdge(capital,actual.getId(),distancia);
+							graphDirected.addEdge(capital,actual.getId(),distancia);
 							nuevo2.getInfo().añadirAdyacente(actual.getInfo());
 							numEdges++;
 						}
 						catch(Exception e)
 						{
 							graph.addEdge(capital,actual.getId(),0);
+							graphDirected.addEdge(capital,actual.getId(),0);
 							nuevo2.getInfo().añadirAdyacente(actual.getInfo());
 							numEdges++;
 						}
@@ -367,5 +375,46 @@ public class Modelo
 		if(parametro!=null)
 			resp = parametro.darAdyacentes().size();
 		return resp;
+	}
+	/**
+	 * Requerimiento 1 cantidad de clústeres dentro de la red de cables submarinos y si dos landing points. 
+	 */
+	public TablaSimbolos<Integer, Boolean> cantidadClustersDentroRed(String pLand1, String pLand2)
+	{
+		TablaSimbolos<Integer, Boolean> resp = new TablaSimbolos<Integer, Boolean>();
+		int resp1 = 0;
+		boolean resp2 = false;
+		if(graphDirected.getSCC().size()!= 0)
+		{
+			resp1 = graphDirected.getSCC().size();
+		}
+		for(int i = 0; i < graphDirected.getSCC().size(); i++)
+		{
+			if(graphDirected.getSCC().contains(pLand1) && graphDirected.getSCC().contains(pLand2))
+				resp2 = true;
+		}
+		resp.put(resp1, resp2);
+		return resp;
+	}
+	/**
+	 * Requerimiento 2 landing point(s) que sirven como punto de interconexión a más cables en la red.
+	 */
+	public TablaSimbolos<ILista<String>, Integer> masCablesRed()
+	{
+		TablaSimbolos<ILista<String>, Integer>  respFinal = new TablaSimbolos<>();
+		int max = 0;
+		ILista<String> resp = new ArregloDinamico<>(7);
+		int resp2 = 0;
+		for (int i = 0; i < graph.vertices().size(); i++) 
+		{
+			if(graph.vertices().getElement(i).getEdges().size() > max)
+			{
+				resp.addLast(graph.vertices().getElement(i).toString());
+				max = graph.vertices().getElement(i).getEdges().size();
+				resp2 ++;
+			}
+		}
+		respFinal.put(resp, resp2);
+		return respFinal;
 	}
 }

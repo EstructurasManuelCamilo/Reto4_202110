@@ -44,8 +44,10 @@ public class Cola <T extends Comparable <T>> implements Iterable<T>
         last = new Node1<T>();
         last.item = item;
         last.next = null;
-        if (isEmpty()) first = last;
-        else           oldlast.next = last;
+        if (isEmpty()) 
+        	first = last;
+        else 
+        	oldlast.next = last;
         n++;
     }
     
